@@ -28,7 +28,7 @@
         "lint:eslint": "eslint src/**/*.js",
         "lint:scss": "npx stylelint \"**/*.scss\"",
         "lint": "yarn lint:prettier && yarn lint:eslint && yarn lint:scss",
-        "validate": "npm run lint && npm build",
+        "validate": "npm run lint && npm run build",
         "pre-commit": "pretty-quick --staged --ignore-path=.eslintignore && lint-staged",
         "pre-push": "npm run validate",
         "prettier": "npx prettier --write .",
