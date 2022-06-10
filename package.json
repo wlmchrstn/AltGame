@@ -25,7 +25,7 @@
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "lint:prettier": "prettier --ignore-path .gitignore --check .",
-        "lint:eslint": "eslint src/**/*.js src/**/*.jsx",
+        "lint:eslint": "eslint src/**/*.js",
         "lint:scss": "npx stylelint \"**/*.scss\"",
         "lint": "yarn lint:prettier && yarn lint:eslint && yarn lint:scss",
         "validate": "npm run lint && npm build",
