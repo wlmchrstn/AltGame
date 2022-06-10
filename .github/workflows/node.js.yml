@@ -3,12 +3,7 @@
 
 name: Build React App
 
-on:
-    push:
-        branches:
-            - '**'
-    pull_request:
-        branches: ['master', 'develop']
+on: push
 
 jobs:
     build:
