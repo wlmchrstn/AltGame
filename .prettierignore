@@ -161,10 +161,7 @@ exports
 
 # testing
 /coverage
-/cypress/report
-/cypress/screenshots
-/cypress/videos
-/cypress/downloads
+/cypress
 
 # production
 /build
@@ -179,7 +176,6 @@ exports
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-package-lock.json
 
 storybook-static
 out

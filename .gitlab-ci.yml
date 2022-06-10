@@ -1,0 +1,40 @@
+stages:
+  - build
+  - staging
+  - production
+
+build:
+  image: node:16.14.0
+  stage: build
+  script:
+    - npm install
+    - npm run build
+  except:
+    - develop
+    - master
+
+staging:
+  image: ruby:latest
+  stage: staging
+  environment:
+    name: staging
+    url: https://$STAGING.$DOMAIN
+  before_script:
+    - gem install dpl
+  script:
+    - dpl --provider=heroku --app=$STAGING --api-key=$HEROKU_API_KEY
+  only:
+    - develop
+
+# production:
+#   image: ruby:latest
+#   stage: production
+#   environment:
+#     name: production
+#     url: https://$PRODUCTION.$DOMAIN
+#   before_script:
+#     - gem install dpl
+#   script:
+#     - dpl --provider=heroku --app=$PRODUCTION --api-key=$HEROKU_API_KEY
+#   only:
+#     - master
