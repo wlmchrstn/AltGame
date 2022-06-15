@@ -6,6 +6,7 @@ const LandingPage = () => {
         <div className={styles.root}>
             <h1>Landing Page</h1>
             <h2>test pr</h2>
+            <h3>test eslint</h3>
         </div>
     );
 };
