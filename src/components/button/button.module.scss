@@ -1,3 +1,5 @@
+@use '../../styles' as *;
+
 .root {
     align-items: center;
     border-radius: 16px;
@@ -14,13 +16,13 @@
 }
 
 .primary {
-    background-color: #7126b5;
+    background-color: $color-purple;
     color: #fff;
 }
 
 .secondary {
     background-color: #fff;
-    border: 1px solid #7126b5;
+    border: 1px solid $color-purple;
     color: #151515;
 }
 
