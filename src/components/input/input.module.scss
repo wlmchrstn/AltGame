@@ -1,0 +1,32 @@
+.root {
+    display: flex;
+    flex-direction: column;
+}
+
+.input {
+    background-color: #fff;
+    border: 1px solid #d0d0d0;
+    border-radius: 16px;
+    display: flex;
+    padding: 14px 16px;
+
+    &:focus-within {
+        border: 1px solid #000;
+    }
+
+    input,
+    select {
+        background-color: transparent;
+        border: 0;
+        color: #000;
+        font-size: 14px;
+        line-height: 20px;
+        padding: 0;
+        width: 100%;
+
+        &::placeholder {
+            color: #8a8a8a;
+            font-size: 14px;
+        }
+    }
+}
