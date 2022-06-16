@@ -1,3 +1,68 @@
-.title {
-    color: $color-red;
+.root {
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.heading-1 {
+    font-size: 24px;
+
+    &-light {
+        font-size: 24px;
+        font-weight: 400;
+    }
+
+    &-bold {
+        font-size: 24px;
+        font-weight: 700;
+    }
+}
+
+.heading-2 {
+    font-size: 20px;
+
+    &-light {
+        font-size: 20px;
+        font-weight: 400;
+    }
+
+    &-bold {
+        font-size: 20px;
+        font-weight: 700;
+    }
+}
+
+.title-1 {
+    font-size: 18px;
+
+    &-light {
+        font-size: 20px;
+        font-weight: 400;
+    }
+
+    &-bold {
+        font-size: 20px;
+        font-weight: 700;
+    }
+}
+
+.title-2 {
+    font-size: 16px;
+
+    &-light {
+        font-size: 20px;
+        font-weight: 400;
+    }
+
+    &-bold {
+        font-size: 20px;
+        font-weight: 700;
+    }
+}
+
+.black {
+    color: #000;
+}
+
+.white {
+    color: #fff;
 }

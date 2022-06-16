@@ -15,7 +15,9 @@
                     "include",
                     "mixin",
                     "extend",
-                    "for"
+                    "for",
+                    "forward",
+                    "use"
                 ]
             }
         ],

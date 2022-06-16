@@ -1,0 +1,53 @@
+@use '../../styles' as *;
+
+.root {
+    align-items: center;
+    border-radius: 16px;
+    box-sizing: border-box;
+    display: flex;
+    font-size: 14px;
+    font-weight: 500;
+    height: 48px;
+    justify-content: center;
+    line-height: 20px;
+    padding: 8px 12px;
+    text-align: center;
+    width: 100%;
+}
+
+.primary {
+    background-color: $color-purple;
+    color: #fff;
+}
+
+.secondary {
+    background-color: #fff;
+    border: 1px solid $color-purple;
+    color: #151515;
+}
+
+// .primary-disabled {
+//     @extend .primary;
+//     background-color: #d0d0d0;
+//     color: #fff;
+// }
+
+// .secondary-disabled {
+//     background-color: #fff;
+//     border: 1px solid #d0d0d0;
+//     color: #151515;
+// }
+
+// .primary-ghost {
+//     @extend .primary;
+//     background: #fff;
+//     color: #7126b5;
+//     opacity: 1;
+// }
+
+// .secondary-ghost {
+//     @extend .primary;
+//     background: #fff;
+//     color: #151515;
+//     opacity: 1;
+// }
