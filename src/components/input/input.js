@@ -4,8 +4,8 @@ import classNames from 'classnames';
 import styles from './input.module.scss';
 
 const Input = ({ children, ...props }) => (
-    <div className={styles.root} {...props}>
-        <div className={classNames(styles.input, props.className)}>
+    <div className={styles.root}>
+        <div className={classNames(props.className, styles.input)}>
             {children}
         </div>
     </div>
