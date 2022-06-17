@@ -1,10 +1,45 @@
 .root {
-    align-items: center;
     background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+    width: 100vw;
+}
+
+.wrapper {
+    align-items: center;
     display: flex;
     flex-direction: row;
     height: 84px;
     margin: 0 auto;
     max-width: 1168px;
     width: 100vw;
+}
+
+.logo-wrapper {
+    margin-right: 24px;
+}
+
+.bg {
+    background-color: #eee !important;
+    border: none !important;
+    width: 444px;
+}
+
+.button-group {
+    column-gap: 24px;
+    display: grid;
+    grid-template-columns: repeat(3, 24px);
+    margin-left: auto;
+}
+
+.login-wrapper {
+    width: 105px;
+    margin-left: auto;
+
+    img {
+        margin-right: 8px;
+    }
+}
+
+.button {
+    cursor: pointer;
 }
