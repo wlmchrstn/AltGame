@@ -6,7 +6,7 @@ import Custom404 from '../pages/custom404/custom404';
 
 import Navbar from '../modules/navbar/navbar';
 
-const WithNavFoot = () => {
+const WithNav = () => {
     return (
         <>
             <Navbar />
@@ -18,7 +18,7 @@ const WithNavFoot = () => {
 const Router = () => {
     return (
         <Routes>
-            <Route element={<WithNavFoot />}>
+            <Route element={<WithNav />}>
                 <Route path={'/'} element={<LandingPage />} />
             </Route>
             <Route path={'*'} element={<Custom404 />} />
