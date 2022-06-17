@@ -31,7 +31,7 @@ export const Login = () => {
                 <Button type={'submit'} variant={'primary'} color={'white'}>
                     {'Masuk'}
                 </Button>
-                <div className={styles.toRegister}>
+                <div className={styles['to-register']}>
                     <p>
                         {'Belum punya akun? '}
                         <a href="Register" alt="#">

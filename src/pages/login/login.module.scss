@@ -13,8 +13,8 @@
     width: 50%;
 
     h1 {
-        font-weight: 700;
         font-size: 40px;
+        font-weight: 700;
         margin: 35% 13%;
     }
 }
@@ -27,9 +27,9 @@
     padding: 134px;
 
     h1 {
+        font-size: 24px;
         font-weight: 700;
         margin: 24px 0;
-        font-size: 24px;
     }
 
     p {
@@ -38,26 +38,20 @@
 
     button {
         margin-top: 8px;
-        // figma size :
-        // margin-bottom: 16px;
     }
 
-    .toRegister {
+    .to-register {
         margin-top: 40px;
         text-align: center;
 
         a {
-            font-weight: 700;
             color: #7126b5;
+            font-weight: 700;
+            text-decoration: none;
         }
     }
 }
 
 .input {
     margin-bottom: 12px;
-}
-
-a {
-    margin-top: 40px;
-    text-decoration: none;
 }
