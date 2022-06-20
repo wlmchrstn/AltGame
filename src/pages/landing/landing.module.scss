@@ -1,0 +1,9 @@
+.product {
+    align-items: center;
+    display: grid;
+    column-gap: 24px;
+    row-gap: 24px;
+    grid-template-columns: auto auto auto auto auto auto;
+    grid-template-rows: auto auto auto auto auto;
+    justify-content: center;
+}
