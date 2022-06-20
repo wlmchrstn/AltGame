@@ -1,11 +1,11 @@
 .root {
     align-items: center;
+    background-color: #7126b5;
     display: flex;
     flex-direction: column;
     height: 100vh;
     justify-content: center;
     width: 100vw;
-    background-color: #7126b5;
 }
 
 .wrapper {
@@ -23,6 +23,7 @@
     p {
         margin-bottom: 4px;
     }
+
     button {
         margin-top: 24px;
     }
