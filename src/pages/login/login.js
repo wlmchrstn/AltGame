@@ -6,7 +6,7 @@ import Title from '../../components/title/title';
 import Input from '../../components/input/input';
 import Button from '../../components/button/button';
 
-export const Login = () => {
+export const LoginPage = () => {
     return (
         <section className={styles.root}>
             <div className={styles.image} />
@@ -48,4 +48,4 @@ export const Login = () => {
     );
 };
 
-export default Login;
+export default LoginPage;
