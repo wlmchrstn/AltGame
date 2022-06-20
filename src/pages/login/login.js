@@ -11,7 +11,11 @@ export const Login = () => {
         <section className={styles.root}>
             <div className={styles.image} />
             <form className={styles.form}>
-                <Title tagElement={'h1'} variant={'heading-1'} color={'black'}>
+                <Title
+                    tagElement={'h1'}
+                    variant={'heading-1-bold'}
+                    color={'black'}
+                >
                     {'Masuk'}
                 </Title>
                 <p>{'Email'}</p>

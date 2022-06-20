@@ -1,3 +1,5 @@
+@use '../../styles' as *;
+
 .root {
     display: flex;
     flex-direction: row;
@@ -11,12 +13,6 @@
     background-size: cover;
     display: flex;
     width: 50%;
-
-    h1 {
-        font-size: 40px;
-        font-weight: 700;
-        margin: 35% 13%;
-    }
 }
 
 .form {
@@ -27,8 +23,6 @@
     padding: 134px;
 
     h1 {
-        font-size: 24px;
-        font-weight: 700;
         margin: 24px 0;
     }
 
@@ -45,7 +39,7 @@
         text-align: center;
 
         a {
-            color: #7126b5;
+            color: $color-purple;
             font-weight: 700;
             text-decoration: none;
         }
