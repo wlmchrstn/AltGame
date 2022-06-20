@@ -1,0 +1,51 @@
+@use '../../styles' as *;
+
+.root {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+}
+
+.image {
+    background-image: url('../../assets/images/login-bg.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    width: 50%;
+}
+
+.form {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    padding: 134px;
+
+    h1 {
+        margin: 24px 0;
+    }
+
+    p {
+        margin-bottom: 4px;
+    }
+
+    button {
+        margin-top: 8px;
+    }
+
+    .to-register {
+        margin-top: 40px;
+        text-align: center;
+
+        a {
+            color: $color-purple;
+            font-weight: 700;
+            text-decoration: none;
+        }
+    }
+}
+
+.input {
+    margin-bottom: 12px;
+}
