@@ -1,11 +1,10 @@
 .root {
     background-color: #fff;
     border-radius: 4px;
-    box-shadow: 0 0 4px 0 #00000026;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    max-width: 153.14px;
     padding: 8px;
 }
 
@@ -15,8 +14,7 @@
     height: 100px;
     margin-bottom: 8px;
     overflow: hidden;
-    position: relative;
-    width: Fill (137.14px);
+    width: 100%;
 
     img {
         align-self: center;
@@ -26,4 +24,11 @@
 
 .wrapper {
     margin-bottom: 4px;
+}
+
+.title {
+    margin-bottom: 4px;
+}
+.category {
+    margin-bottom: 8px;
 }
