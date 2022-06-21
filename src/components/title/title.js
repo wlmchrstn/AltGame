@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import styles from './title.module.scss';
 
-const Title = ({ children, tagElement, variant, color, ...props }) => {
+const Title = ({ children, tagElement, variant, color, weight, ...props }) => {
     const baseProps = {
         className: classNames(
             styles.root,
             styles[variant],
             styles[color],
+            styles[weight],
             props.className
         ),
     };
@@ -34,6 +35,7 @@ Title.propTypes = {
     tagElement: PropTypes.string,
     variant: PropTypes.string,
     color: PropTypes.string,
+    weight: PropTypes.string,
     className: PropTypes.string,
 };
 
@@ -42,6 +44,8 @@ Title.defaultProps = {
     tagElement: 'h1',
     variant: 'heading-1',
     color: 'black',
+    weight: null,
+    className: null,
 };
 
 export default Title;
