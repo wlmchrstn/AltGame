@@ -21,8 +21,8 @@
 
 .product {
     align-items: center;
-    display: grid;
     column-gap: 16px;
+    display: grid;
     grid-template-columns: auto auto auto auto auto auto;
     grid-template-rows: auto auto auto auto auto auto;
     justify-content: center;
