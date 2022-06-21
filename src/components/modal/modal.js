@@ -32,7 +32,7 @@ Modal.propTypes = {
 };
 
 Modal.defaultProps = {
-    children: <input />,
+    children: <p>modal</p>,
     onClose: null,
     open: false,
     className: null,
