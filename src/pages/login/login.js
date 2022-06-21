@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './login.module.scss';
 
-// Componenets
+// Components
 import Title from '../../components/title/title';
 import Input from '../../components/input/input';
 import Button from '../../components/button/button';
