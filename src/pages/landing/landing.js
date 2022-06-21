@@ -8,7 +8,7 @@ import Title from '../../components/title/title';
 
 // Assets
 import search from '../../assets/icons/fi_search.svg';
-import search2 from '../../assets/icons/fi_search_white.svg';
+import search_white from '../../assets/icons/fi_search_white.svg';
 
 const LandingPage = () => {
     const dataMock = [
@@ -37,30 +37,23 @@ const LandingPage = () => {
             <div className={styles.header}>
                 <Title
                     tagElement={'h2'}
-                    variant={'title-2-bold'}
+                    variant={'title-2'}
                     color={'black'}
+                    weight={'bold'}
                 >
-                    {'Telusuri'}
+                    {'Telusuri Kategori'}
                 </Title>
             </div>
             <div className={styles.category}>
-                <Button
-                    type={'button'}
-                    variant={'primary-search'}
-                    color={'white'}
-                >
+                <Button type={'button'} variant={'primary'}>
                     <img
                         className={styles.icon}
-                        src={search2}
+                        src={search_white}
                         alt="logo-search-white"
                     />
                     {'Semua'}
                 </Button>
-                <Button
-                    type={'button'}
-                    variant={'secondary-search'}
-                    color={'black'}
-                >
+                <Button type={'button'} variant={'secondary'}>
                     <img
                         className={styles.icon}
                         src={search}
@@ -68,11 +61,7 @@ const LandingPage = () => {
                     />
                     {'Hobi'}
                 </Button>
-                <Button
-                    type={'button'}
-                    variant={'secondary-search'}
-                    color={'black'}
-                >
+                <Button type={'button'} variant={'secondary'}>
                     <img
                         className={styles.icon}
                         src={search}
@@ -80,12 +69,7 @@ const LandingPage = () => {
                     />
                     {'Kendaraan'}
                 </Button>
-                <Button
-                    type={'button'}
-                    variant={'secondary-search'}
-                    color={'black'}
-                    withIcon={search}
-                >
+                <Button type={'button'} variant={'secondary'}>
                     <img
                         className={styles.icon}
                         src={search}
@@ -93,11 +77,7 @@ const LandingPage = () => {
                     />
                     {'Baju'}
                 </Button>
-                <Button
-                    type={'button'}
-                    variant={'secondary-search'}
-                    color={'black'}
-                >
+                <Button type={'button'} variant={'secondary'}>
                     <img
                         className={styles.icon}
                         src={search}
@@ -105,11 +85,7 @@ const LandingPage = () => {
                     />
                     {'Elektronik'}
                 </Button>
-                <Button
-                    type={'button'}
-                    variant={'secondary-search'}
-                    color={'black'}
-                >
+                <Button type={'button'} variant={'secondary'}>
                     <img
                         className={styles.icon}
                         src={search}
