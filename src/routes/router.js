@@ -23,7 +23,7 @@ const Router = () => {
         <Routes>
             <Route element={<WithNav />}>
                 <Route path={'/'} element={<LandingPage />} />
-                <Route path={'/product/:id'} element={<ProductPage />} />
+                <Route path={'/product/:ids'} element={<ProductPage />} />
             </Route>
             <Route path={'/login'} element={<LoginPage />} />
             <Route path={'/register'} element={<Register />} />
