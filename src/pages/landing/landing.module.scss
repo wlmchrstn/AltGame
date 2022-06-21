@@ -1,9 +1,31 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.header {
+    margin: 16px 136px;
+}
+
+.category {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
+    margin: 0 136px;
+    row-gap: 16px;
+
+    .icon {
+        margin-right: 8px;
+    }
+}
+
 .product {
     align-items: center;
     display: grid;
-    column-gap: 24px;
-    row-gap: 24px;
+    column-gap: 16px;
     grid-template-columns: auto auto auto auto auto auto;
-    grid-template-rows: auto auto auto auto auto;
+    grid-template-rows: auto auto auto auto auto auto;
     justify-content: center;
+    margin: 40px 136px;
+    row-gap: 16px;
 }
