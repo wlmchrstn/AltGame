@@ -9,6 +9,7 @@ import Modal from '../../components/modal/modal';
 import Input from '../../components/input/input';
 import Title from '../../components/title/title';
 import Paragraph from '../../components/paragraph/paragraph';
+import Notification from '../../components/notification/notification';
 
 // Assets
 import imgPlaceholder from '../../assets/images/login-bg.png';
@@ -21,6 +22,7 @@ const ProductPage = () => {
         handleSubmit,
     } = useForm();
     const [isOpen, setIsOpen] = useState(false);
+    const [notification, setNotification] = useState(false);
 
     const handleClick = () => {
         setIsOpen(true);
@@ -28,10 +30,17 @@ const ProductPage = () => {
 
     const handleTawar = data => {
         console.log(data);
+        setNotification(true);
     };
 
     return (
         <section className={styles.root}>
+            <Notification
+                message={'Harga tawarmu berhasil dikirim ke penjual'}
+                variant={'success'}
+                show={notification}
+                setShow={setNotification}
+            />
             <div className={styles.left}>
                 <div className={styles.carousel}>
                     <img src={imgPlaceholder} alt={'placeholder'} />
