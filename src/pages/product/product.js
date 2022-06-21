@@ -7,6 +7,8 @@ import styles from './product.module.scss';
 import Button from '../../components/button/button';
 import Modal from '../../components/modal/modal';
 import Input from '../../components/input/input';
+import Title from '../../components/title/title';
+import Paragraph from '../../components/paragraph/paragraph';
 
 // Assets
 import imgPlaceholder from '../../assets/images/login-bg.png';
@@ -35,8 +37,15 @@ const ProductPage = () => {
                     <img src={imgPlaceholder} alt={'placeholder'} />
                 </div>
                 <div className={styles.desc}>
-                    <p className={styles['desc-header']}>Deskripsi</p>
-                    <p className={styles['desc-body']}>
+                    <Paragraph
+                        className={styles['desc-header']}
+                        variant={'body-1'}
+                        weight={'medium'}
+                        color={'black'}
+                    >
+                        Deskripsi
+                    </Paragraph>
+                    <Paragraph variant={'body-1'} color={'grey'}>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                         sed do eiusmod tempor incididunt ut labore et dolore
                         magna aliqua. Ut enim ad minim veniam, quis nostrud
@@ -57,14 +66,33 @@ const ProductPage = () => {
                         fugiat nulla pariatur. Excepteur sint occaecat cupidatat
                         cupidatat non proident, sunt in culpa qui officia
                         deserunt mollit anim id est laborum.
-                    </p>
+                    </Paragraph>
                 </div>
             </div>
             <div className={styles.right}>
                 <div className={styles.product}>
-                    <p>Jam Tangan Casio</p>
-                    <p>Aksesoris</p>
-                    <p>Rp 250.000</p>
+                    <Title
+                        tagElement={'h2'}
+                        className={styles['product-title']}
+                        variant={'title-2'}
+                        weight={'medium'}
+                    >
+                        Jam Tangan Casio
+                    </Title>
+                    <Paragraph
+                        className={styles['product-category']}
+                        variant={'body-1'}
+                    >
+                        Aksesoris
+                    </Paragraph>
+                    <Title
+                        tagElement={'h2'}
+                        className={styles['product-price']}
+                        variant={'title-2'}
+                        weight={'medium'}
+                    >
+                        Rp 250.000
+                    </Title>
                     <Button
                         type={'button'}
                         variant={'primary'}
@@ -77,11 +105,21 @@ const ProductPage = () => {
                         onClose={() => setIsOpen(false)}
                         className={styles.modal}
                     >
-                        <p>Masukkan Harga Tawarmu</p>
-                        <p>
+                        <Paragraph
+                            className={styles['modal-header']}
+                            variant={'body-1'}
+                            weight={'medium'}
+                        >
+                            Masukkan Harga Tawarmu
+                        </Paragraph>
+                        <Paragraph
+                            className={styles['modal-header']}
+                            variant={'body-1'}
+                            color={'grey'}
+                        >
                             Harga tawaranmu akan diketahui penual, jika penjual
                             cocok kamu akan segera dihubungi penjual.
-                        </p>
+                        </Paragraph>
                         <div className={styles['product-summary']}>
                             <img
                                 className={styles['product-image']}
@@ -89,12 +127,28 @@ const ProductPage = () => {
                                 alt={'seller-image'}
                             />
                             <div className={styles['product-detail']}>
-                                <p>Jam Tangan Casio</p>
-                                <p>Rp 250.000</p>
+                                <Paragraph
+                                    className={styles['product-detail-title']}
+                                    variant={'body-1'}
+                                    weight={'medium'}
+                                >
+                                    Jam Tangan Casio
+                                </Paragraph>
+                                <Paragraph variant={'body-1'}>
+                                    Rp 250.000
+                                </Paragraph>
                             </div>
                         </div>
-                        <p>Harga Tawar</p>
-                        <form onSubmit={handleSubmit(handleTawar)}>
+                        <form
+                            className={styles.form}
+                            onSubmit={handleSubmit(handleTawar)}
+                        >
+                            <Paragraph
+                                className={styles['form-label']}
+                                variant={'body-2'}
+                            >
+                                Harga Tawar
+                            </Paragraph>
                             <Input>
                                 <input
                                     type={'number'}
@@ -121,8 +175,16 @@ const ProductPage = () => {
                         alt={'seller-image'}
                     />
                     <div className={styles['seller-detail']}>
-                        <p>Nama Penjual</p>
-                        <p>Kota</p>
+                        <Paragraph
+                            className={styles['seller-name']}
+                            variant={'body-1'}
+                            weight={'medium'}
+                        >
+                            Nama Penjual
+                        </Paragraph>
+                        <Paragraph variant={'body-3'} color={'grey'}>
+                            Kota
+                        </Paragraph>
                     </div>
                 </div>
             </div>
