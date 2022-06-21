@@ -6,11 +6,19 @@ import styles from './notification.module.scss';
 
 import Paragraph from '../paragraph/paragraph';
 
-const Notification = ({ message, variant }) => {
+const Notification = ({ message, variant, show, setShow }) => {
     useEffect(() => {
-        console.log('useEffect');
-    }, []);
+        const timeId = setTimeout(() => {
+            // After 3 seconds set the show value to false
+            setShow(false);
+        }, 3000);
 
+        return () => {
+            clearTimeout(timeId);
+        };
+    }, [show]);
+
+    if (!show) return null;
     return createPortal(
         <div className={classNames(styles.root, styles[variant])}>
             <Paragraph variant={'body-1'} color={'white'}>
@@ -24,11 +32,15 @@ const Notification = ({ message, variant }) => {
 Notification.propTypes = {
     message: PropTypes.string.isRequired,
     variant: PropTypes.string.isRequired,
+    show: PropTypes.bool,
+    setShow: PropTypes.func,
 };
 
 Notification.defaultProps = {
     message: 'Notification message',
     variant: 'success',
+    show: false,
+    setShow: null,
 };
 
 export default Notification;
