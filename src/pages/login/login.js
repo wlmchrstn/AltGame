@@ -13,8 +13,9 @@ export const LoginPage = () => {
             <form className={styles.form}>
                 <Title
                     tagElement={'h1'}
-                    variant={'heading-1-bold'}
+                    variant={'heading-1'}
                     color={'black'}
+                    weight={'bold'}
                 >
                     {'Masuk'}
                 </Title>
