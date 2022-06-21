@@ -21,9 +21,9 @@
     z-index: $z-index-overflow;
 
     .image {
-        display: flex;
-        border-radius: 50%;
         align-self: right;
+        border-radius: 50%;
+        display: flex;
         margin-left: auto;
     }
 
