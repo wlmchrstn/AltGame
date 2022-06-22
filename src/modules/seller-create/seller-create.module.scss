@@ -1,0 +1,28 @@
+.root {
+    margin-top: 40px;
+}
+
+form {
+    margin: -24px auto 0;
+    max-width: 568px;
+
+    .label {
+        margin-bottom: 4px;
+    }
+
+    .input {
+        margin-bottom: 16px;
+    }
+
+    .file {
+        align-items: center;
+        border: 1px dashed #d0d0d0;
+        border-radius: 12px;
+        cursor: pointer;
+        display: flex;
+        height: 96px;
+        justify-content: center;
+        margin-bottom: 24px;
+        width: 96px;
+    }
+}
