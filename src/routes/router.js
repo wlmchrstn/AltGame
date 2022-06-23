@@ -8,6 +8,7 @@ import Custom404 from '../pages/custom404/custom404';
 import Register from '../pages/register/register';
 
 import Navbar from '../modules/navbar/navbar';
+import ProfilePage from '../pages/profile/profile';
 
 const WithNav = () => {
     return (
@@ -24,6 +25,7 @@ const Router = () => {
             <Route element={<WithNav />}>
                 <Route path={'/'} element={<LandingPage />} />
                 <Route path={'/product/:id'} element={<ProductPage />} />
+                <Route path={'/profile'} element={<ProfilePage />} />
             </Route>
             <Route path={'/login'} element={<LoginPage />} />
             <Route path={'/register'} element={<Register />} />
