@@ -159,7 +159,7 @@
 .container-main-03 input {
     align-items: flex-start;
     align-self: stretch;
-    background: #ffffff;
+    background: #fff;
     border: 1px solid #d0d0d0;
     border-radius: 16px;
     box-sizing: border-box;
@@ -208,8 +208,8 @@
     flex-direction: row;
     flex-grow: 0;
     font-family: 'Poppins';
-    font-style: normal;
     font-size: 14px;
+    font-style: normal;
     font-weight: 400;
     gap: 16px;
     height: 48px;
@@ -219,11 +219,11 @@
     width: 568px;
 }
 
-.Save-button {
+.save-button {
     background: #7126b5;
-    border-radius: 16px;
     border-color: #7126b5;
-    color: white;
+    border-radius: 16px;
+    color: #fff;
     display: flexbox;
     font-family: 'Poppins';
     font-size: 14px;
