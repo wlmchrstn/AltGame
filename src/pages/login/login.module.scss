@@ -26,7 +26,7 @@
         margin: 24px 0;
     }
 
-    p {
+    .label {
         margin-bottom: 4px;
     }
 
@@ -34,18 +34,23 @@
         margin-top: 8px;
     }
 
-    .to-register {
+    .register {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
         margin-top: 40px;
         text-align: center;
 
         a {
             color: $color-purple;
+            font-size: 12px;
             font-weight: 700;
+            margin-left: 8px;
             text-decoration: none;
         }
     }
 }
 
 .input {
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 }
