@@ -1,0 +1,31 @@
+.root {
+    margin: 0 auto;
+    max-width: 1168px;
+    padding: 40px 0;
+}
+
+.category {
+    display: flex;
+    margin-top: 16px;
+
+    button {
+        flex: 0 1;
+        padding: 14px 24px;
+    }
+
+    .icon {
+        margin-right: 8px;
+    }
+}
+
+.category button:not(:first-child) {
+    margin-left: 16px;
+}
+
+.product {
+    column-gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    margin-top: 40px;
+    row-gap: 16px;
+}

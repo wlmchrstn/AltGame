@@ -1,0 +1,146 @@
+.root {
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    max-width: 968px;
+    padding: 40px 0;
+}
+
+.left {
+    flex: 6;
+    margin-right: 32px;
+    max-width: 600px;
+}
+
+.right {
+    flex: 4;
+    max-width: 336px;
+}
+
+.desc {
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+    max-width: 600px;
+    padding: 16px;
+
+    &-header {
+        margin-bottom: 16px;
+    }
+}
+
+.carousel {
+    align-items: center;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+    max-height: 436px;
+    max-width: 600px;
+    overflow: hidden;
+
+    img {
+        border-radius: 16px;
+        max-width: 600px;
+        object-fit: contain;
+    }
+}
+
+.product {
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+    padding: 24px;
+
+    &-title {
+        margin-bottom: 8px;
+    }
+
+    &-category {
+        margin-bottom: 16px;
+    }
+
+    &-price {
+        margin-bottom: 24px;
+    }
+
+    &-summary {
+        background: #eee;
+        border-radius: 16px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+        display: flex;
+        flex-direction: row;
+        margin-top: 16px;
+        padding: 16px;
+    }
+
+    &-image {
+        border-radius: 12px;
+        height: 48px;
+        margin-right: 16px;
+        width: 48px;
+    }
+
+    &-detail {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        &-title {
+            margin-bottom: 4px;
+        }
+    }
+}
+
+.seller {
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: row;
+    margin-top: 24px;
+    padding: 16px;
+
+    &-name {
+        margin-bottom: 4px;
+    }
+
+    &-image {
+        border-radius: 12px;
+        height: 48px;
+        margin-right: 16px;
+        width: 48px;
+    }
+
+    &-detail {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+.modal {
+    max-width: 360px;
+
+    button {
+        margin-top: 24px;
+    }
+
+    &-header {
+        margin-top: 16px;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    }
+
+    &-desc {
+        margin-top: 16px;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .form {
+        margin-top: 24px;
+
+        &-label {
+            margin-bottom: 4px;
+        }
+    }
+}

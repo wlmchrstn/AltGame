@@ -1,62 +1,33 @@
 .root {
-    font-weight: 500;
-    line-height: 1.5;
+    font-weight: 400;
 }
 
 .heading-1 {
     font-size: 24px;
-
-    &-light {
-        font-size: 24px;
-        font-weight: 400;
-    }
-
-    &-bold {
-        font-size: 24px;
-        font-weight: 700;
-    }
+    line-height: 36px;
 }
 
 .heading-2 {
     font-size: 20px;
-
-    &-light {
-        font-size: 20px;
-        font-weight: 400;
-    }
-
-    &-bold {
-        font-size: 20px;
-        font-weight: 700;
-    }
+    line-height: 30px;
 }
 
 .title-1 {
     font-size: 18px;
-
-    &-light {
-        font-size: 20px;
-        font-weight: 400;
-    }
-
-    &-bold {
-        font-size: 20px;
-        font-weight: 700;
-    }
+    line-height: 26px;
 }
 
 .title-2 {
     font-size: 16px;
+    line-height: 24px;
+}
 
-    &-light {
-        font-size: 20px;
-        font-weight: 400;
-    }
+.medium {
+    font-weight: 500;
+}
 
-    &-bold {
-        font-size: 20px;
-        font-weight: 700;
-    }
+.bold {
+    font-weight: 700;
 }
 
 .black {

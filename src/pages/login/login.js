@@ -1,20 +1,21 @@
 import React from 'react';
 import styles from './login.module.scss';
 
-// Componenets
+// Components
 import Title from '../../components/title/title';
 import Input from '../../components/input/input';
 import Button from '../../components/button/button';
 
-export const Login = () => {
+export const LoginPage = () => {
     return (
         <section className={styles.root}>
             <div className={styles.image} />
             <form className={styles.form}>
                 <Title
                     tagElement={'h1'}
-                    variant={'heading-1-bold'}
+                    variant={'heading-1'}
                     color={'black'}
+                    weight={'bold'}
                 >
                     {'Masuk'}
                 </Title>
@@ -48,4 +49,4 @@ export const Login = () => {
     );
 };
 
-export default Login;
+export default LoginPage;
