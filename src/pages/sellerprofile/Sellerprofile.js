@@ -2,7 +2,7 @@ import React from 'react';
 import logoheader from '../../assets/images/Rectangle 127.png';
 import profile from '../../assets/images/Group 1.png';
 import arrowleft from '../../assets/images/fi_arrow-left.png';
-import '../sellerprofile/sellerprofile.scss';
+import '../Sellerprofile/Sellerprofile.scss';
 
 const Sellerprofile = () => {
     return (
