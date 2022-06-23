@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './navbar.module.scss';
 
 // Components
@@ -15,10 +16,12 @@ import login from '../../assets/icons/fi_log-in.svg';
 
 const Navbar = () => {
     const [auth, setAuth] = useState(false);
+    const navigate = useNavigate();
 
-    const handleLogin = () => {
-        setAuth(!auth);
-    };
+    useEffect(() => {
+        const token = localStorage.getItem('altToken');
+        setAuth(token);
+    }, []);
 
     return (
         <section className={styles.root}>
@@ -34,26 +37,29 @@ const Navbar = () => {
                     <div className={styles['button-group']}>
                         <div
                             className={styles.button}
-                            onClick={() => handleLogin}
+                            onClick={() => console.log('click')}
                         >
                             <img src={list} alt={'fi_list'} />
                         </div>
                         <div
                             className={styles.button}
-                            onClick={() => handleLogin}
+                            onClick={() => console.log('click')}
                         >
                             <img src={bell} alt={'fi_bell'} />
                         </div>
                         <div
                             className={styles.button}
-                            onClick={() => handleLogin}
+                            onClick={() => console.log('click')}
                         >
                             <img src={user} alt={'fi_user'} />
                         </div>
                     </div>
                 ) : (
                     <div className={styles['login-wrapper']}>
-                        <Button variant={'primary'} onClick={() => handleLogin}>
+                        <Button
+                            variant={'primary'}
+                            onClick={() => navigate('/login')}
+                        >
                             <img src={login} alt={'fi_login'} />
                             {'Masuk'}
                         </Button>

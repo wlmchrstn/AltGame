@@ -31,6 +31,7 @@ const ProductPage = () => {
     const handleTawar = data => {
         console.log(data);
         setNotification(true);
+        setIsOpen(false);
     };
 
     return (

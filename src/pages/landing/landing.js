@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './landing.module.scss';
 
 // Components
@@ -25,11 +26,19 @@ const LandingPage = () => {
         'Jam Tangan E',
         'Jam Tangan F',
     ];
+    const [filter, setFilter] = useState('semua');
+    const navigate = useNavigate();
 
     const handleMapping = () => {
         return dataMock.map((value, index) => {
             console.log(value);
-            return <Card key={index} title={value}></Card>;
+            return (
+                <Card
+                    key={index}
+                    title={value}
+                    onClick={() => navigate(`/product/${index}`)}
+                />
+            );
         });
     };
     return (
@@ -45,50 +54,74 @@ const LandingPage = () => {
                 </Title>
             </div>
             <div className={styles.category}>
-                <Button type={'button'} variant={'primary'}>
+                <Button
+                    type={'button'}
+                    variant={filter === 'semua' ? 'primary' : 'secondary'}
+                    onClick={() => setFilter('semua')}
+                >
                     <img
                         className={styles.icon}
-                        src={search_white}
+                        src={filter === 'semua' ? search_white : search}
                         alt="logo-search-white"
                     />
                     {'Semua'}
                 </Button>
-                <Button type={'button'} variant={'secondary'}>
+                <Button
+                    type={'button'}
+                    variant={filter === 'hobi' ? 'primary' : 'secondary'}
+                    onClick={() => setFilter('hobi')}
+                >
                     <img
                         className={styles.icon}
-                        src={search}
+                        src={filter === 'hobi' ? search_white : search}
                         alt="logo-search"
                     />
                     {'Hobi'}
                 </Button>
-                <Button type={'button'} variant={'secondary'}>
+                <Button
+                    type={'button'}
+                    variant={filter === 'kendaraan' ? 'primary' : 'secondary'}
+                    onClick={() => setFilter('kendaraan')}
+                >
                     <img
                         className={styles.icon}
-                        src={search}
+                        src={filter === 'kendaraan' ? search_white : search}
                         alt="logo-search"
                     />
                     {'Kendaraan'}
                 </Button>
-                <Button type={'button'} variant={'secondary'}>
+                <Button
+                    type={'button'}
+                    variant={filter === 'baju' ? 'primary' : 'secondary'}
+                    onClick={() => setFilter('baju')}
+                >
                     <img
                         className={styles.icon}
-                        src={search}
+                        src={filter === 'baju' ? search_white : search}
                         alt="logo-search"
                     />
                     {'Baju'}
                 </Button>
-                <Button type={'button'} variant={'secondary'}>
+                <Button
+                    type={'button'}
+                    variant={filter === 'elektronik' ? 'primary' : 'secondary'}
+                    onClick={() => setFilter('elektronik')}
+                >
                     <img
                         className={styles.icon}
-                        src={search}
+                        src={filter === 'elektronik' ? search_white : search}
                         alt="logo-search"
                     />
                     {'Elektronik'}
                 </Button>
-                <Button type={'button'} variant={'secondary'}>
+                <Button
+                    type={'button'}
+                    variant={filter === 'kesehatan' ? 'primary' : 'secondary'}
+                    onClick={() => setFilter('kesehatan')}
+                >
                     <img
                         className={styles.icon}
-                        src={search}
+                        src={filter === 'kesehatan' ? search_white : search}
                         alt="logo-search"
                     />
                     {'Kesehatan'}

@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import Paragraph from '../paragraph/paragraph';
 import imgcard from '../../assets/images/card-image.png';
 
-const Card = ({ title }) => {
+const Card = ({ title, ...props }) => {
     return (
-        <div className={styles.root}>
+        <div className={styles.root} {...props}>
             <div className={styles.image}>
                 <img src={imgcard} alt={'console'} />
             </div>
