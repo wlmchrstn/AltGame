@@ -9,6 +9,7 @@ import Register from '../pages/register/register';
 import SellerPage from '../pages/seller/seller';
 
 import Navbar from '../modules/navbar/navbar';
+import ProfilePage from '../pages/profile/profile';
 
 const WithNav = () => {
     return (
@@ -26,6 +27,7 @@ const Router = () => {
                 <Route path={'/'} element={<LandingPage />} />
                 <Route path={'/product/:id'} element={<ProductPage />} />
                 <Route path={'/seller'} element={<SellerPage />} />
+                <Route path={'/profile'} element={<ProfilePage />} />
             </Route>
             <Route path={'/login'} element={<LoginPage />} />
             <Route path={'/register'} element={<Register />} />
