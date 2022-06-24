@@ -25,7 +25,7 @@ const Notification = ({ message, variant, show, setShow }) => {
                 {message}
             </Paragraph>
         </div>,
-        document.getElementById('notification')
+        document.getElementById('portal')
     );
 };
 
