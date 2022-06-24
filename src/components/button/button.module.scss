@@ -27,29 +27,3 @@
     color: #151515;
     height: fit-content;
 }
-
-.primary-disabled {
-    @extend .primary;
-    background-color: #d0d0d0;
-    color: #fff;
-}
-
-.secondary-disabled {
-    background-color: #fff;
-    border: 1px solid #d0d0d0;
-    color: #151515;
-}
-
-.primary-ghost {
-    @extend .primary;
-    background: #fff;
-    color: #7126b5;
-    opacity: 1;
-}
-
-.secondary-ghost {
-    @extend .primary;
-    background: #fff;
-    color: #151515;
-    opacity: 1;
-}
