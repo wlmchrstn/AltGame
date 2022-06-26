@@ -1,3 +1,5 @@
+@use '../../styles' as *;
+
 .root {
     font-weight: 400;
 }
@@ -31,9 +33,17 @@
 }
 
 .black {
-    color: #000;
+    color: $color-black;
 }
 
 .white {
-    color: #fff;
+    color: $color-white;
+}
+
+.neutral {
+    color: $color-neutral;
+}
+
+.purple {
+    color: $color-purple;
 }

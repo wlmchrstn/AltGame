@@ -1,0 +1,128 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: 968px;
+    padding: 40px 0;
+}
+
+.seller {
+    border-radius: 16px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 24px;
+    padding: 16px;
+    width: 968px;
+
+    &-name {
+        margin-bottom: 4px;
+    }
+
+    &-image {
+        border-radius: 12px;
+        height: 48px;
+        margin-right: 16px;
+        width: 48px;
+    }
+
+    &-detail {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 809px;
+    }
+
+    .btn-wrapper {
+        margin: 5px 0;
+        margin-left: auto;
+        max-height: 26px;
+        width: 67px;
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    width: 968px;
+}
+
+.category {
+    align-items: flex-start;
+    border-radius: 16px;
+    box-shadow: 0 0 10px 0 #00000026;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    height: 248px;
+    margin-top: 24px;
+    padding: 24px;
+    // position: absolute;
+
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+
+        .item {
+            display: flex;
+            flex-direction: row;
+            padding: 16px;
+            width: 220px;
+        }
+
+        .item-name {
+            margin: 0 8px;
+            width: 156px;
+        }
+
+        .item:not(:last-child) {
+            border-bottom: 1px solid;
+        }
+
+        .icon-left {
+            margin-right: auto;
+        }
+
+        .icon-right {
+            margin-left: auto;
+        }
+    }
+}
+
+.product {
+    column-gap: 24px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-left: 32px;
+    margin-top: 24px;
+    row-gap: 24px;
+    width: 100%;
+
+    &-add {
+        align-items: center;
+        background: #fff;
+        border: 1px dashed #d0d0d0;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        img {
+            margin-bottom: 8px;
+        }
+    }
+}
+
+.diminati {
+    height: 666px;
+    margin-left: 210px;
+    margin-top: 24px;
+    width: 100%;
+
+    .paragraph-diminati-empty {
+        margin-top: 24px;
+    }
+}
