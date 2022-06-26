@@ -11,31 +11,61 @@ import Title from '../../components/title/title';
 import search from '../../assets/icons/fi_search.svg';
 import search_white from '../../assets/icons/fi_search_white.svg';
 
+const dataMock = [
+    {
+        id: 1,
+        title: 'Jam Tangan Casio',
+        category: 'Aksesoris',
+        harga: 200000,
+    },
+    {
+        id: 2,
+        title: 'Jam Tangan Casio',
+        category: 'Aksesoris',
+        harga: 400000,
+    },
+    {
+        id: 3,
+        title: 'Jam Tangan Casio',
+        category: 'Aksesoris',
+        harga: 600000,
+    },
+    {
+        id: 4,
+        title: 'Jam Tangan Casio',
+        category: 'Aksesoris',
+        harga: 800000,
+    },
+    {
+        id: 5,
+        title: 'Jam Tangan Casio',
+        category: 'Aksesoris',
+        harga: 1000000,
+    },
+    {
+        id: 6,
+        title: 'Jam Tangan Casio',
+        category: 'Aksesoris',
+        harga: 1200000,
+    },
+    {
+        id: 7,
+        title: 'Jam Tangan Casio',
+        category: 'Aksesoris',
+        harga: 1400000,
+    },
+];
+
 const LandingPage = () => {
-    const dataMock = [
-        'Jam Tangan A',
-        'Jam Tangan B',
-        'Jam Tangan C',
-        'Jam Tangan D',
-        'Jam Tangan E',
-        'Jam Tangan F',
-        'Jam Tangan A',
-        'Jam Tangan B',
-        'Jam Tangan C',
-        'Jam Tangan D',
-        'Jam Tangan E',
-        'Jam Tangan F',
-    ];
     const [filter, setFilter] = useState('semua');
     const navigate = useNavigate();
 
     const handleMapping = () => {
         return dataMock.map((value, index) => {
-            console.log(value);
             return (
                 <Card
                     key={index}
-                    title={value}
+                    data={value}
                     onClick={() => navigate(`/product/${index}`)}
                 />
             );

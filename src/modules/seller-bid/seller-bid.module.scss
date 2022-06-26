@@ -1,0 +1,74 @@
+.root {
+    margin-top: 40px;
+}
+
+.container {
+    margin: -24px auto 0;
+    max-width: 768px;
+}
+
+.product {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: row;
+    padding: 16px 24px;
+
+    &-image {
+        border-radius: 12px;
+        height: 48px;
+        margin-right: 24px;
+        object-fit: cover;
+        width: 48px;
+    }
+}
+
+.header {
+    margin: 24px 0;
+}
+
+.bid {
+    &-wrapper {
+        border-radius: 16px;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+        display: flex;
+        flex-direction: column;
+        padding: 12px 24px;
+    }
+}
+
+.bid-wrapper:not(:last-child) {
+    margin-bottom: 24px;
+}
+
+.user {
+    display: flex;
+    flex-direction: row;
+
+    img {
+        border-radius: 12px;
+        height: 48px;
+        margin-right: 12px;
+        object-fit: cover;
+        width: 48px;
+    }
+}
+
+.user-detail p:not(:last-child) {
+    margin-bottom: 8px;
+}
+
+.button {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+
+    button {
+        width: 158px;
+    }
+}
+
+.button button:not(:last-child) {
+    margin-right: 16px;
+}

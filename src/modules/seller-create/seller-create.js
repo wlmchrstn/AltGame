@@ -21,7 +21,7 @@ const SellerCreate = ({ handleCreate, handleNotification }) => {
 
     const handleForm = data => {
         console.log(data);
-        handleCreate(false);
+        handleCreate('landing');
         handleNotification(true);
     };
 
@@ -30,7 +30,7 @@ const SellerCreate = ({ handleCreate, handleNotification }) => {
             <img
                 src={arrowLeft}
                 alt={'fi_arrow-left'}
-                onClick={() => handleCreate(false)}
+                onClick={() => handleCreate('landing')}
             />
             <form onSubmit={handleSubmit(handleForm)}>
                 <Paragraph variant={'body-2'} className={styles.label}>

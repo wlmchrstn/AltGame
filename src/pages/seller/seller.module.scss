@@ -1,3 +1,5 @@
+@use '../../styles/' as *;
+
 .root {
     display: flex;
     flex-direction: column;
@@ -10,9 +12,9 @@
     border-radius: 16px;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
     box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 48px calc(100% - 128px) 48px;
+    column-gap: 16px;
     margin-top: 24px;
     padding: 16px;
     width: 968px;
@@ -24,7 +26,6 @@
     &-image {
         border-radius: 12px;
         height: 48px;
-        margin-right: 16px;
         width: 48px;
     }
 
@@ -32,14 +33,14 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        width: 809px;
     }
 
-    .btn-wrapper {
-        margin: 5px 0;
+    .button {
+        border-radius: 8px;
+        margin: auto 0;
         margin-left: auto;
-        max-height: 26px;
-        width: 67px;
+        padding: 4px 12px;
+        width: 47px;
     }
 }
 
@@ -47,6 +48,7 @@
     display: flex;
     flex-direction: row;
     width: 968px;
+    margin-top: 24px;
 }
 
 .category {
@@ -58,38 +60,36 @@
     flex-direction: column;
     gap: 24px;
     height: 248px;
-    margin-top: 24px;
     padding: 24px;
-    // position: absolute;
 
-    .wrapper {
+    &-wrapper {
         display: flex;
         flex-direction: column;
-
-        .item {
-            display: flex;
-            flex-direction: row;
-            padding: 16px;
-            width: 220px;
-        }
-
-        .item-name {
-            margin: 0 8px;
-            width: 156px;
-        }
-
-        .item:not(:last-child) {
-            border-bottom: 1px solid;
-        }
-
-        .icon-left {
-            margin-right: auto;
-        }
-
-        .icon-right {
-            margin-left: auto;
-        }
     }
+}
+
+.selected {
+    border-bottom: 1px solid $color-purple;
+}
+
+.border {
+    border-bottom: 1px solid $color-neutral-2;
+}
+
+.item {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 16px;
+    width: 220px;
+
+    &-name {
+        margin: 0 auto 0 8px;
+        width: 156px;
+    }
+}
+
+.item:not(:last-child) {
+    margin-bottom: 16px;
 }
 
 .product {
@@ -97,7 +97,6 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     margin-left: 32px;
-    margin-top: 24px;
     row-gap: 24px;
     width: 100%;
 
@@ -116,13 +115,13 @@
     }
 }
 
-.diminati {
+.empty {
     height: 666px;
     margin-left: 210px;
     margin-top: 24px;
     width: 100%;
 
-    .paragraph-diminati-empty {
-        margin-top: 24px;
+    &-text {
+        margin-top: 16px;
     }
 }

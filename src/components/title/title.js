@@ -24,6 +24,7 @@ const Title = ({ children, tagElement, variant, color, weight, ...props }) => {
                     h4: <h4 {...baseProps}>{children}</h4>,
                     h5: <h5 {...baseProps}>{children}</h5>,
                     h6: <h6 {...baseProps}>{children}</h6>,
+                    p: <p {...baseProps}>{children}</p>,
                 }[tagElement]
             }
         </>

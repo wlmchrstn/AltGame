@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import classNames from 'classnames';
 import styles from './seller.module.scss';
 
 // Components
@@ -24,31 +25,74 @@ import iconPlus from '../../assets/icons/fi_plus.svg';
 
 // Modules
 import SellerCreate from '../../modules/seller-create/seller-create';
+import SellerBid from '../../modules/seller-bid/seller-bid';
+
+const dataMock = [
+    {
+        id: 1,
+        title: 'Jam Tangan Casio',
+        category: 'Aksesoris',
+        harga: 200000,
+    },
+    {
+        id: 2,
+        title: 'Jam Tangan Casio',
+        category: 'Aksesoris',
+        harga: 400000,
+    },
+    {
+        id: 3,
+        title: 'Jam Tangan Casio',
+        category: 'Aksesoris',
+        harga: 600000,
+    },
+    {
+        id: 4,
+        title: 'Jam Tangan Casio',
+        category: 'Aksesoris',
+        harga: 800000,
+    },
+];
+
+const bidExample = [
+    {
+        name: 'William',
+        harga: 400000,
+        status: 'pending',
+    },
+    {
+        name: 'Sonef',
+        harga: 350000,
+        status: 'pending',
+    },
+    {
+        name: 'Cantika',
+        harga: 375000,
+        status: 'pending',
+    },
+];
 
 export const SellerPage = () => {
     const [filter, setFilter] = useState('semua');
-    const [create, setCreate] = useState(false);
+    const [page, setPage] = useState('landing');
     const [notification, setNotification] = useState(false);
-    const navigate = useNavigate;
-    const dataMock = [
-        'Jam Tangan Casio',
-        'Jam Tangan Casio',
-        'Jam Tangan Casio',
-        'Jam Tangan Casio',
-        'Jam Tangan Casio',
-        'Jam Tangan Casio',
-        'Jam Tangan Casio',
-        'Jam Tangan Casio',
-        'Jam Tangan Casio',
-    ];
+    const [product, setProduct] = useState(null);
+    const [bid, setBid] = useState(null);
+    const navigate = useNavigate();
+
+    const handleCard = params => {
+        setProduct(params);
+        setBid(bidExample);
+        setPage('bid');
+    };
 
     const handleMapping = params => {
         return params.map((value, index) => {
             return (
                 <Card
                     key={index}
-                    title={value}
-                    onClick={() => navigate(`/seller/product/${index}`)}
+                    data={value}
+                    onClick={() => handleCard(value)}
                 />
             );
         });
@@ -56,12 +100,7 @@ export const SellerPage = () => {
 
     return (
         <section className={styles.root}>
-            {create ? (
-                <SellerCreate
-                    handleCreate={setCreate}
-                    handleNotification={setNotification}
-                />
-            ) : (
+            {page === 'landing' ? (
                 <>
                     <Notification
                         message={'Produk berhasil diterbitkan.'}
@@ -102,11 +141,16 @@ export const SellerPage = () => {
                                 {'Kota'}
                             </Paragraph>
                         </div>
-                        <div className={styles['btn-wrapper']}>
-                            <Button type={'button'} variant={'secondary'}>
+                        <Button
+                            type={'button'}
+                            variant={'secondary'}
+                            className={styles.button}
+                            onClick={() => navigate('/profile')}
+                        >
+                            <Paragraph variant={'body-2'} weight={'medium'}>
                                 {'Edit'}
-                            </Button>
-                        </div>
+                            </Paragraph>
+                        </Button>
                     </div>
                     <div className={styles.content}>
                         <div className={styles.category}>
@@ -118,9 +162,14 @@ export const SellerPage = () => {
                             >
                                 {'Kategori'}
                             </Title>
-                            <div className={styles.wrapper}>
+                            <div className={styles['category-wrapper']}>
                                 <div
-                                    className={styles.item}
+                                    className={classNames(
+                                        filter === 'semua'
+                                            ? styles.selected
+                                            : styles.border,
+                                        styles.item
+                                    )}
                                     onClick={() => setFilter('semua')}
                                 >
                                     <img
@@ -156,7 +205,12 @@ export const SellerPage = () => {
                                     />
                                 </div>
                                 <div
-                                    className={styles.item}
+                                    className={classNames(
+                                        filter === 'diminati'
+                                            ? styles.selected
+                                            : styles.border,
+                                        styles.item
+                                    )}
                                     onClick={() => setFilter('diminati')}
                                 >
                                     <img
@@ -234,12 +288,12 @@ export const SellerPage = () => {
                                 <>
                                     <div
                                         className={styles['product-add']}
-                                        onClick={() => setCreate(true)}
+                                        onClick={() => setPage('create')}
                                     >
                                         <img src={iconPlus} alt={'fi_plus'} />
                                         <Paragraph
                                             variant={'body-2'}
-                                            color={'grey'}
+                                            color={'neutral'}
                                         >
                                             {'Tambah Produk'}
                                         </Paragraph>
@@ -247,12 +301,10 @@ export const SellerPage = () => {
                                     {handleMapping(dataMock)}
                                 </>
                             ) : filter === 'diminati' ? (
-                                <div className={styles.diminati}>
+                                <div className={styles.empty}>
                                     <img src={iconEmpty} alt={'icon-empty'} />
                                     <Paragraph
-                                        className={
-                                            styles['paragraph-diminati-empty']
-                                        }
+                                        className={styles['empty-text']}
                                         variant={'body-1'}
                                         color={'black'}
                                         weight={'medium'}
@@ -265,12 +317,10 @@ export const SellerPage = () => {
                                     </Paragraph>
                                 </div>
                             ) : filter === 'terjual' ? (
-                                <div className={styles.diminati}>
+                                <div className={styles.empty}>
                                     <img src={iconEmpty} alt={'icon-empty'} />
                                     <Paragraph
-                                        className={
-                                            styles['paragraph-diminati-empty']
-                                        }
+                                        className={styles['empty-text']}
                                         variant={'body-1'}
                                         color={'black'}
                                         weight={'medium'}
@@ -284,7 +334,14 @@ export const SellerPage = () => {
                         </div>
                     </div>
                 </>
-            )}
+            ) : page === 'create' ? (
+                <SellerCreate
+                    handleCreate={setPage}
+                    handleNotification={setNotification}
+                />
+            ) : page === 'bid' ? (
+                <SellerBid product={product} bid={bid} handleBid={setPage} />
+            ) : null}
         </section>
     );
 };

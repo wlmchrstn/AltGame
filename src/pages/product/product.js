@@ -55,7 +55,7 @@ const ProductPage = () => {
                     >
                         Deskripsi
                     </Paragraph>
-                    <Paragraph variant={'body-1'} color={'grey'}>
+                    <Paragraph variant={'body-1'} color={'neutral'}>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                         sed do eiusmod tempor incididunt ut labore et dolore
                         magna aliqua. Ut enim ad minim veniam, quis nostrud
@@ -125,7 +125,7 @@ const ProductPage = () => {
                         <Paragraph
                             className={styles['modal-header']}
                             variant={'body-1'}
-                            color={'grey'}
+                            color={'neutral'}
                         >
                             Harga tawaranmu akan diketahui penual, jika penjual
                             cocok kamu akan segera dihubungi penjual.
@@ -192,7 +192,7 @@ const ProductPage = () => {
                         >
                             Nama Penjual
                         </Paragraph>
-                        <Paragraph variant={'body-3'} color={'grey'}>
+                        <Paragraph variant={'body-3'} color={'neutral'}>
                             Kota
                         </Paragraph>
                     </div>

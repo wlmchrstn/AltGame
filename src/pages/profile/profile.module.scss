@@ -1,3 +1,5 @@
+@use '../../styles/' as *;
+
 .root {
     margin: 40px auto 0;
     max-width: 768px;
@@ -6,17 +8,6 @@
 form {
     margin: -24px auto 0;
     max-width: 568px;
-
-    .camera {
-        align-items: center;
-        background: #e2d4f0;
-        border-radius: 12px;
-        display: flex;
-        height: 96px;
-        justify-content: center;
-        margin: 0 auto 24px;
-        width: 96px;
-    }
 
     .label {
         margin-bottom: 4px;
@@ -29,4 +20,33 @@ form {
     button {
         margin-top: 8px;
     }
+}
+
+.camera {
+    align-items: center;
+    background: #e2d4f0;
+    border-radius: 12px;
+    display: flex;
+    height: 96px;
+    justify-content: center;
+    margin: 0 auto 24px;
+    width: 96px;
+}
+
+.profile {
+    margin: 0 auto;
+    max-width: 568px;
+
+    &-data {
+        padding-bottom: 16px;
+        border-bottom: 1px solid $color-black;
+    }
+
+    button {
+        margin-top: 24px;
+    }
+}
+
+.profile-label:not(:last-child) {
+    margin-top: 24px;
 }

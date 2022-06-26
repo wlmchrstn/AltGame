@@ -4,8 +4,10 @@ import PropTypes from 'prop-types';
 
 import Paragraph from '../paragraph/paragraph';
 import imgcard from '../../assets/images/card-image.png';
+import { formatRupiah } from '../../utils/helper';
 
-const Card = ({ title, ...props }) => {
+const Card = ({ data, ...props }) => {
+    const { title, category, harga } = data;
     return (
         <div className={styles.root} {...props}>
             <div className={styles.image}>
@@ -18,12 +20,12 @@ const Card = ({ title, ...props }) => {
                 <Paragraph
                     className={styles.category}
                     variant={'body-3'}
-                    color={'grey'}
+                    color={'neutral'}
                 >
-                    {'Aksesoris'}
+                    {category}
                 </Paragraph>
                 <Paragraph className={styles.price} variant={'body-1'}>
-                    {'Rp 250.000'}
+                    {formatRupiah(harga)}
                 </Paragraph>
             </div>
         </div>
@@ -31,11 +33,16 @@ const Card = ({ title, ...props }) => {
 };
 
 Card.propTypes = {
-    title: PropTypes.string.isRequired,
+    data: PropTypes.object.isRequired,
 };
 
 Card.defaultProps = {
-    title: 'Jam Tangan Casio',
+    data: {
+        id: 1,
+        title: 'Jam Tangan Casio',
+        category: 'Aksesoris',
+        harga: 200000,
+    },
 };
 
 export default Card;
