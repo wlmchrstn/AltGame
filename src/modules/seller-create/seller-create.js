@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import styles from './seller-create.module.scss';
 
@@ -11,21 +12,27 @@ import Button from '../../components/button/button';
 import arrowLeft from '../../assets/icons/fi_arrow-left.svg';
 import plus from '../../assets/icons/fi_plus.svg';
 
-const SellerCreate = () => {
+const SellerCreate = ({ handleCreate, handleNotification }) => {
     const {
         register,
         formState: { errors },
         handleSubmit,
     } = useForm();
 
-    const handleCreate = data => {
+    const handleForm = data => {
         console.log(data);
+        handleCreate(false);
+        handleNotification(true);
     };
 
     return (
         <section className={styles.root}>
-            <img src={arrowLeft} alt={'fi_arrow-left'} />
-            <form onSubmit={handleSubmit(handleCreate)}>
+            <img
+                src={arrowLeft}
+                alt={'fi_arrow-left'}
+                onClick={() => handleCreate(false)}
+            />
+            <form onSubmit={handleSubmit(handleForm)}>
                 <Paragraph variant={'body-2'} className={styles.label}>
                     {'Nama Produk'}
                 </Paragraph>
@@ -88,6 +95,16 @@ const SellerCreate = () => {
             </form>
         </section>
     );
+};
+
+SellerCreate.propTypes = {
+    handleCreate: PropTypes.func,
+    handleNotification: PropTypes.func,
+};
+
+SellerCreate.defaultProps = {
+    handleCreate: null,
+    handleNotification: null,
 };
 
 export default SellerCreate;

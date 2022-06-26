@@ -18,12 +18,12 @@
 .primary {
     background-color: $color-purple;
     border: 1px solid $color-purple;
-    color: #fff;
+    color: $color-white;
 }
 
 .secondary {
-    background-color: #fff;
+    background-color: $color-white;
     border: 1px solid $color-purple;
-    color: #151515;
+    color: $color-black;
     height: fit-content;
 }

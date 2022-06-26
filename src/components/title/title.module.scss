@@ -1,3 +1,5 @@
+@use '../../styles' as *;
+
 .root {
     font-weight: 400;
 }
@@ -22,10 +24,6 @@
     line-height: 24px;
 }
 
-.lighter {
-    font-weight: 400;
-}
-
 .medium {
     font-weight: 500;
 }
@@ -35,17 +33,17 @@
 }
 
 .black {
-    color: #000;
+    color: $color-black;
 }
 
 .white {
-    color: #fff;
+    color: $color-white;
 }
 
 .neutral {
-    color: #8a8a8a;
+    color: $color-neutral;
 }
 
 .purple {
-    color: #7126b5;
+    color: $color-purple;
 }
