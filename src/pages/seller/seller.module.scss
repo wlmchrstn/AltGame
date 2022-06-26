@@ -37,8 +37,8 @@
 
     .btn-wrapper {
         margin: 5px 0;
-        max-height: 26px;
         margin-left: auto;
+        max-height: 26px;
         width: 67px;
     }
 }
@@ -69,13 +69,13 @@
         .item {
             display: flex;
             flex-direction: row;
-            padding: 16px 16px;
+            padding: 16px;
             width: 220px;
+        }
 
-            .item-name {
-                margin: 0 8px;
-                width: 156px;
-            }
+        .item-name {
+            margin: 0 8px;
+            width: 156px;
         }
 
         .item:not(:last-child) {
