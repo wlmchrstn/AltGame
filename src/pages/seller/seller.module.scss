@@ -12,9 +12,9 @@
     border-radius: 16px;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
     box-sizing: border-box;
+    column-gap: 16px;
     display: grid;
     grid-template-columns: 48px calc(100% - 128px) 48px;
-    column-gap: 16px;
     margin-top: 24px;
     padding: 16px;
     width: 968px;
@@ -47,8 +47,8 @@
 .content {
     display: flex;
     flex-direction: row;
-    width: 968px;
     margin-top: 24px;
+    width: 968px;
 }
 
 .category {
