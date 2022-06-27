@@ -12,6 +12,8 @@ import list from '../../assets/icons/fi_list.svg';
 import user from '../../assets/icons/fi_user.svg';
 import bell from '../../assets/icons/fi_bell.svg';
 import login from '../../assets/icons/fi_log-in.svg';
+import Modal from '../../components/modal/modal';
+import Paragraph from '../../components/paragraph/paragraph';
 
 const Navbar = () => {
     const [auth, setAuth] = useState(false);
@@ -49,6 +51,45 @@ const Navbar = () => {
                             onClick={() => handleLogin}
                         >
                             <img src={user} alt={'fi_user'} />
+                            <Modal>
+                                <Paragraph
+                                    className={styles['modal-header']}
+                                    variant={'body-1'}
+                                    color={'grey'}
+                                >
+                                    Penawaran Produk
+                                </Paragraph>
+                                <Paragraph
+                                    className={styles['modal-header']}
+                                    variant={'body-1'}
+                                    weight={'medium'}
+                                >
+                                    Jam Tangan Casio
+                                </Paragraph>
+                                <Paragraph
+                                    className={styles['modal-header']}
+                                    variant={'body-1'}
+                                    weight={'medium'}
+                                >
+                                    Rp 250.000
+                                </Paragraph>
+                                <Paragraph
+                                    className={styles['modal-header']}
+                                    variant={'body-1'}
+                                    weight={'medium'}
+                                >
+                                    Berhasil Ditawar Rp 200.000
+                                </Paragraph>
+                                <Paragraph
+                                    className={styles['modal-header']}
+                                    variant={'body-1'}
+                                    color={'grey'}
+                                >
+                                    Kamu akan segera dihubungi penjual via
+                                    whatsapp
+                                </Paragraph>
+                                <div className={styles['nav-modal']}></div>
+                            </Modal>
                         </div>
                     </div>
                 ) : (
