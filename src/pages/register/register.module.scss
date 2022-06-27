@@ -1,0 +1,51 @@
+@use '../../styles' as *;
+
+.root {
+    align-items: center;
+    background-color: $color-purple;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+    width: 100vw;
+}
+
+.wrapper {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 30px;
+    padding: 40px;
+    width: 532px;
+
+    h1 {
+        margin-bottom: 24px;
+    }
+}
+
+.form {
+    .input {
+        margin-bottom: 16px;
+    }
+
+    .label {
+        margin-bottom: 4px;
+    }
+
+    button {
+        margin-top: 8px;
+    }
+}
+
+.login {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 40px;
+
+    a {
+        color: $color-purple;
+        font-size: 12px;
+        font-weight: 700;
+        margin-left: 8px;
+        text-decoration: none;
+    }
+}

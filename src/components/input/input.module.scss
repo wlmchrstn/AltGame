@@ -1,31 +1,33 @@
+@use '../../styles/' as *;
+
 .root {
     display: flex;
     flex-direction: column;
 }
 
 .input {
-    background-color: #fff;
-    border: 1px solid #d0d0d0;
+    background-color: $color-white;
+    border: 1px solid $color-neutral-2;
     border-radius: 16px;
     display: flex;
     padding: 14px 16px;
 
     &:focus-within {
-        border: 1px solid #000;
+        border: 1px solid $color-black;
     }
 
     input,
     select {
         background-color: transparent;
         border: 0;
-        color: #000;
+        color: $color-black;
         font-size: 14px;
         line-height: 20px;
         padding: 0;
         width: 100%;
 
         &::placeholder {
-            color: #8a8a8a;
+            color: $color-neutral;
             font-size: 14px;
         }
     }

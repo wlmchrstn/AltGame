@@ -1,0 +1,29 @@
+@use '../../styles/' as *;
+
+form {
+    margin: -24px auto 0;
+    max-width: 568px;
+
+    .label {
+        margin-bottom: 4px;
+    }
+
+    .input {
+        margin-bottom: 16px;
+    }
+
+    button {
+        margin-top: 8px;
+    }
+}
+
+.camera {
+    align-items: center;
+    background: #e2d4f0;
+    border-radius: 12px;
+    display: flex;
+    height: 96px;
+    justify-content: center;
+    margin: 0 auto 24px;
+    width: 96px;
+}
