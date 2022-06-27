@@ -1,3 +1,5 @@
+@use '../../styles/' as *;
+
 .root {
     margin-top: 40px;
 }
@@ -8,7 +10,7 @@
 }
 
 .product {
-    background: #fff;
+    background: $color-white;
     border-radius: 16px;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
     display: flex;
@@ -71,4 +73,57 @@
 
 .button button:not(:last-child) {
     margin-right: 16px;
+}
+
+.modal {
+    box-sizing: border-box;
+    width: 360px;
+
+    &-header {
+        margin: 0 auto 16px;
+        text-align: center;
+    }
+
+    &-match {
+        background-color: $color-neutral-2;
+        border-radius: 16px;
+        margin-top: 16px;
+        padding: 16px;
+    }
+
+    &-wrapper {
+        display: flex;
+        flex-direction: row;
+
+        img {
+            border-radius: 12px;
+            height: 48px;
+            margin-right: 16px;
+            object-fit: cover;
+            width: 48px;
+        }
+    }
+
+    &-detail {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    &-product {
+        display: flex;
+        flex-direction: column;
+    }
+
+    button {
+        margin-top: 24px;
+    }
+}
+
+.modal-wrapper:not(:last-child) {
+    margin-bottom: 16px;
+}
+
+.line-through {
+    text-decoration: line-through;
 }
