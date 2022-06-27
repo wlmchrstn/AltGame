@@ -27,7 +27,11 @@ const Navbar = () => {
         <section className={styles.root}>
             <div className={styles.wrapper}>
                 <div className={styles['logo-wrapper']}>
-                    <img src={logo} alt={'logo'} />
+                    <img
+                        src={logo}
+                        alt={'logo'}
+                        onClick={() => navigate('/')}
+                    />
                 </div>
                 <Input className={styles.bg}>
                     <input placeholder={'Cari di sini ...'} />
@@ -37,7 +41,7 @@ const Navbar = () => {
                     <div className={styles['button-group']}>
                         <div
                             className={styles.button}
-                            onClick={() => console.log('click')}
+                            onClick={() => navigate('/seller')}
                         >
                             <img src={list} alt={'fi_list'} />
                         </div>
@@ -49,7 +53,7 @@ const Navbar = () => {
                         </div>
                         <div
                             className={styles.button}
-                            onClick={() => console.log('click')}
+                            onClick={() => navigate('/profile')}
                         >
                             <img src={user} alt={'fi_user'} />
                         </div>

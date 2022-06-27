@@ -1,10 +1,5 @@
 @use '../../styles/' as *;
 
-.root {
-    margin: 40px auto 0;
-    max-width: 768px;
-}
-
 form {
     margin: -24px auto 0;
     max-width: 568px;
@@ -31,22 +26,4 @@ form {
     justify-content: center;
     margin: 0 auto 24px;
     width: 96px;
-}
-
-.profile {
-    margin: 0 auto;
-    max-width: 568px;
-
-    &-data {
-        border-bottom: 1px solid $color-black;
-        padding-bottom: 16px;
-    }
-
-    button {
-        margin-top: 24px;
-    }
-}
-
-.profile-label:not(:last-child) {
-    margin-top: 24px;
 }

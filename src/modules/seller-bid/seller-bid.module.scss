@@ -1,0 +1,129 @@
+@use '../../styles/' as *;
+
+.root {
+    margin-top: 40px;
+}
+
+.container {
+    margin: -24px auto 0;
+    max-width: 768px;
+}
+
+.product {
+    background: $color-white;
+    border-radius: 16px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: row;
+    padding: 16px 24px;
+
+    &-image {
+        border-radius: 12px;
+        height: 48px;
+        margin-right: 24px;
+        object-fit: cover;
+        width: 48px;
+    }
+}
+
+.header {
+    margin: 24px 0;
+}
+
+.bid {
+    &-wrapper {
+        border-radius: 16px;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+        display: flex;
+        flex-direction: column;
+        padding: 12px 24px;
+    }
+}
+
+.bid-wrapper:not(:last-child) {
+    margin-bottom: 24px;
+}
+
+.user {
+    display: flex;
+    flex-direction: row;
+
+    img {
+        border-radius: 12px;
+        height: 48px;
+        margin-right: 12px;
+        object-fit: cover;
+        width: 48px;
+    }
+}
+
+.user-detail p:not(:last-child) {
+    margin-bottom: 8px;
+}
+
+.button {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+
+    button {
+        width: 158px;
+    }
+}
+
+.button button:not(:last-child) {
+    margin-right: 16px;
+}
+
+.modal {
+    box-sizing: border-box;
+    width: 360px;
+
+    &-header {
+        margin: 0 auto 16px;
+        text-align: center;
+    }
+
+    &-match {
+        background-color: $color-neutral-2;
+        border-radius: 16px;
+        margin-top: 16px;
+        padding: 16px;
+    }
+
+    &-wrapper {
+        display: flex;
+        flex-direction: row;
+
+        img {
+            border-radius: 12px;
+            height: 48px;
+            margin-right: 16px;
+            object-fit: cover;
+            width: 48px;
+        }
+    }
+
+    &-detail {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    &-product {
+        display: flex;
+        flex-direction: column;
+    }
+
+    button {
+        margin-top: 24px;
+    }
+}
+
+.modal-wrapper:not(:last-child) {
+    margin-bottom: 16px;
+}
+
+.line-through {
+    text-decoration: line-through;
+}
