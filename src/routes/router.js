@@ -8,13 +8,13 @@ import Custom404 from '../pages/custom404/custom404';
 import Register from '../pages/register/register';
 import SellerPage from '../pages/seller/seller';
 
-import Navbar from '../modules/navbar/navbar';
+// import Navbar from '../modules/navbar/navbar';
 import ProfilePage from '../pages/profile/profile';
 
 const WithNav = () => {
     return (
         <>
-            <Navbar />
+            {/* <Navbar /> */}
             <Outlet />
         </>
     );
