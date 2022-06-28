@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import styles from './seller.module.scss';
@@ -15,10 +15,13 @@ import profileImg from '../../assets/images/profile-image.png';
 import iconEmpty from '../../assets/icons/fi_empty.svg';
 import iconBoxGrey from '../../assets/icons/fi_box_grey.svg';
 import iconBoxPurple from '../../assets/icons/fi_box_purple.svg';
+import iconBoxWhite from '../../assets/icons/fi_box_white.svg';
 import iconHeartGrey from '../../assets/icons/fi_heart_grey.svg';
 import iconHeartPurple from '../../assets/icons/fi_heart_purple.svg';
+import iconHeartWhite from '../../assets/icons/fi_heart_white.svg';
 import iconDollarGrey from '../../assets/icons/fi_dollar_grey.svg';
 import iconDollarPurple from '../../assets/icons/fi_dollar_purple.svg';
+import iconDollarWhite from '../../assets/icons/fi_dollar_white.svg';
 import iconChevronGreyR from '../../assets/icons/fi_chevron_r_gray.svg';
 import iconChevronPurpleR from '../../assets/icons/fi_chevron_r_purple.svg';
 import iconPlus from '../../assets/icons/fi_plus.svg';
@@ -78,7 +81,15 @@ export const SellerPage = () => {
     const [notification, setNotification] = useState(false);
     const [product, setProduct] = useState(null);
     const [bid, setBid] = useState(null);
+    const [screenSize, setScreenSize] = useState(null);
     const navigate = useNavigate();
+
+    useLayoutEffect(() => {
+        const updateScreenSize = () => setScreenSize(window.innerWidth);
+        window.addEventListener('resize', updateScreenSize);
+        updateScreenSize();
+        return () => window.removeEventListener('resize', updateScreenSize);
+    }, []);
 
     const handleCard = params => {
         setProduct(params);
@@ -153,137 +164,208 @@ export const SellerPage = () => {
                         </Button>
                     </div>
                     <div className={styles.content}>
-                        <div className={styles.category}>
-                            <Title
-                                tagElement={'h3'}
-                                variant={'title-2'}
-                                color={'black'}
-                                weight={'medium'}
-                            >
-                                {'Kategori'}
-                            </Title>
-                            <div className={styles['category-wrapper']}>
-                                <div
-                                    className={classNames(
+                        {screenSize > 767 ? (
+                            <div className={styles.category}>
+                                <Title
+                                    tagElement={'h3'}
+                                    variant={'title-2'}
+                                    color={'black'}
+                                    weight={'medium'}
+                                >
+                                    {'Kategori'}
+                                </Title>
+                                <div className={styles['category-wrapper']}>
+                                    <div
+                                        className={classNames(
+                                            filter === 'semua'
+                                                ? styles.selected
+                                                : styles.border,
+                                            styles.item
+                                        )}
+                                        onClick={() => setFilter('semua')}
+                                    >
+                                        <img
+                                            className={styles['icon-left']}
+                                            src={
+                                                filter === 'semua'
+                                                    ? iconBoxPurple
+                                                    : iconBoxGrey
+                                            }
+                                            alt={'box-icon'}
+                                        />
+                                        <Title
+                                            className={styles['item-name']}
+                                            tagElement={'h4'}
+                                            variant={'title-2'}
+                                            weight={'medium'}
+                                            color={
+                                                filter === 'semua'
+                                                    ? 'purple'
+                                                    : 'black'
+                                            }
+                                        >
+                                            {'Semua Produk'}
+                                        </Title>
+                                        <img
+                                            className={styles['icon-right']}
+                                            src={
+                                                filter === 'semua'
+                                                    ? iconChevronPurpleR
+                                                    : iconChevronGreyR
+                                            }
+                                            alt={'chevron-icon'}
+                                        />
+                                    </div>
+                                    <div
+                                        className={classNames(
+                                            filter === 'diminati'
+                                                ? styles.selected
+                                                : styles.border,
+                                            styles.item
+                                        )}
+                                        onClick={() => setFilter('diminati')}
+                                    >
+                                        <img
+                                            className={styles['icon-left']}
+                                            src={
+                                                filter === 'diminati'
+                                                    ? iconHeartPurple
+                                                    : iconHeartGrey
+                                            }
+                                            alt={'box-heart'}
+                                        />
+                                        <Title
+                                            className={styles['item-name']}
+                                            tagElement={'h4'}
+                                            variant={'title-2'}
+                                            weight={'medium'}
+                                            color={
+                                                filter === 'diminati'
+                                                    ? 'purple'
+                                                    : 'black'
+                                            }
+                                        >
+                                            {'Diminati'}
+                                        </Title>
+                                        <img
+                                            className={styles['icon-right']}
+                                            src={
+                                                filter === 'diminati'
+                                                    ? iconChevronPurpleR
+                                                    : iconChevronGreyR
+                                            }
+                                            alt={'chevron-icon'}
+                                        />
+                                    </div>
+                                    <div
+                                        className={styles.item}
+                                        onClick={() => setFilter('terjual')}
+                                    >
+                                        <img
+                                            className={styles['icon-left']}
+                                            src={
+                                                filter === 'terjual'
+                                                    ? iconDollarPurple
+                                                    : iconDollarGrey
+                                            }
+                                            alt={'box-dollar'}
+                                        />
+                                        <Title
+                                            className={styles['item-name']}
+                                            tagElement={'h4'}
+                                            variant={'title-2'}
+                                            weight={'medium'}
+                                            color={
+                                                filter === 'terjual'
+                                                    ? 'purple'
+                                                    : 'black'
+                                            }
+                                        >
+                                            {'Terjual'}
+                                        </Title>
+                                        <img
+                                            className={styles['icon-right']}
+                                            src={
+                                                filter === 'terjual'
+                                                    ? iconChevronPurpleR
+                                                    : iconChevronGreyR
+                                            }
+                                            alt={'chevron-icon'}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className={styles.category}>
+                                <Button
+                                    type={'button'}
+                                    variant={
                                         filter === 'semua'
-                                            ? styles.selected
-                                            : styles.border,
-                                        styles.item
-                                    )}
+                                            ? 'primary'
+                                            : 'secondary'
+                                    }
                                     onClick={() => setFilter('semua')}
                                 >
                                     <img
-                                        className={styles['icon-left']}
+                                        className={styles.icon}
                                         src={
                                             filter === 'semua'
-                                                ? iconBoxPurple
+                                                ? iconBoxWhite
                                                 : iconBoxGrey
                                         }
-                                        alt={'box-icon'}
+                                        alt="logo-search-white"
                                     />
-                                    <Title
-                                        className={styles['item-name']}
-                                        tagElement={'h4'}
-                                        variant={'title-2'}
-                                        weight={'medium'}
-                                        color={
-                                            filter === 'semua'
-                                                ? 'purple'
-                                                : 'black'
-                                        }
-                                    >
-                                        {'Semua Produk'}
-                                    </Title>
-                                    <img
-                                        className={styles['icon-right']}
-                                        src={
-                                            filter === 'semua'
-                                                ? iconChevronPurpleR
-                                                : iconChevronGreyR
-                                        }
-                                        alt={'chevron-icon'}
-                                    />
-                                </div>
-                                <div
-                                    className={classNames(
+                                    {'Semua'}
+                                </Button>
+                                <Button
+                                    type={'button'}
+                                    variant={
                                         filter === 'diminati'
-                                            ? styles.selected
-                                            : styles.border,
-                                        styles.item
-                                    )}
+                                            ? 'primary'
+                                            : 'secondary'
+                                    }
                                     onClick={() => setFilter('diminati')}
                                 >
                                     <img
-                                        className={styles['icon-left']}
+                                        className={styles.icon}
                                         src={
                                             filter === 'diminati'
-                                                ? iconHeartPurple
+                                                ? iconHeartWhite
                                                 : iconHeartGrey
                                         }
-                                        alt={'box-heart'}
+                                        alt="logo-search"
                                     />
-                                    <Title
-                                        className={styles['item-name']}
-                                        tagElement={'h4'}
-                                        variant={'title-2'}
-                                        weight={'medium'}
-                                        color={
-                                            filter === 'diminati'
-                                                ? 'purple'
-                                                : 'black'
-                                        }
-                                    >
-                                        {'Diminati'}
-                                    </Title>
-                                    <img
-                                        className={styles['icon-right']}
-                                        src={
-                                            filter === 'diminati'
-                                                ? iconChevronPurpleR
-                                                : iconChevronGreyR
-                                        }
-                                        alt={'chevron-icon'}
-                                    />
-                                </div>
-                                <div
-                                    className={styles.item}
+                                    {'Diminati'}
+                                </Button>
+                                <Button
+                                    type={'button'}
+                                    variant={
+                                        filter === 'terjual'
+                                            ? 'primary'
+                                            : 'secondary'
+                                    }
                                     onClick={() => setFilter('terjual')}
                                 >
                                     <img
-                                        className={styles['icon-left']}
+                                        className={styles.icon}
                                         src={
                                             filter === 'terjual'
-                                                ? iconDollarPurple
+                                                ? iconDollarWhite
                                                 : iconDollarGrey
                                         }
-                                        alt={'box-dollar'}
+                                        alt="logo-search"
                                     />
-                                    <Title
-                                        className={styles['item-name']}
-                                        tagElement={'h4'}
-                                        variant={'title-2'}
-                                        weight={'medium'}
-                                        color={
-                                            filter === 'terjual'
-                                                ? 'purple'
-                                                : 'black'
-                                        }
-                                    >
-                                        {'Terjual'}
-                                    </Title>
-                                    <img
-                                        className={styles['icon-right']}
-                                        src={
-                                            filter === 'terjual'
-                                                ? iconChevronPurpleR
-                                                : iconChevronGreyR
-                                        }
-                                        alt={'chevron-icon'}
-                                    />
-                                </div>
+                                    {'Terjual'}
+                                </Button>
                             </div>
-                        </div>
-                        <div className={styles.product}>
+                        )}
+                        <div
+                            className={
+                                filter === 'semua'
+                                    ? styles.product
+                                    : styles['product-empty']
+                            }
+                        >
                             {filter === 'semua' ? (
                                 <>
                                     <div

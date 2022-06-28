@@ -11,9 +11,13 @@
     height: fit-content;
     justify-content: center;
     line-height: 20px;
-    padding: 14px 24px;
+    padding: 4px 12px;
     text-align: center;
     width: 100%;
+
+    @include tablet() {
+        padding: 14px 24px;
+    }
 }
 
 .primary {
