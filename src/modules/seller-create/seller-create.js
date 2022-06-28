@@ -32,7 +32,7 @@ const SellerCreate = ({ handleCreate, handleNotification }) => {
                 alt={'fi_arrow-left'}
                 onClick={() => handleCreate('landing')}
             />
-            <form onSubmit={handleSubmit(handleForm)}>
+            <form className={styles.form} onSubmit={handleSubmit(handleForm)}>
                 <Paragraph variant={'body-2'} className={styles.label}>
                     {'Nama Produk'}
                 </Paragraph>

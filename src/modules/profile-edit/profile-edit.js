@@ -31,7 +31,7 @@ const ProfileEdit = ({ handleEdit }) => {
                 alt={'fi_arrow-left'}
                 onClick={() => handleEdit(false)}
             />
-            <form onSubmit={handleSubmit(handleUpdate)}>
+            <form className={styles.form} onSubmit={handleSubmit(handleUpdate)}>
                 <div className={styles.camera}>
                     <img src={camera_purple} alt={'fi_camera_purple'} />
                 </div>

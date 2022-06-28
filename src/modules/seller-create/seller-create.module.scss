@@ -1,10 +1,16 @@
+@use '../../styles/' as *;
+
 .root {
-    margin-top: 40px;
+    margin-top: 16px;
 }
 
-form {
-    margin: -24px auto 0;
-    max-width: 568px;
+.form {
+    margin: -24px 24px 0 48px;
+
+    @include tablet() {
+        max-width: 568px;
+        margin: -24px auto 0;
+    }
 
     .label {
         margin-bottom: 4px;
@@ -16,7 +22,7 @@ form {
 
     .file {
         align-items: center;
-        border: 1px dashed #d0d0d0;
+        border: 1px dashed $color-neutral-3;
         border-radius: 12px;
         cursor: pointer;
         display: flex;
