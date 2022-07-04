@@ -1,12 +1,26 @@
+@use '../../styles/' as *;
+
 .root {
     margin: 0 auto;
-    max-width: 1168px;
-    padding: 40px 0;
+    padding: 40px 70px;
+    max-width: max-content;
 }
 
 .category {
     display: flex;
     margin-top: 16px;
+
+    @include mobile() {
+        overflow-x: scroll;
+    }
+
+    @include only-mobile() {
+        overflow-x: scroll;
+    }
+
+    @include only-tablet() {
+        overflow-x: scroll;
+    }
 
     button {
         flex: 0 1;
@@ -27,5 +41,20 @@
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     margin-top: 40px;
+    max-width: 1168px;
     row-gap: 16px;
+
+    @include mobile() {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include only-mobile() {
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        max-width: 700px;
+    }
+
+    @include only-tablet() {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
