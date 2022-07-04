@@ -1,0 +1,103 @@
+@use '../../styles/' as *;
+
+.root {
+    background-color: $color-white;
+    border-radius: 4px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+
+    @include tablet() {
+        padding: 24px;
+    }
+}
+
+.header {
+    border-bottom: 1px solid $color-neutral;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+
+    img {
+        height: 34px;
+        margin-right: 16px;
+        width: 34px;
+    }
+
+    &-content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    p {
+        margin: auto 0;
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+
+    &-top {
+        display: flex;
+        margin-bottom: 16px;
+
+        img {
+            border-radius: 12px;
+            height: 48px;
+            margin-right: 16px;
+            object-fit: cover;
+            width: 48px;
+        }
+    }
+
+    &-product {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    &-bottom {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    &-price {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+
+    &-button {
+        align-self: flex-end;
+    }
+}
+
+%variant {
+    border-radius: 12px;
+    padding: 4px 8px;
+}
+
+.selesai {
+    @extend %variant;
+    background-color: $color-green;
+    color: $color-white;
+}
+
+.ditolak {
+    @extend %variant;
+    background-color: $color-red;
+    color: $color-white;
+}
+
+.waiting {
+    @extend %variant;
+    background-color: $color-yellow;
+    color: $color-white;
+}

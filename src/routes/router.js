@@ -7,9 +7,11 @@ import ProductPage from '../pages/product/product';
 import Custom404 from '../pages/custom404/custom404';
 import Register from '../pages/register/register';
 import SellerPage from '../pages/seller/seller';
+import ProfilePage from '../pages/profile/profile';
+import TransactionPage from '../pages/transaction/transaction';
+import PaymentPage from '../pages/payment/payment.js';
 
 import Navbar from '../modules/navbar/navbar';
-import ProfilePage from '../pages/profile/profile';
 
 const WithNav = () => {
     return (
@@ -28,6 +30,8 @@ const Router = () => {
                 <Route path={'/product/:id'} element={<ProductPage />} />
                 <Route path={'/profile'} element={<ProfilePage />} />
                 <Route path={'/seller'} element={<SellerPage />} />
+                <Route path={'/transaction/'} element={<TransactionPage />} />
+                <Route path={'/transaction/:id'} element={<PaymentPage />} />
             </Route>
             <Route path={'/login'} element={<LoginPage />} />
             <Route path={'/register'} element={<Register />} />
