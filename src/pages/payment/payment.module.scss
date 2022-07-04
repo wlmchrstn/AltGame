@@ -45,8 +45,8 @@
     padding: 16px;
 
     @include tablet() {
-        padding: 24px;
         border-radius: 16px;
+        padding: 24px;
     }
 
     img {
