@@ -2,8 +2,8 @@
 
 .root {
     margin: 0 auto;
-    padding: 40px 70px;
     max-width: max-content;
+    padding: 40px 70px;
 }
 
 .category {
@@ -49,8 +49,8 @@
     }
 
     @include only-mobile() {
-        grid-template-columns: repeat(2, 1fr);
         align-items: center;
+        grid-template-columns: repeat(2, 1fr);
         max-width: 700px;
     }
 
