@@ -40,6 +40,7 @@ const Register = () => {
                     <Input className={styles.input}>
                         <input
                             type={'text'}
+                            name={'name'}
                             placeholder={'Nama lengkap'}
                             {...register('nama', { required: true })}
                         />
@@ -48,11 +49,26 @@ const Register = () => {
                         <p className={styles.error}>*Required field*</p>
                     )}
                     <Paragraph variant={'body-2'} className={styles.label}>
+                        {'Username'}
+                    </Paragraph>
+                    <Input className={styles.input}>
+                        <input
+                            type={'text'}
+                            name={'username'}
+                            placeholder={'Masukkan Username'}
+                            {...register('username', { required: true })}
+                        />
+                    </Input>
+                    {errors.username && errors.username.type === 'required' && (
+                        <p className={styles.error}>*Required field*</p>
+                    )}
+                    <Paragraph variant={'body-2'} className={styles.label}>
                         {'Email'}
                     </Paragraph>
                     <Input className={styles.input}>
                         <input
                             type={'email'}
+                            name={'email'}
                             placeholder={'Contoh: johndee@gmail.com'}
                             {...register('email', { required: true })}
                         />
@@ -66,11 +82,26 @@ const Register = () => {
                     <Input className={styles.input}>
                         <input
                             type={'password'}
+                            name={'password'}
                             placeholder={'Masukkan password'}
                             {...register('password', { required: true })}
                         />
                     </Input>
                     {errors.password && errors.password.type === 'required' && (
+                        <p className={styles.error}>*Required field*</p>
+                    )}
+                    <Paragraph variant={'body-2'} className={styles.label}>
+                        {'Phone'}
+                    </Paragraph>
+                    <Input className={styles.input}>
+                        <input
+                            type={'number'}
+                            name={'phone'}
+                            placeholder={'Contoh: 087898685848'}
+                            {...register('phone', { required: true })}
+                        />
+                    </Input>
+                    {errors.phone && errors.phone.type === 'required' && (
                         <p className={styles.error}>*Required field*</p>
                     )}
                     <Button type={'submit'} variant={'primary'}>
