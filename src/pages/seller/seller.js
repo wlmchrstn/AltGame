@@ -1,4 +1,5 @@
 import React, { useState, useLayoutEffect } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import styles from './seller.module.scss';
@@ -91,7 +92,18 @@ export const SellerPage = () => {
         return () => window.removeEventListener('resize', updateScreenSize);
     }, []);
 
-    const handleCard = params => {
+    const handleCard = async params => {
+        try {
+            const { data: response } = await axios.get(
+                'https://api-altgame-production.herokuapp.com/api/products/index',
+                {
+                    headers: { 'Access-Control-Allow-Origin': '*' },
+                }
+            );
+            console.log(response);
+        } catch (err) {
+            console.log(err);
+        }
         setProduct(params);
         setBid(bidExample);
         setPage('bid');

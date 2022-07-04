@@ -63,7 +63,7 @@ const Navbar = () => {
                                 </div>
                                 <div
                                     className={styles.button}
-                                    onClick={() => navigate('/wishlist')}
+                                    onClick={() => navigate('/transaction')}
                                 >
                                     <img src={shoppingCart} alt={'fi_cart'} />
                                 </div>
@@ -165,7 +165,7 @@ const Navbar = () => {
                             <div
                                 className={styles['modal-item']}
                                 onClick={() => {
-                                    navigate('/wishlist');
+                                    navigate('/transaction');
                                     setIsOpen(false);
                                 }}
                             >
