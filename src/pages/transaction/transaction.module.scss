@@ -37,9 +37,9 @@
 }
 
 .transaction {
-    margin-top: 16px;
     display: flex;
     flex-direction: column;
+    margin-top: 16px;
 
     @include tablet() {
         margin-top: 24px;
