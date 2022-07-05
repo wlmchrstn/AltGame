@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './landing.module.scss';
 
 // Components
@@ -10,67 +11,33 @@ import Title from '../../components/title/title';
 // Assets
 import search from '../../assets/icons/fi_search.svg';
 import search_white from '../../assets/icons/fi_search_white.svg';
-
-const dataMock = [
-    {
-        id: 1,
-        title: 'Jam Tangan Casio',
-        category: 'Aksesoris',
-        harga: 200000,
-    },
-    {
-        id: 2,
-        title: 'Jam Tangan Casio',
-        category: 'Aksesoris',
-        harga: 400000,
-    },
-    {
-        id: 3,
-        title: 'Jam Tangan Casio',
-        category: 'Aksesoris',
-        harga: 600000,
-    },
-    {
-        id: 4,
-        title: 'Jam Tangan Casio',
-        category: 'Aksesoris',
-        harga: 800000,
-    },
-    {
-        id: 5,
-        title: 'Jam Tangan Casio',
-        category: 'Aksesoris',
-        harga: 1000000,
-    },
-    {
-        id: 6,
-        title: 'Jam Tangan Casio',
-        category: 'Aksesoris',
-        harga: 1200000,
-    },
-    {
-        id: 7,
-        title: 'Jam Tangan Casio',
-        category: 'Aksesoris',
-        harga: 1400000,
-    },
-];
+import { getAllProduct } from '../../stores/actions/ActionProduct';
 
 const LandingPage = () => {
     const [filter, setFilter] = useState('semua');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { listProducts, loading } = useSelector(
+        state => state.ReducerProduct
+    );
+
+    useEffect(() => {
+        dispatch(getAllProduct());
+    }, [dispatch]);
 
     const handleMapping = () => {
-        return dataMock.map((value, index) => {
+        return listProducts.map((value, index) => {
             return (
                 <Card
                     key={index}
                     data={value}
-                    onClick={() => navigate(`/product/${index}`)}
+                    onClick={() => navigate(`/product/${value.productId}`)}
                 />
             );
         });
     };
+
+    if (loading === true) return <p>loading</p>;
     return (
         <section className={styles.root}>
             <div className={styles.header}>

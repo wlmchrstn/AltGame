@@ -1,7 +1,8 @@
-import React, { useState, useLayoutEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
+import { setToken } from '../../utils/helper';
 import styles from './seller.module.scss';
 
 // Components
@@ -31,32 +32,35 @@ import iconPlus from '../../assets/icons/fi_plus.svg';
 import SellerCreate from '../../modules/seller-create/seller-create';
 import SellerBid from '../../modules/seller-bid/seller-bid';
 
-const dataMock = [
-    {
-        id: 1,
-        title: 'Jam Tangan Casio',
-        category: 'Aksesoris',
-        harga: 200000,
-    },
-    {
-        id: 2,
-        title: 'Jam Tangan Casio',
-        category: 'Aksesoris',
-        harga: 400000,
-    },
-    {
-        id: 3,
-        title: 'Jam Tangan Casio',
-        category: 'Aksesoris',
-        harga: 600000,
-    },
-    {
-        id: 4,
-        title: 'Jam Tangan Casio',
-        category: 'Aksesoris',
-        harga: 800000,
-    },
-];
+// Actions
+import { getSellerProduct } from '../../stores/actions/ActionSeller';
+
+// const dataMock = [
+//     {
+//         id: 1,
+//         title: 'Jam Tangan Casio',
+//         category: 'Aksesoris',
+//         harga: 200000,
+//     },
+//     {
+//         id: 2,
+//         title: 'Jam Tangan Casio',
+//         category: 'Aksesoris',
+//         harga: 400000,
+//     },
+//     {
+//         id: 3,
+//         title: 'Jam Tangan Casio',
+//         category: 'Aksesoris',
+//         harga: 600000,
+//     },
+//     {
+//         id: 4,
+//         title: 'Jam Tangan Casio',
+//         category: 'Aksesoris',
+//         harga: 800000,
+//     },
+// ];
 
 const bidExample = [
     {
@@ -83,7 +87,10 @@ export const SellerPage = () => {
     const [product, setProduct] = useState(null);
     const [bid, setBid] = useState(null);
     const [screenSize, setScreenSize] = useState(null);
+    const [refresh, setRefresh] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { listProducts, loading } = useSelector(state => state.ReducerSeller);
 
     useLayoutEffect(() => {
         const updateScreenSize = () => setScreenSize(window.innerWidth);
@@ -92,24 +99,21 @@ export const SellerPage = () => {
         return () => window.removeEventListener('resize', updateScreenSize);
     }, []);
 
-    const handleCard = async params => {
-        try {
-            const { data: response } = await axios.get(
-                'https://api-altgame-production.herokuapp.com/api/products/index',
-                {
-                    headers: { 'Access-Control-Allow-Origin': '*' },
-                }
-            );
-            console.log(response);
-        } catch (err) {
-            console.log(err);
+    useEffect(() => {
+        if (sessionStorage.getItem('token')) {
+            setToken(sessionStorage.getItem('token'));
         }
+        dispatch(getSellerProduct('usernameBuyer'));
+    }, [dispatch, refresh]);
+
+    const handleCard = async params => {
         setProduct(params);
         setBid(bidExample);
         setPage('bid');
     };
 
     const handleMapping = params => {
+        if (params === undefined) return null;
         return params.map((value, index) => {
             return (
                 <Card
@@ -392,7 +396,11 @@ export const SellerPage = () => {
                                             {'Tambah Produk'}
                                         </Paragraph>
                                     </div>
-                                    {handleMapping(dataMock)}
+                                    {loading ? (
+                                        <p>loading</p>
+                                    ) : (
+                                        handleMapping(listProducts)
+                                    )}
                                 </>
                             ) : filter === 'diminati' ? (
                                 <div className={styles.empty}>
@@ -432,6 +440,8 @@ export const SellerPage = () => {
                 <SellerCreate
                     handleCreate={setPage}
                     handleNotification={setNotification}
+                    refresh={refresh}
+                    handleRefresh={setRefresh}
                 />
             ) : page === 'bid' ? (
                 <SellerBid product={product} bid={bid} handleBid={setPage} />

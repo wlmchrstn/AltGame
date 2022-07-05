@@ -26,7 +26,7 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem('altToken');
+        const token = sessionStorage.getItem('token');
         setAuth(token);
     }, []);
 
