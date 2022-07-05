@@ -3,6 +3,48 @@
 .root {
     margin: 40px auto 0;
     max-width: 768px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    @include tablet() {
+        flex-direction: row;
+        max-width: $max-width-md;
+        padding: 40px 24px;
+    }
+
+    @include desktop() {
+        max-width: $max-width-lg;
+    }
+}
+
+.left {
+    @include only-mobile() {
+        margin-bottom: 16px;
+    }
+
+    @include only-tablet() {
+        max-width: 600px;
+    }
+
+    @include tablet() {
+        flex: 6;
+        margin-right: 24px;
+    }
+
+    @include desktop() {
+        margin-right: 32px;
+    }
+}
+
+.right {
+    @include tablet() {
+        flex: 4;
+    }
+
+    @include only-tablet() {
+        max-width: 336px;
+    }
 }
 
 form {

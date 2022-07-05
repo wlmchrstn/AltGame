@@ -25,48 +25,55 @@ export const LoginPage = () => {
 
     return (
         <section className={styles.root}>
-            <div className={styles.image} />
-            <form className={styles.form} onSubmit={handleSubmit(handleLogin)}>
-                <Title
-                    tagElement={'h1'}
-                    variant={'heading-1'}
-                    color={'black'}
-                    weight={'bold'}
+            <div className={styles.left}>
+                <div className={styles.image} />
+            </div>
+            <div className={styles.right}>
+                <form
+                    className={styles.form}
+                    onSubmit={handleSubmit(handleLogin)}
                 >
-                    {'Masuk'}
-                </Title>
-                <Paragraph variant={'body-2'} className={styles.label}>
-                    {'Email'}
-                </Paragraph>
-                <Input className={styles.input}>
-                    <input
-                        type={'email'}
-                        placeholder={'Contoh: johndee@gmail.com'}
-                        {...register('email', { required: true })}
-                    />
-                </Input>
-                {errors.email && errors.email.type === 'required' && (
-                    <p className={styles.error}>*Required field*</p>
-                )}
-                <Paragraph variant={'body-2'} className={styles.label}>
-                    {'Email'}
-                </Paragraph>
-                <Input className={styles.input}>
-                    <input
-                        type={'password'}
-                        placeholder={'Masukkan password'}
-                    />
-                </Input>
-                <Button type={'submit'} variant={'primary'} color={'white'}>
-                    {'Masuk'}
-                </Button>
-                <div className={styles.register}>
-                    <Paragraph variant={'body-2'}>
-                        {'Belum punya akun?'}
+                    <Title
+                        tagElement={'h1'}
+                        variant={'heading-1'}
+                        color={'black'}
+                        weight={'bold'}
+                    >
+                        {'Masuk'}
+                    </Title>
+                    <Paragraph variant={'body-2'} className={styles.label}>
+                        {'Email'}
                     </Paragraph>
-                    <Link to={'/register'}>{'Daftar di sini'}</Link>
-                </div>
-            </form>
+                    <Input className={styles.input}>
+                        <input
+                            type={'email'}
+                            placeholder={'Contoh: johndee@gmail.com'}
+                            {...register('email', { required: true })}
+                        />
+                    </Input>
+                    {errors.email && errors.email.type === 'required' && (
+                        <p className={styles.error}>*Required field*</p>
+                    )}
+                    <Paragraph variant={'body-2'} className={styles.label}>
+                        {'Email'}
+                    </Paragraph>
+                    <Input className={styles.input}>
+                        <input
+                            type={'password'}
+                            placeholder={'Masukkan password'}
+                        />
+                    </Input>
+                    <Button type={'submit'} variant={'primary'} color={'white'}>
+                        {'Masuk'}
+                    </Button>
+                    <div className={styles.register}>
+                        <Paragraph variant={'body-2'}>
+                            {'Belum punya akun?'}
+                        </Paragraph>
+                        <Link to={'/register'}>{'Daftar di sini'}</Link>
+                    </div>
+                </form>
+            </div>
         </section>
     );
 };
