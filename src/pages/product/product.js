@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-// import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import { formatRupiah, setToken } from '../../utils/helper';
 import styles from './product.module.scss';
 
 // Components
@@ -14,12 +16,15 @@ import Notification from '../../components/notification/notification';
 // Assets
 import imgPlaceholder from '../../assets/images/product-image.png';
 
-// eslint-disable-next-line prettier/prettier
-const lorem =
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+// Actions
+import { getProduct } from '../../stores/actions/ActionProduct';
 
 const ProductPage = () => {
-    // const { id } = useParams();
+    const { id } = useParams();
+    const dispatch = useDispatch();
+    const { product, productOwner, loading } = useSelector(
+        state => state.ReducerProduct
+    );
     const {
         register,
         formState: { errors },
@@ -38,6 +43,19 @@ const ProductPage = () => {
         setIsOpen(false);
     };
 
+    useEffect(() => {
+        if (sessionStorage.getItem('token')) {
+            setToken(sessionStorage.getItem('token'));
+        }
+        dispatch(getProduct(id));
+    }, [dispatch]);
+
+    useEffect(() => {
+        console.log(typeof product.image);
+    });
+
+    if (loading === true) return <p>loading</p>;
+
     return (
         <section className={styles.root}>
             <Notification
@@ -49,7 +67,9 @@ const ProductPage = () => {
             <div className={styles.left}>
                 <div
                     className={styles.carousel}
-                    style={{ backgroundImage: `url(${imgPlaceholder})` }}
+                    style={{
+                        backgroundImage: `url("data:image/jpeg;base64,${product.image}")`,
+                    }}
                 />
                 <div className={styles.desc}>
                     <Paragraph
@@ -61,7 +81,7 @@ const ProductPage = () => {
                         Deskripsi
                     </Paragraph>
                     <Paragraph variant={'body-1'} color={'neutral'}>
-                        {lorem}
+                        {product.description}
                     </Paragraph>
                 </div>
             </div>
@@ -73,13 +93,13 @@ const ProductPage = () => {
                         variant={'title-2'}
                         weight={'medium'}
                     >
-                        Jam Tangan Casio
+                        {product.name}
                     </Title>
                     <Paragraph
                         className={styles['product-category']}
                         variant={'body-1'}
                     >
-                        Aksesoris
+                        {product.categoryId}
                     </Paragraph>
                     <Title
                         tagElement={'h2'}
@@ -87,7 +107,7 @@ const ProductPage = () => {
                         variant={'title-2'}
                         weight={'medium'}
                     >
-                        Rp 250.000
+                        {formatRupiah(product.price)}
                     </Title>
                     <Button
                         type={'button'}
@@ -113,8 +133,8 @@ const ProductPage = () => {
                             variant={'body-1'}
                             color={'neutral'}
                         >
-                            Harga tawaranmu akan diketahui penjual, jika penjual
-                            cocok kamu dapat melanjutkan ke pembayaran.
+                            Harga tawaranmu akan diketahui penjual, jika cocok
+                            kamu dapat melanjutkan ke pembayaran.
                         </Paragraph>
                         <div className={styles['product-summary']}>
                             <img
@@ -128,10 +148,10 @@ const ProductPage = () => {
                                     variant={'body-1'}
                                     weight={'medium'}
                                 >
-                                    Jam Tangan Casio
+                                    {product.name}
                                 </Paragraph>
                                 <Paragraph variant={'body-1'}>
-                                    Rp 250.000
+                                    {formatRupiah(product.price)}
                                 </Paragraph>
                             </div>
                         </div>
@@ -149,7 +169,9 @@ const ProductPage = () => {
                                 <input
                                     type={'number'}
                                     placeholder={'Rp 0,00'}
-                                    {...register('harga', { required: true })}
+                                    {...register('harga', {
+                                        required: true,
+                                    })}
                                 />
                                 {errors.harga &&
                                     errors.harga.type === 'required' && (
@@ -176,10 +198,10 @@ const ProductPage = () => {
                             variant={'body-1'}
                             weight={'medium'}
                         >
-                            Nama Penjual
+                            {productOwner.name}
                         </Paragraph>
                         <Paragraph variant={'body-3'} color={'neutral'}>
-                            Kota
+                            {productOwner.city}
                         </Paragraph>
                     </div>
                 </div>
