@@ -13,6 +13,7 @@ import Spinner from '../../components/spinner/spinner';
 import search from '../../assets/icons/fi_search.svg';
 import search_white from '../../assets/icons/fi_search_white.svg';
 import { getAllProduct } from '../../stores/actions/ActionProduct';
+import { getUser } from '../../stores/actions/ActionAuth';
 
 const LandingPage = () => {
     const [filter, setFilter] = useState('Semua');
@@ -23,6 +24,7 @@ const LandingPage = () => {
     );
 
     useEffect(() => {
+        dispatch(getUser());
         dispatch(getAllProduct());
     }, [dispatch]);
 
