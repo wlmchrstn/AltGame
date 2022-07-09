@@ -28,23 +28,6 @@ export default (state = initialState, action) => {
     const { type, payload } = action;
 
     switch (type) {
-        case LOGIN_SUCCESS:
-            sessionStorage.setItem('token', payload);
-            return {
-                ...state,
-                token: payload.token,
-                isAuthenticated: true,
-                loading: payload.loading,
-                error: '',
-            };
-        case LOGIN_FAIL:
-            sessionStorage.removeItem('token');
-            return {
-                ...state,
-                isAuthenticated: false,
-                loading: false,
-                error: 'Invalid Login',
-            };
         case REGISTER_SUCCESS:
             sessionStorage.setItem('token', payload.token);
             return {
@@ -61,6 +44,23 @@ export default (state = initialState, action) => {
                 isAuthenticated: false,
                 loading: false,
                 error: 'Failed to Register',
+            };
+        case LOGIN_SUCCESS:
+            sessionStorage.setItem('token', payload.token);
+            return {
+                ...state,
+                token: payload.token,
+                isAuthenticated: true,
+                loading: payload.loading,
+                error: '',
+            };
+        case LOGIN_FAIL:
+            sessionStorage.removeItem('token');
+            return {
+                ...state,
+                isAuthenticated: false,
+                loading: false,
+                error: 'Failed to Login',
             };
         case GET_USER:
             return {

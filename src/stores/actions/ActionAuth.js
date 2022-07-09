@@ -46,7 +46,7 @@ export const registerUser =
                 },
             });
 
-            navigate('/');
+            navigate('/', { replace: true });
         } catch (error) {
             dispatch({
                 type: REGISTER_FAILED,
@@ -81,7 +81,6 @@ export const login = (data, navigate, notification) => async dispatch => {
                 loading: false,
             },
         });
-        sessionStorage.setItem('token', response.data.access_token.toString());
 
         navigate('/', { replace: true });
     } catch (error) {

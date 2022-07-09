@@ -12,6 +12,7 @@ import Button from '../../components/button/button';
 // Assets
 import arrowLeft from '../../assets/icons/fi_arrow-left.svg';
 import plus from '../../assets/icons/fi_plus.svg';
+import { setToken } from '../../utils/helper';
 
 const SellerCreate = ({
     handleCreate,
@@ -26,6 +27,7 @@ const SellerCreate = ({
     } = useForm();
 
     const handleForm = async data => {
+        setToken(sessionStorage.getItem('token'));
         const { categoryId, name, description, price, image } = data;
         const req = new FormData();
         req.append('categoryId', categoryId);

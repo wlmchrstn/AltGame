@@ -2,7 +2,6 @@ import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { setToken } from '../../utils/helper';
 import styles from './seller.module.scss';
 
 // Components
@@ -35,51 +34,6 @@ import SellerBid from '../../modules/seller-bid/seller-bid';
 // Actions
 import { getSellerProduct } from '../../stores/actions/ActionSeller';
 
-// const dataMock = [
-//     {
-//         id: 1,
-//         title: 'Jam Tangan Casio',
-//         category: 'Aksesoris',
-//         harga: 200000,
-//     },
-//     {
-//         id: 2,
-//         title: 'Jam Tangan Casio',
-//         category: 'Aksesoris',
-//         harga: 400000,
-//     },
-//     {
-//         id: 3,
-//         title: 'Jam Tangan Casio',
-//         category: 'Aksesoris',
-//         harga: 600000,
-//     },
-//     {
-//         id: 4,
-//         title: 'Jam Tangan Casio',
-//         category: 'Aksesoris',
-//         harga: 800000,
-//     },
-// ];
-
-// const bidExample = [
-//     {
-//         name: 'William',
-//         harga: 400000,
-//         status: 'pending',
-//     },
-//     {
-//         name: 'Sonef',
-//         harga: 350000,
-//         status: 'pending',
-//     },
-//     {
-//         name: 'Cantika',
-//         harga: 375000,
-//         status: 'pending',
-//     },
-// ];
-
 export const SellerPage = () => {
     const [filter, setFilter] = useState('semua');
     const [page, setPage] = useState('landing');
@@ -90,6 +44,7 @@ export const SellerPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { listProducts, loading } = useSelector(state => state.ReducerSeller);
+    const { user } = useSelector(state => state.ReducerAuth);
 
     useLayoutEffect(() => {
         const updateScreenSize = () => setScreenSize(window.innerWidth);
@@ -99,10 +54,7 @@ export const SellerPage = () => {
     }, []);
 
     useEffect(() => {
-        if (sessionStorage.getItem('token')) {
-            setToken(sessionStorage.getItem('token'));
-        }
-        dispatch(getSellerProduct('buyer1'));
+        dispatch(getSellerProduct(user.username));
     }, [dispatch, refresh]);
 
     const handleCard = async params => {
