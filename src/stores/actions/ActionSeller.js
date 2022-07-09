@@ -13,7 +13,6 @@ export const getSellerProduct = data => async dispatch => {
         const { data: response } = await axios.get(
             `${process.env.REACT_APP_BASE_URL}/api/products/${data}`
         );
-        console.log('berhasil get product', response.data.products);
         dispatch({
             type: SHOW_ALL_SELLER_PRODUCT,
             payload: {
@@ -35,8 +34,6 @@ export const addProduct = data => async dispatch => {
             `${process.env.REACT_APP_BASE_URL}/api/products/store`,
             data
         );
-
-        console.log('berhasil add', response.message);
         dispatch({
             type: ADD_PRODUCT,
             payload: response.data,

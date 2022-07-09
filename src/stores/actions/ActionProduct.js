@@ -39,6 +39,7 @@ export const getProduct = data => async dispatch => {
             },
         });
 
+        console.log(data);
         const { data: response } = await axios.get(
             `${process.env.REACT_APP_BASE_URL}/api/products/show/${data}`
         );
@@ -48,10 +49,11 @@ export const getProduct = data => async dispatch => {
             city: 'Batam',
         };
 
+        console.log(response.data[0]);
         dispatch({
             type: SHOW_PRODUCT,
             payload: {
-                data: response.data,
+                data: response.data[0],
                 owner: owner,
                 loading: false,
             },

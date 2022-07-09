@@ -1,24 +1,65 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './profile.module.scss';
 
 // Components
 import Button from '../../components/button/button';
 import Paragraph from '../../components/paragraph/paragraph';
+import Modal from '../../components/modal/modal';
+import Notification from '../../components/notification/notification';
 
 // Assets
 import camera_purple from '../../assets/icons/fi_camera_purple.svg';
 import Title from '../../components/title/title';
 
 // Modules
+// import ProfileEdit from '../../modules/profile-edit/profile-edit';
+
+// Actions
+import { getUser } from '../../stores/actions/ActionAuth';
+import Spinner from '../../components/spinner/spinner';
 import ProfileEdit from '../../modules/profile-edit/profile-edit';
 
 const ProfilePage = () => {
-    const [edit, setEdit] = useState(false);
+    const [userData, setUserData] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
+    const [notification, setNotification] = useState(false);
+    const [failedNotification, setFailedNotification] = useState(false);
+    const dispatch = useDispatch();
+    const { error } = useSelector(state => state.ReducerAuth);
+
+    useEffect(() => {
+        dispatch(getUser(setUserData, setIsLoading));
+    }, [dispatch]);
 
     return (
         <section className={styles.root}>
-            {edit ? (
-                <ProfileEdit handleEdit={setEdit} />
+            <Modal
+                open={isOpen}
+                onClose={() => setIsOpen(false)}
+                className={styles.modal}
+            >
+                <ProfileEdit
+                    user={userData}
+                    notification={setNotification}
+                    failedNotification={setFailedNotification}
+                />
+            </Modal>
+            <Notification
+                message={error}
+                variant={'failed'}
+                show={failedNotification}
+                setShow={setFailedNotification}
+            />
+            <Notification
+                message={'Berhasil update profile'}
+                variant={'success'}
+                show={notification}
+                setShow={setNotification}
+            />
+            {isLoading ? (
+                <Spinner variant={'page'} />
             ) : (
                 <div className={styles.profile}>
                     <div className={styles.camera}>
@@ -37,7 +78,7 @@ const ProfilePage = () => {
                         weight={'medium'}
                         className={styles['profile-data']}
                     >
-                        {'William Christian'}
+                        {userData.name}
                     </Title>
                     <Paragraph
                         variant={'body-2'}
@@ -59,21 +100,6 @@ const ProfilePage = () => {
                         className={styles['profile-label']}
                         color={'neutral'}
                     >
-                        {'Alamat'}
-                    </Paragraph>
-                    <Title
-                        tagElement={'p'}
-                        variant={'title-1'}
-                        weight={'medium'}
-                        className={styles['profile-data']}
-                    >
-                        {'Perumahan Kintamani'}
-                    </Title>
-                    <Paragraph
-                        variant={'body-2'}
-                        className={styles['profile-label']}
-                        color={'neutral'}
-                    >
                         {'No Handphone'}
                     </Paragraph>
                     <Title
@@ -82,12 +108,12 @@ const ProfilePage = () => {
                         weight={'medium'}
                         className={styles['profile-data']}
                     >
-                        {'+62 822 7800 1173'}
+                        {userData.phone}
                     </Title>
                     <Button
                         type={'button'}
                         variant={'primary'}
-                        onClick={() => setEdit(true)}
+                        onClick={() => setIsOpen(true)}
                     >
                         {'Edit'}
                     </Button>

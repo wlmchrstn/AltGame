@@ -62,30 +62,29 @@ import { getSellerProduct } from '../../stores/actions/ActionSeller';
 //     },
 // ];
 
-const bidExample = [
-    {
-        name: 'William',
-        harga: 400000,
-        status: 'pending',
-    },
-    {
-        name: 'Sonef',
-        harga: 350000,
-        status: 'pending',
-    },
-    {
-        name: 'Cantika',
-        harga: 375000,
-        status: 'pending',
-    },
-];
+// const bidExample = [
+//     {
+//         name: 'William',
+//         harga: 400000,
+//         status: 'pending',
+//     },
+//     {
+//         name: 'Sonef',
+//         harga: 350000,
+//         status: 'pending',
+//     },
+//     {
+//         name: 'Cantika',
+//         harga: 375000,
+//         status: 'pending',
+//     },
+// ];
 
 export const SellerPage = () => {
     const [filter, setFilter] = useState('semua');
     const [page, setPage] = useState('landing');
     const [notification, setNotification] = useState(false);
     const [product, setProduct] = useState(null);
-    const [bid, setBid] = useState(null);
     const [screenSize, setScreenSize] = useState(null);
     const [refresh, setRefresh] = useState(false);
     const navigate = useNavigate();
@@ -103,12 +102,11 @@ export const SellerPage = () => {
         if (sessionStorage.getItem('token')) {
             setToken(sessionStorage.getItem('token'));
         }
-        dispatch(getSellerProduct('usernameBuyer'));
+        dispatch(getSellerProduct('buyer1'));
     }, [dispatch, refresh]);
 
     const handleCard = async params => {
-        setProduct(params);
-        setBid(bidExample);
+        setProduct(listProducts[params]);
         setPage('bid');
     };
 
@@ -119,7 +117,7 @@ export const SellerPage = () => {
                 <Card
                     key={index}
                     data={value}
-                    onClick={() => handleCard(value)}
+                    onClick={() => handleCard(index)}
                 />
             );
         });
@@ -444,7 +442,7 @@ export const SellerPage = () => {
                     handleRefresh={setRefresh}
                 />
             ) : page === 'bid' ? (
-                <SellerBid product={product} bid={bid} handleBid={setPage} />
+                <SellerBid product={product} handleBid={setPage} />
             ) : null}
         </section>
     );

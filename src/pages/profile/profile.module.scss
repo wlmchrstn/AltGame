@@ -1,8 +1,22 @@
 @use '../../styles/' as *;
 
 .root {
-    margin: 40px auto 0;
-    max-width: 768px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: $max-width-sm;
+    padding: 16px 24px;
+
+    @include tablet() {
+        flex-direction: row;
+        max-width: $max-width-md;
+        padding: 40px 24px;
+    }
+
+    @include desktop() {
+        max-width: $max-width-lg;
+    }
 }
 
 .camera {
@@ -17,8 +31,9 @@
 }
 
 .profile {
+    width: 100%;
+    max-width: 567px;
     margin: 0 auto;
-    max-width: 568px;
 
     &-data {
         border-bottom: 1px solid $color-black;

@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './register.module.scss';
 
 import Title from '../../components/title/title';
 import Input from '../../components/input/input';
 import Button from '../../components/button/button';
 import Paragraph from '../../components/paragraph/paragraph';
+import Notification from '../../components/notification/notification';
+import Spinner from '../../components/spinner/spinner';
+
+// Actions
+import { registerUser } from '../../stores/actions/ActionAuth';
 
 const Register = () => {
     const {
@@ -14,13 +20,23 @@ const Register = () => {
         formState: { errors },
         handleSubmit,
     } = useForm();
+    const [notification, setNotification] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { error, loading } = useSelector(state => state.ReducerAuth);
 
-    const handleRegister = () => {
-        console.log('berhasil');
+    const handleRegister = data => {
+        dispatch(registerUser(data, navigate, setNotification));
     };
 
     return (
         <section className={styles.root}>
+            <Notification
+                message={error}
+                variant={'failed'}
+                show={notification}
+                setShow={setNotification}
+            />
             <div className={styles.container}>
                 <div className={styles.wrapper}>
                     <Title
@@ -36,14 +52,14 @@ const Register = () => {
                         className={styles.form}
                     >
                         <Paragraph variant={'body-2'} className={styles.label}>
-                            {'Nama'}
+                            {'Name'}
                         </Paragraph>
                         <Input className={styles.input}>
                             <input
                                 type={'text'}
                                 name={'name'}
                                 placeholder={'Nama lengkap'}
-                                {...register('nama', { required: true })}
+                                {...register('name', { required: true })}
                             />
                         </Input>
                         {errors.nama && errors.nama.type === 'required' && (
@@ -108,7 +124,11 @@ const Register = () => {
                             <p className={styles.error}>*Required field*</p>
                         )}
                         <Button type={'submit'} variant={'primary'}>
-                            {'Daftar'}
+                            {loading ? (
+                                <Spinner variant={'button'} />
+                            ) : (
+                                'Daftar'
+                            )}
                         </Button>
                     </form>
                     <div className={styles.login}>

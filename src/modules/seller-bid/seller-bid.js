@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import styles from './seller-bid.module.scss';
 import { formatRupiah } from '../../utils/helper';
 
@@ -19,6 +20,7 @@ const Bid = ({ data, product }) => {
     const { title, harga: price } = product;
     const [notification, setNotification] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+
     return (
         <div className={styles['bid-wrapper']}>
             <Notification
@@ -107,8 +109,24 @@ const Bid = ({ data, product }) => {
     );
 };
 
-const SellerBid = ({ product, bid, handleBid }) => {
-    const { title, category, harga } = product;
+const SellerBid = ({ product, handleBid }) => {
+    const { name, category, price } = product;
+    const [bid, setBid] = useState(null);
+
+    const getAllBid = async params => {
+        try {
+            const { data: response } = await axios.get(
+                `${process.env.REACT_APP_BASE_URL}/api/bids/all-bids-product/${params}`
+            );
+            console.log(response.data);
+            setBid(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    useEffect(() => {
+        getAllBid(product.productId);
+    }, []);
 
     const mapTawar = params => {
         return params.map((value, index) => {
@@ -132,13 +150,13 @@ const SellerBid = ({ product, bid, handleBid }) => {
                     />
                     <div className={styles['product-detail']}>
                         <Paragraph variant={'body-1'} color={'black'}>
-                            {title}
+                            {name}
                         </Paragraph>
                         <Paragraph variant={'body-1'} color={'black'}>
                             {category}
                         </Paragraph>
                         <Paragraph variant={'body-1'} color={'black'}>
-                            {formatRupiah(harga)}
+                            {formatRupiah(price)}
                         </Paragraph>
                     </div>
                 </div>
@@ -150,7 +168,9 @@ const SellerBid = ({ product, bid, handleBid }) => {
                 >
                     {'Daftar Penawar'}
                 </Title>
-                <div className={styles.bid}>{mapTawar(bid)}</div>
+                <div className={styles.bid}>
+                    {bid === null ? <p>loading</p> : mapTawar(bid)}
+                </div>
             </div>
         </div>
     );
