@@ -9,7 +9,7 @@
     top: 50px;
     transform: translate(-50%, 0);
     width: 300px;
-    z-index: $z-index-front;
+    z-index: $z-index-overflow;
 
     @include tablet() {
         top: 100px;

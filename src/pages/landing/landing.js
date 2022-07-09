@@ -7,6 +7,7 @@ import styles from './landing.module.scss';
 import Card from '../../components/card/card';
 import Button from '../../components/button/button';
 import Title from '../../components/title/title';
+import Spinner from '../../components/spinner/spinner';
 
 // Assets
 import search from '../../assets/icons/fi_search.svg';
@@ -14,7 +15,7 @@ import search_white from '../../assets/icons/fi_search_white.svg';
 import { getAllProduct } from '../../stores/actions/ActionProduct';
 
 const LandingPage = () => {
-    const [filter, setFilter] = useState('semua');
+    const [filter, setFilter] = useState('Semua');
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { listProducts, loading } = useSelector(
@@ -25,19 +26,27 @@ const LandingPage = () => {
         dispatch(getAllProduct());
     }, [dispatch]);
 
-    const handleMapping = () => {
+    const handleMapping = params => {
         return listProducts.map((value, index) => {
-            return (
-                <Card
-                    key={index}
-                    data={value}
-                    onClick={() => navigate(`/product/${value.productId}`)}
-                />
-            );
+            if (params === 'Semua')
+                return (
+                    <Card
+                        key={index}
+                        data={value}
+                        onClick={() => navigate(`/product/${value.productId}`)}
+                    />
+                );
+            if (params === value.category)
+                return (
+                    <Card
+                        key={index}
+                        data={value}
+                        onClick={() => navigate(`/product/${value.productId}`)}
+                    />
+                );
         });
     };
 
-    if (loading === true) return <p>loading</p>;
     return (
         <section className={styles.root}>
             <div className={styles.header}>
@@ -51,80 +60,130 @@ const LandingPage = () => {
                 </Title>
             </div>
             <div className={styles.category}>
-                <Button
-                    type={'button'}
-                    variant={filter === 'semua' ? 'primary' : 'secondary'}
-                    onClick={() => setFilter('semua')}
-                >
-                    <img
-                        className={styles.icon}
-                        src={filter === 'semua' ? search_white : search}
-                        alt="logo-search-white"
-                    />
-                    {'Semua'}
-                </Button>
-                <Button
-                    type={'button'}
-                    variant={filter === 'hobi' ? 'primary' : 'secondary'}
-                    onClick={() => setFilter('hobi')}
-                >
-                    <img
-                        className={styles.icon}
-                        src={filter === 'hobi' ? search_white : search}
-                        alt="logo-search"
-                    />
-                    {'Hobi'}
-                </Button>
-                <Button
-                    type={'button'}
-                    variant={filter === 'kendaraan' ? 'primary' : 'secondary'}
-                    onClick={() => setFilter('kendaraan')}
-                >
-                    <img
-                        className={styles.icon}
-                        src={filter === 'kendaraan' ? search_white : search}
-                        alt="logo-search"
-                    />
-                    {'Kendaraan'}
-                </Button>
-                <Button
-                    type={'button'}
-                    variant={filter === 'baju' ? 'primary' : 'secondary'}
-                    onClick={() => setFilter('baju')}
-                >
-                    <img
-                        className={styles.icon}
-                        src={filter === 'baju' ? search_white : search}
-                        alt="logo-search"
-                    />
-                    {'Baju'}
-                </Button>
-                <Button
-                    type={'button'}
-                    variant={filter === 'elektronik' ? 'primary' : 'secondary'}
-                    onClick={() => setFilter('elektronik')}
-                >
-                    <img
-                        className={styles.icon}
-                        src={filter === 'elektronik' ? search_white : search}
-                        alt="logo-search"
-                    />
-                    {'Elektronik'}
-                </Button>
-                <Button
-                    type={'button'}
-                    variant={filter === 'kesehatan' ? 'primary' : 'secondary'}
-                    onClick={() => setFilter('kesehatan')}
-                >
-                    <img
-                        className={styles.icon}
-                        src={filter === 'kesehatan' ? search_white : search}
-                        alt="logo-search"
-                    />
-                    {'Kesehatan'}
-                </Button>
+                <div className={styles.wrapper}>
+                    <Button
+                        type={'button'}
+                        variant={filter === 'Semua' ? 'primary' : 'secondary'}
+                        onClick={() => setFilter('Semua')}
+                    >
+                        <img
+                            className={styles.icon}
+                            src={filter === 'Semua' ? search_white : search}
+                            alt="logo-search-white"
+                        />
+                        {'Semua'}
+                    </Button>
+                </div>
+                <div className={styles.wrapper}>
+                    <Button
+                        type={'button'}
+                        variant={filter === 'Console' ? 'primary' : 'secondary'}
+                        onClick={() => setFilter('Console')}
+                    >
+                        <img
+                            className={styles.icon}
+                            src={filter === 'Console' ? search_white : search}
+                            alt="logo-search"
+                        />
+                        {'Console'}
+                    </Button>
+                </div>
+                <div className={styles.wrapper}>
+                    <Button
+                        type={'button'}
+                        variant={
+                            filter === 'Video Game' ? 'primary' : 'secondary'
+                        }
+                        onClick={() => setFilter('Video Game')}
+                    >
+                        <img
+                            className={styles.icon}
+                            src={
+                                filter === 'Video Game' ? search_white : search
+                            }
+                            alt="logo-search"
+                        />
+                        {'Video Game'}
+                    </Button>
+                </div>
+                <div className={styles.wrapper}>
+                    <Button
+                        type={'button'}
+                        variant={
+                            filter === 'Controller' ? 'primary' : 'secondary'
+                        }
+                        onClick={() => setFilter('Controller')}
+                    >
+                        <img
+                            className={styles.icon}
+                            src={
+                                filter === 'Controller' ? search_white : search
+                            }
+                            alt="logo-search"
+                        />
+                        {'Controller'}
+                    </Button>
+                </div>
+                <div className={styles.wrapper}>
+                    <Button
+                        type={'button'}
+                        variant={
+                            filter === 'Aksesoris' ? 'primary' : 'secondary'
+                        }
+                        onClick={() => setFilter('Aksesoris')}
+                    >
+                        <img
+                            className={styles.icon}
+                            src={filter === 'Aksesoris' ? search_white : search}
+                            alt="logo-search"
+                        />
+                        {'Aksesoris'}
+                    </Button>
+                </div>
+                <div className={styles.wrapper}>
+                    <Button
+                        type={'button'}
+                        variant={
+                            filter === 'Board Game' ? 'primary' : 'secondary'
+                        }
+                        onClick={() => setFilter('Board Game')}
+                    >
+                        <img
+                            className={styles.icon}
+                            src={
+                                filter === 'Board Game' ? search_white : search
+                            }
+                            alt="logo-search"
+                        />
+                        {'Board Game'}
+                    </Button>
+                </div>
+                <div className={styles.wrapper}>
+                    <Button
+                        type={'button'}
+                        variant={
+                            filter === 'Collectible' ? 'primary' : 'secondary'
+                        }
+                        onClick={() => setFilter('Collectible')}
+                    >
+                        <img
+                            className={styles.icon}
+                            src={
+                                filter === 'Collectible' ? search_white : search
+                            }
+                            alt="logo-search"
+                        />
+                        {'Collectible'}
+                    </Button>
+                </div>
             </div>
-            <div className={styles.product}>{handleMapping()}</div>
+            {loading ? (
+                <div styles={{ marginTop: '40px' }}>
+                    <Spinner variant={'page'} />
+                </div>
+            ) : (
+                <div className={styles.product}>{handleMapping(filter)}</div>
+            )}
         </section>
     );
 };

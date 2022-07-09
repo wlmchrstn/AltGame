@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { formatRupiah, setToken } from '../../utils/helper';
+import { formatRupiah } from '../../utils/helper';
 import styles from './product.module.scss';
 
 // Components
@@ -18,6 +18,7 @@ import imgPlaceholder from '../../assets/images/product-image.png';
 
 // Actions
 import { getProduct } from '../../stores/actions/ActionProduct';
+import { getUser } from '../../stores/actions/ActionAuth';
 
 const ProductPage = () => {
     const { id } = useParams();
@@ -25,6 +26,7 @@ const ProductPage = () => {
     const { product, productOwner, loading } = useSelector(
         state => state.ReducerProduct
     );
+    const { user } = useSelector(state => state.ReducerAuth);
     const {
         register,
         formState: { errors },
@@ -44,15 +46,9 @@ const ProductPage = () => {
     };
 
     useEffect(() => {
-        if (sessionStorage.getItem('token')) {
-            setToken(sessionStorage.getItem('token'));
-        }
+        dispatch(getUser());
         dispatch(getProduct(id));
     }, [dispatch]);
-
-    useEffect(() => {
-        console.log(typeof product.image);
-    });
 
     if (loading === true) return <p>loading</p>;
 
@@ -113,6 +109,11 @@ const ProductPage = () => {
                         type={'button'}
                         variant={'primary'}
                         onClick={handleClick}
+                        disabled={
+                            user.username === productOwner.username
+                                ? true
+                                : false
+                        }
                     >
                         Saya tertarik dan ingin nego
                     </Button>

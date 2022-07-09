@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import styles from './button.module.scss';
 
-const Button = ({ children, variant, type, className, ...props }) => {
+const Button = ({ children, variant, type, className, disabled, ...props }) => {
     return (
         <button
             className={classNames(styles.root, styles[variant], className)}
             type={type}
+            disabled={disabled}
             {...props}
         >
             {children}
@@ -20,6 +21,7 @@ Button.propTypes = {
     variant: PropTypes.string,
     type: PropTypes.string,
     className: PropTypes.string,
+    disabled: PropTypes.bool,
 };
 
 Button.defaultProps = {
@@ -27,6 +29,7 @@ Button.defaultProps = {
     variant: 'primary',
     type: 'button',
     className: null,
+    disabled: false,
 };
 
 export default Button;

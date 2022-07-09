@@ -9,15 +9,17 @@
     font-size: 14px;
     font-weight: 500;
     height: fit-content;
+    max-height: 54px;
     justify-content: center;
     line-height: 20px;
-    padding: 4px 12px;
+    padding: 14px 24px;
     text-align: center;
     width: 100%;
+}
 
-    @include tablet() {
-        padding: 14px 24px;
-    }
+.root:disabled {
+    background-color: $color-neutral;
+    border-color: $color-neutral;
 }
 
 .primary {
