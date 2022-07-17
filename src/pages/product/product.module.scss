@@ -195,3 +195,20 @@
         }
     }
 }
+
+.loading {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: 40px auto;
+}
+
+.empty {
+    height: 666px;
+    margin: 40px auto;
+    width: 296px;
+
+    &-text {
+        margin-top: 16px;
+    }
+}

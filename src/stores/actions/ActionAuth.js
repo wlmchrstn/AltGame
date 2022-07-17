@@ -55,6 +55,7 @@ export const registerUser =
                     data: error.response,
                 },
             });
+            console.log(error.response.data);
 
             notification(true);
         }
@@ -78,6 +79,7 @@ export const login = (data, navigate, notification) => async dispatch => {
             type: LOGIN_SUCCESS,
             payload: {
                 token: response.data.access_token,
+                user: response.data.user,
                 loading: false,
             },
         });

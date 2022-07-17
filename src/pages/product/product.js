@@ -12,13 +12,16 @@ import Input from '../../components/input/input';
 import Title from '../../components/title/title';
 import Paragraph from '../../components/paragraph/paragraph';
 import Notification from '../../components/notification/notification';
+import Spinner from '../../components/spinner/spinner';
 
 // Assets
 import imgPlaceholder from '../../assets/images/product-image.png';
+import iconEmpty from '../../assets/icons/fi_empty.svg';
 
 // Actions
 import { getProduct } from '../../stores/actions/ActionProduct';
 import { getUser } from '../../stores/actions/ActionAuth';
+import { addBid } from '../../stores/actions/ActionBid';
 
 const ProductPage = () => {
     const { id } = useParams();
@@ -27,6 +30,7 @@ const ProductPage = () => {
         state => state.ReducerProduct
     );
     const { user } = useSelector(state => state.ReducerAuth);
+    const { addLoading } = useSelector(state => state.ReducerBid);
     const {
         register,
         formState: { errors },
@@ -40,9 +44,11 @@ const ProductPage = () => {
     };
 
     const handleTawar = data => {
-        console.log(data);
-        setNotification(true);
-        setIsOpen(false);
+        const req = {
+            price: data.price,
+            productId: id,
+        };
+        dispatch(addBid(req, setNotification, setIsOpen));
     };
 
     useEffect(() => {
@@ -50,8 +56,26 @@ const ProductPage = () => {
         dispatch(getProduct(id));
     }, [dispatch]);
 
-    if (loading === true) return <p>loading</p>;
-
+    if (loading === true)
+        return (
+            <div className={styles.loading}>
+                <Spinner variant={'page'} />
+            </div>
+        );
+    if (Object.keys(product).length === 0)
+        return (
+            <div className={styles.empty}>
+                <img src={iconEmpty} alt={'icon-empty'} />
+                <Paragraph
+                    className={styles['empty-text']}
+                    variant={'body-1'}
+                    color={'black'}
+                    weight={'medium'}
+                >
+                    {'Produk tidak ketemu'}
+                </Paragraph>
+            </div>
+        );
     return (
         <section className={styles.root}>
             <Notification
@@ -64,7 +88,7 @@ const ProductPage = () => {
                 <div
                     className={styles.carousel}
                     style={{
-                        backgroundImage: `url("data:image/jpeg;base64,${product.image}")`,
+                        backgroundImage: `url('${product.image}')`,
                     }}
                 />
                 <div className={styles.desc}>
@@ -170,7 +194,7 @@ const ProductPage = () => {
                                 <input
                                     type={'number'}
                                     placeholder={'Rp 0,00'}
-                                    {...register('harga', {
+                                    {...register('price', {
                                         required: true,
                                     })}
                                 />
@@ -182,7 +206,11 @@ const ProductPage = () => {
                                     )}
                             </Input>
                             <Button type={'submit'} variant={'primary'}>
-                                Kirim
+                                {addLoading ? (
+                                    <Spinner variant={'button'} />
+                                ) : (
+                                    'Kirim'
+                                )}
                             </Button>
                         </form>
                     </Modal>

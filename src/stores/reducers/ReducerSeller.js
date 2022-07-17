@@ -1,13 +1,16 @@
 import {
     SHOW_ALL_SELLER_PRODUCT,
-    SHOW_ALL_PRODUCT_BID,
-    SELLER_ERROR,
+    ADD_PRODUCT,
+    UPDATE_PRODUCT,
+    DELETE_PRODUCT,
 } from '../actions/types';
 
 const initialState = {
     listProducts: [],
-    loading: true,
-    error: '',
+    loading: false,
+    buttonLoading: false,
+    message: '',
+    messageStatus: '',
 };
 
 export default (state = initialState, action) => {
@@ -20,15 +23,26 @@ export default (state = initialState, action) => {
                 listProducts: payload.data,
                 loading: payload.loading,
             };
-        case SHOW_ALL_PRODUCT_BID:
+        case ADD_PRODUCT:
             return {
                 ...state,
-                listBids: payload,
+                buttonLoading: payload.loading,
+                message: payload.message,
+                messageStatus: payload.messageStatus,
             };
-        case SELLER_ERROR:
+        case UPDATE_PRODUCT:
             return {
                 ...state,
-                error: payload,
+                buttonLoading: payload.loading,
+                message: payload.message,
+                messageStatus: payload.messageStatus,
+            };
+        case DELETE_PRODUCT:
+            return {
+                ...state,
+                buttonLoading: payload.loading,
+                message: payload.message,
+                messageStatus: payload.messageStatus,
             };
         default:
             return state;

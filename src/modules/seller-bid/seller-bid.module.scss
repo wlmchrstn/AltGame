@@ -23,6 +23,7 @@
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     padding: 16px 24px;
 
     &-image {
@@ -31,6 +32,28 @@
         margin-right: 24px;
         object-fit: cover;
         width: 48px;
+    }
+
+    &-left {
+        display: flex;
+        flex-direction: row;
+    }
+
+    &-right {
+        align-items: center;
+        display: flex;
+
+        img {
+            cursor: pointer;
+            height: 24px;
+            padding: 6px;
+            width: 24px;
+        }
+
+        img:hover {
+            background-color: $color-neutral-2;
+            border-radius: 6px;
+        }
     }
 }
 
@@ -138,4 +161,56 @@
 
 .line-through {
     text-decoration: line-through;
+}
+
+.empty {
+    height: 666px;
+    margin: 0 auto;
+    width: 296px;
+
+    &-text {
+        margin-top: 16px;
+    }
+}
+
+.edit {
+    min-width: 327px;
+
+    &-label {
+        margin-bottom: 4px;
+    }
+
+    &-input {
+        margin-bottom: 16px;
+    }
+
+    &-file {
+        align-items: center;
+        border: 1px dashed $color-neutral-3;
+        border-radius: 12px;
+        cursor: pointer;
+        display: flex;
+        height: 96px;
+        justify-content: center;
+        margin-bottom: 24px;
+        width: 96px;
+
+        input {
+            border: 0;
+            border-radius: 12px;
+            cursor: pointer;
+            height: 98px;
+            margin: 0;
+            opacity: 0;
+            padding: 0;
+            position: absolute;
+            width: 98px;
+        }
+    }
+}
+
+.delete {
+    &-label {
+        margin-bottom: 16px;
+    }
 }

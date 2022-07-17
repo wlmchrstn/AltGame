@@ -9,10 +9,9 @@ import Button from '../button/button';
 
 // Assets
 import shoppingBag from '../../assets/icons/fi_shopping-bag.svg';
-import imgcard from '../../assets/images/card-image.png';
 
 const TransactionCard = ({ data, variant, ...props }) => {
-    const { title, category, harga } = data;
+    const { name, category, price, image } = data;
 
     return (
         <div className={styles.root} {...props}>
@@ -34,10 +33,10 @@ const TransactionCard = ({ data, variant, ...props }) => {
             </div>
             <div className={styles.content}>
                 <div className={styles['content-top']}>
-                    <img src={imgcard} alt={'imgcard'} />
+                    <img src={image} alt={'imgcard'} />
                     <div className={styles['content-product']}>
                         <Paragraph variant={'body-1'} weight={'medium'}>
-                            {title}
+                            {name}
                         </Paragraph>
                         <Paragraph variant={'body-1'} color={'neutral'}>
                             {category}
@@ -50,7 +49,7 @@ const TransactionCard = ({ data, variant, ...props }) => {
                             {'Total Belanja'}
                         </Paragraph>
                         <Paragraph variant={'body-1'} weight={'medium'}>
-                            {formatRupiah(harga)}
+                            {formatRupiah(price)}
                         </Paragraph>
                     </div>
                     <div className={styles['content-button']}>
@@ -75,9 +74,10 @@ TransactionCard.propTypes = {
 TransactionCard.defaultProps = {
     data: {
         id: 1,
-        title: 'Jam Tangan Casio',
+        name: 'Jam Tangan Casio',
         category: 'Aksesoris',
-        harga: 200000,
+        price: 200000,
+        image: null,
     },
     variant: 'berlangsung',
 };

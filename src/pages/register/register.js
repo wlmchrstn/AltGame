@@ -123,6 +123,20 @@ const Register = () => {
                         {errors.phone && errors.phone.type === 'required' && (
                             <p className={styles.error}>*Required field*</p>
                         )}
+                        <Paragraph variant={'body-2'} className={styles.label}>
+                            {'City'}
+                        </Paragraph>
+                        <Input className={styles.input}>
+                            <input
+                                type={'text'}
+                                name={'city'}
+                                placeholder={'Semarang'}
+                                {...register('city', { required: true })}
+                            />
+                        </Input>
+                        {errors.city && errors.city.type === 'required' && (
+                            <p className={styles.error}>*Required field*</p>
+                        )}
                         <Button type={'submit'} variant={'primary'}>
                             {loading ? (
                                 <Spinner variant={'button'} />

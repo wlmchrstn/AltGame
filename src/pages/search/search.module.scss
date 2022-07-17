@@ -1,0 +1,56 @@
+@use '../../styles/' as *;
+
+.root {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: $max-width-sm;
+    min-height: calc(100vh - 80px);
+    padding: 16px 24px;
+
+    @include tablet() {
+        max-width: $max-width-md;
+        min-height: calc(100vh - 84px);
+        padding: 40px 24px;
+    }
+
+    @include desktop() {
+        max-width: $max-width-lg;
+    }
+
+    h2 {
+        margin-bottom: 24px;
+    }
+}
+
+.product {
+    column-gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 16px;
+
+    @include tablet() {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    @include desktop() {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+.loading {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.empty {
+    height: 666px;
+    margin: 0 auto;
+    width: 296px;
+
+    &-text {
+        margin-top: 16px;
+    }
+}

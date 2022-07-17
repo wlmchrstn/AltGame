@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import styles from './navbar.module.scss';
 
@@ -19,11 +21,15 @@ import menu from '../../assets/icons/fi_menu.svg';
 import store from '../../assets/icons/fi_store.svg';
 import shoppingCart from '../../assets/icons/fi_shopping-cart.svg';
 
+// Actions
+import { searchProduct } from '../../stores/actions/ActionProduct';
 const Navbar = () => {
     const [auth, setAuth] = useState(false);
     const [screenSize, setScreenSize] = useState(window.innerWidth);
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
+    const { register, handleSubmit } = useForm();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');
@@ -37,6 +43,10 @@ const Navbar = () => {
         return () => window.removeEventListener('resize', updateScreenSize);
     }, []);
 
+    const handleSearch = async params => {
+        dispatch(searchProduct(params.search, navigate));
+    };
+
     return (
         <section className={styles.root}>
             <div className={styles.wrapper}>
@@ -49,10 +59,18 @@ const Navbar = () => {
                                 onClick={() => navigate('/')}
                             />
                         </div>
-                        <Input className={styles.bg}>
-                            <input placeholder={'Cari di sini ...'} />
-                            <img src={search} alt={'fi_search'} />
-                        </Input>
+                        {window.location.pathname === '/' ||
+                        window.location.pathname === '/search' ? (
+                            <form onSubmit={handleSubmit(handleSearch)}>
+                                <Input className={styles.bg}>
+                                    <input
+                                        placeholder={'Cari di sini ...'}
+                                        {...register('search')}
+                                    />
+                                    <img src={search} alt={'fi_search'} />
+                                </Input>
+                            </form>
+                        ) : null}
                         {auth ? (
                             <div className={styles['button-group']}>
                                 <div
@@ -102,10 +120,18 @@ const Navbar = () => {
                         >
                             <img src={menu} alt={'fi_menu'} />
                         </div>
-                        <Input className={styles.bg}>
-                            <input placeholder={'Cari di sini ...'} />
-                            <img src={search} alt={'fi_search'} />
-                        </Input>
+                        {window.location.pathname === '/' ||
+                        window.location.pathname === '/search' ? (
+                            <form onSubmit={handleSubmit(handleSearch)}>
+                                <Input className={styles.bg}>
+                                    <input
+                                        placeholder={'Cari di sini ...'}
+                                        {...register('search')}
+                                    />
+                                    <img src={search} alt={'fi_search'} />
+                                </Input>
+                            </form>
+                        ) : null}
                         <Modal
                             open={isOpen}
                             onClose={() => setIsOpen(false)}

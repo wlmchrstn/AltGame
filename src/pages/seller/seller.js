@@ -10,6 +10,7 @@ import Paragraph from '../../components/paragraph/paragraph';
 import Button from '../../components/button/button';
 import Card from '../../components/card/card';
 import Notification from '../../components/notification/notification';
+import Spinner from '../../components/spinner/spinner';
 
 // Assets
 import profileImg from '../../assets/images/profile-image.png';
@@ -43,9 +44,10 @@ export const SellerPage = () => {
     const [refresh, setRefresh] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { listProducts, loading } = useSelector(state => state.ReducerSeller);
+    const { listProducts, loading, message, messageStatus } = useSelector(
+        state => state.ReducerSeller
+    );
     const { user } = useSelector(state => state.ReducerAuth);
-
     useLayoutEffect(() => {
         const updateScreenSize = () => setScreenSize(window.innerWidth);
         window.addEventListener('resize', updateScreenSize);
@@ -54,7 +56,7 @@ export const SellerPage = () => {
     }, []);
 
     useEffect(() => {
-        dispatch(getSellerProduct(user.username));
+        dispatch(getSellerProduct(navigate));
     }, [dispatch, refresh]);
 
     const handleCard = async params => {
@@ -63,7 +65,7 @@ export const SellerPage = () => {
     };
 
     const handleMapping = params => {
-        if (params === undefined) return null;
+        if (params === []) return null;
         return params.map((value, index) => {
             return (
                 <Card
@@ -80,8 +82,8 @@ export const SellerPage = () => {
             {page === 'landing' ? (
                 <>
                     <Notification
-                        message={'Produk berhasil diterbitkan.'}
-                        variant={'success'}
+                        message={message}
+                        variant={messageStatus}
                         show={notification}
                         setShow={setNotification}
                     />
@@ -108,14 +110,14 @@ export const SellerPage = () => {
                                 color={'black'}
                                 weight={'medium'}
                             >
-                                {'Nama Penjual'}
+                                {user.name}
                             </Paragraph>
                             <Paragraph
                                 className={styles['seller-city']}
                                 variant={'body-3'}
                                 color={'neutral'}
                             >
-                                {'Kota'}
+                                {user.city || 'Batam'}
                             </Paragraph>
                         </div>
                         <Button
@@ -347,7 +349,7 @@ export const SellerPage = () => {
                                         </Paragraph>
                                     </div>
                                     {loading ? (
-                                        <p>loading</p>
+                                        <Spinner variant={'page'} />
                                     ) : (
                                         handleMapping(listProducts)
                                     )}
@@ -391,10 +393,16 @@ export const SellerPage = () => {
                     handleCreate={setPage}
                     handleNotification={setNotification}
                     refresh={refresh}
-                    handleRefresh={setRefresh}
+                    setRefresh={setRefresh}
                 />
             ) : page === 'bid' ? (
-                <SellerBid product={product} handleBid={setPage} />
+                <SellerBid
+                    product={product}
+                    handleBid={setPage}
+                    handleNotification={setNotification}
+                    refresh={refresh}
+                    setRefresh={setRefresh}
+                />
             ) : null}
         </section>
     );

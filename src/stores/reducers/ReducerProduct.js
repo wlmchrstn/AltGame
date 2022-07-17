@@ -1,10 +1,16 @@
-import { SHOW_ALL_PRODUCT, SHOW_PRODUCT } from '../actions/types';
+import {
+    SHOW_ALL_PRODUCT,
+    SHOW_PRODUCT,
+    SEARCH_PRODUCT,
+} from '../actions/types';
 
 const initialState = {
     listProducts: [],
     product: {},
     productOwner: {},
-    loading: true,
+    loading: false,
+    search: [],
+    searchLoading: false,
 };
 
 export default (state = initialState, action) => {
@@ -23,6 +29,12 @@ export default (state = initialState, action) => {
                 product: payload.data,
                 productOwner: payload.owner,
                 loading: payload.loading,
+            };
+        case SEARCH_PRODUCT:
+            return {
+                ...state,
+                search: payload.data,
+                searchLoading: payload.loading,
             };
         default:
             return state;
