@@ -1,39 +1,61 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styles from './transaction.module.scss';
-import {
-    getAllWishlist,
-    deleteWishlist,
-} from '../../stores/actions/ActionWishlist';
-import { setToken } from '../../utils/helper';
 
+// Components
 import Button from '../../components/button/button';
+import Paragraph from '../../components/paragraph/paragraph';
+import Spinner from '../../components/spinner/spinner';
 import TransactionCard from '../../components/transaction-card/transaction-card';
-import WishlistCard from '../../components/wishlist-card/wishlist-card';
 
-const data = {
-    id: 1,
-    title: 'Jam Tangan Casio',
-    category: 'Aksesoris',
-    harga: 200000,
-};
+// Assets
+import iconEmpty from '../../assets/icons/fi_empty.svg';
 
-const TransactionPage = props => {
+// Actions
+import { getBuyerBid } from '../../stores/actions/ActionBid';
+
+const TransactionPage = () => {
     const [filter, setFilter] = useState('semua');
+    const dispatch = useDispatch();
+    const { buyerBids, loading } = useSelector(state => state.ReducerBid);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        if (sessionStorage.getItem('token')) {
-            setToken(sessionStorage.getItem('token'));
-        }
-        props.getAllWishlist();
-    }, []);
+        dispatch(getBuyerBid(navigate));
+    }, [dispatch]);
 
-    const mapWishlist = params => {
-        console.log(params);
-        if (params === []) return null;
+    const handleTransaction = params => {
+        if (params.length === 0)
+            return (
+                <div className={styles.empty}>
+                    <img src={iconEmpty} alt={'icon-empty'} />
+                    <Paragraph
+                        className={styles['empty-text']}
+                        variant={'body-1'}
+                        color={'black'}
+                        weight={'medium'}
+                    >
+                        {'Yang sabar ya,'}
+                        <br />
+                        {'belum ada yang nawar nih'}
+                    </Paragraph>
+                </div>
+            );
         return params.map((value, index) => {
-            return <WishlistCard data={value} key={index} />;
+            switch (true) {
+                case filter === 'semua':
+                    return <TransactionCard key={index} data={value} />;
+                case filter === 'berlangsung' &&
+                    (value.status === 'active' || value.status === 'accepted'):
+                    return <TransactionCard key={index} data={value} />;
+                case filter === 'ditolak' && value.status === 'declined':
+                    return <TransactionCard key={index} data={value} />;
+                case filter === 'selesai' && value.status === 'inactive':
+                    return <TransactionCard key={index} data={value} />;
+                default:
+                    return null;
+            }
         });
     };
 
@@ -68,48 +90,16 @@ const TransactionPage = props => {
                 >
                     {'Selesai'}
                 </Button>
-                <Button
-                    variant={filter === 'wishlist' ? 'primary' : 'secondary'}
-                    type={'button'}
-                    onClick={() => setFilter('wishlist')}
-                >
-                    {'Wishlist'}
-                </Button>
             </div>
             <div className={styles.transaction}>
-                {filter === 'wishlist' ? (
-                    mapWishlist(props.wishlist)
+                {loading ? (
+                    <Spinner variant={'page'} />
                 ) : (
-                    <>
-                        <TransactionCard data={data} variant={'selesai'} />
-                        <TransactionCard data={data} variant={'ditolak'} />
-                        <TransactionCard data={data} variant={'waiting'} />
-                    </>
+                    handleTransaction(buyerBids)
                 )}
             </div>
         </section>
     );
 };
 
-TransactionPage.propTypes = {
-    getAllWishlist: PropTypes.func,
-    wishlist: PropTypes.any,
-};
-
-TransactionPage.defaultProps = {
-    getAllWishlist: null,
-    wishlist: [],
-};
-
-const mapStateToProps = state => {
-    return {
-        wishlist: state.ReducerWishlist.wishlist,
-    };
-};
-
-const TransactionPageConnect = connect(mapStateToProps, {
-    getAllWishlist,
-    deleteWishlist,
-})(TransactionPage);
-
-export default TransactionPageConnect;
+export default TransactionPage;

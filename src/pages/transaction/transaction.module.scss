@@ -53,3 +53,13 @@
         margin-bottom: 24px;
     }
 }
+
+.empty {
+    height: 666px;
+    margin: 16px auto;
+    width: 276px;
+
+    &-text {
+        margin-top: 16px;
+    }
+}

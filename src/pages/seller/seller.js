@@ -34,6 +34,7 @@ import SellerBid from '../../modules/seller-bid/seller-bid';
 
 // Actions
 import { getSellerProduct } from '../../stores/actions/ActionSeller';
+import { getUser } from '../../stores/actions/ActionAuth';
 
 export const SellerPage = () => {
     const [filter, setFilter] = useState('semua');
@@ -48,6 +49,7 @@ export const SellerPage = () => {
         state => state.ReducerSeller
     );
     const { user } = useSelector(state => state.ReducerAuth);
+    const userLoading = useSelector(state => state.ReducerAuth.loading);
 
     useLayoutEffect(() => {
         const updateScreenSize = () => setScreenSize(window.innerWidth);
@@ -60,8 +62,11 @@ export const SellerPage = () => {
         dispatch(getSellerProduct(navigate));
     }, [dispatch, refresh]);
 
+    useEffect(() => {
+        dispatch(getUser());
+    }, [dispatch]);
+
     const handleCard = async params => {
-        console.log(listProducts[params].productId);
         setProductId(listProducts[params].productId);
         setPage('bid');
     };
@@ -78,6 +83,93 @@ export const SellerPage = () => {
             );
         });
     };
+
+    const handleBidded = params => {
+        const bidded = params.filter(item => {
+            return item.status == 'bidded';
+        });
+
+        if (bidded.length == 0) {
+            return (
+                <div className={styles['product-empty']}>
+                    <div className={styles.empty}>
+                        <img src={iconEmpty} alt={'icon-empty'} />
+                        <Paragraph
+                            className={styles['empty-text']}
+                            variant={'body-1'}
+                            color={'black'}
+                            weight={'medium'}
+                        >
+                            {'Belum ada produkmu yang diminati nih,'}
+                            <br />
+                            {'sabar ya rejeki nggak kemana kok'}
+                        </Paragraph>
+                    </div>
+                </div>
+            );
+        } else {
+            return (
+                <div className={styles.product}>
+                    {params.map((value, index) => {
+                        return (
+                            <Card
+                                key={index}
+                                data={value}
+                                onClick={() => handleCard(index)}
+                            />
+                        );
+                    })}
+                </div>
+            );
+        }
+    };
+
+    const handleHistory = params => {
+        const sold = params.filter(item => {
+            return item.status == 'inactive' || item.status == 'waiting';
+        });
+
+        if (sold.length == 0) {
+            return (
+                <div className={styles['product-empty']}>
+                    <div className={styles.empty}>
+                        <img src={iconEmpty} alt={'icon-empty'} />
+                        <Paragraph
+                            className={styles['empty-text']}
+                            variant={'body-1'}
+                            color={'black'}
+                            weight={'medium'}
+                        >
+                            {'Belum ada produkmu yang terjual nih,'}
+                            <br />
+                            {'sabar ya rejeki nggak kemana kok'}
+                        </Paragraph>
+                    </div>
+                </div>
+            );
+        } else {
+            return (
+                <div className={styles.product}>
+                    {params.map((value, index) => {
+                        return (
+                            <Card
+                                key={index}
+                                data={value}
+                                onClick={() => handleCard(index)}
+                            />
+                        );
+                    })}
+                </div>
+            );
+        }
+    };
+
+    if (userLoading)
+        return (
+            <section className={styles.root}>
+                <Spinner variant={'page'} />
+            </section>
+        );
 
     return (
         <section className={styles.root}>
@@ -119,7 +211,7 @@ export const SellerPage = () => {
                                 variant={'body-3'}
                                 color={'neutral'}
                             >
-                                {user.city || 'Batam'}
+                                {user.city || ''}
                             </Paragraph>
                         </div>
                         <Button
@@ -229,12 +321,12 @@ export const SellerPage = () => {
                                     </div>
                                     <div
                                         className={styles.item}
-                                        onClick={() => setFilter('terjual')}
+                                        onClick={() => setFilter('history')}
                                     >
                                         <img
                                             className={styles['icon-left']}
                                             src={
-                                                filter === 'terjual'
+                                                filter === 'history'
                                                     ? iconDollarPurple
                                                     : iconDollarGrey
                                             }
@@ -246,17 +338,17 @@ export const SellerPage = () => {
                                             variant={'title-2'}
                                             weight={'medium'}
                                             color={
-                                                filter === 'terjual'
+                                                filter === 'history'
                                                     ? 'purple'
                                                     : 'black'
                                             }
                                         >
-                                            {'Terjual'}
+                                            {'History'}
                                         </Title>
                                         <img
                                             className={styles['icon-right']}
                                             src={
-                                                filter === 'terjual'
+                                                filter === 'history'
                                                     ? iconChevronPurpleR
                                                     : iconChevronGreyR
                                             }
@@ -310,84 +402,50 @@ export const SellerPage = () => {
                                 <Button
                                     type={'button'}
                                     variant={
-                                        filter === 'terjual'
+                                        filter === 'history'
                                             ? 'primary'
                                             : 'secondary'
                                     }
-                                    onClick={() => setFilter('terjual')}
+                                    onClick={() => setFilter('history')}
                                 >
                                     <img
                                         className={styles.icon}
                                         src={
-                                            filter === 'terjual'
+                                            filter === 'history'
                                                 ? iconDollarWhite
                                                 : iconDollarGrey
                                         }
                                         alt="logo-search"
                                     />
-                                    {'Terjual'}
+                                    {'History'}
                                 </Button>
                             </div>
                         )}
-                        <div
-                            className={
-                                filter === 'semua'
-                                    ? styles.product
-                                    : styles['product-empty']
-                            }
-                        >
-                            {filter === 'semua' ? (
-                                <>
-                                    <div
-                                        className={styles['product-add']}
-                                        onClick={() => setPage('create')}
-                                    >
-                                        <img src={iconPlus} alt={'fi_plus'} />
-                                        <Paragraph
-                                            variant={'body-2'}
-                                            color={'neutral'}
-                                        >
-                                            {'Tambah Produk'}
-                                        </Paragraph>
-                                    </div>
-                                    {loading ? (
-                                        <Spinner variant={'page'} />
-                                    ) : (
-                                        handleMapping(listProducts)
-                                    )}
-                                </>
-                            ) : filter === 'diminati' ? (
-                                <div className={styles.empty}>
-                                    <img src={iconEmpty} alt={'icon-empty'} />
+                        {filter === 'semua' ? (
+                            <div className={styles.product}>
+                                <div
+                                    className={styles['product-add']}
+                                    onClick={() => setPage('create')}
+                                >
+                                    <img src={iconPlus} alt={'fi_plus'} />
                                     <Paragraph
-                                        className={styles['empty-text']}
-                                        variant={'body-1'}
-                                        color={'black'}
-                                        weight={'medium'}
+                                        variant={'body-2'}
+                                        color={'neutral'}
                                     >
-                                        {
-                                            'Belum ada produkmu yang diminati nih,'
-                                        }
-                                        <br />
-                                        {'sabar ya rejeki nggak kemana kok'}
+                                        {'Tambah Produk'}
                                     </Paragraph>
                                 </div>
-                            ) : filter === 'terjual' ? (
-                                <div className={styles.empty}>
-                                    <img src={iconEmpty} alt={'icon-empty'} />
-                                    <Paragraph
-                                        className={styles['empty-text']}
-                                        variant={'body-1'}
-                                        color={'black'}
-                                        weight={'medium'}
-                                    >
-                                        {'Belum ada produkmu yang terjual nih,'}
-                                        <br />
-                                        {'sabar ya rejeki nggak kemana kok'}
-                                    </Paragraph>
-                                </div>
-                            ) : null}
-                        </div>
+                                {loading ? (
+                                    <Spinner variant={'page'} />
+                                ) : (
+                                    handleMapping(listProducts)
+                                )}
+                            </div>
+                        ) : filter === 'diminati' ? (
+                            handleBidded(listProducts)
+                        ) : filter === 'history' ? (
+                            handleHistory(listProducts)
+                        ) : null}
                     </div>
                 </>
             ) : page === 'create' ? (
