@@ -11,7 +11,7 @@ const prod = compose(applyMiddleware(thunk));
 
 const store = createStore(
     rootReducer,
-    process.env.REACT_APP_NODE_ENV === 'PRODUCTION' ? prod : dev
+    process.env.REACT_APP_REDUX_ENV === 'PRODUCTION' ? prod : dev
 );
 
 export default store;
