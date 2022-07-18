@@ -12,7 +12,8 @@ const initialState = {
     buyerBids: [],
     loading: false,
     buttonLoading: false,
-    error: '',
+    message: '',
+    messageStatus: '',
 };
 
 export default (state = initialState, action) => {
@@ -35,25 +36,29 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 buttonLoading: payload.loading,
-                error: payload.error,
+                message: payload.message,
+                messageStatus: payload.messageStatus,
             };
         case DELETE_BID:
             return {
                 ...state,
                 buttonLoading: payload.loading,
-                error: payload.error,
+                message: payload.message,
+                messageStatus: payload.messageStatus,
             };
         case UPDATE_BID:
             return {
                 ...state,
                 buttonLoading: payload.loading,
-                error: payload.error,
+                message: payload.message,
+                messageStatus: payload.messageStatus,
             };
         case ACCEPT_BID:
             return {
                 ...state,
                 buttonLoading: payload.loading,
-                error: payload.error,
+                message: payload.message,
+                messageStatus: payload.messageStatus,
             };
         default:
             return state;

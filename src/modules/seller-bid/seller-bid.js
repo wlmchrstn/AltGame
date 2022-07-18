@@ -24,23 +24,38 @@ import iconDelete from '../../assets/icons/fi_trash.svg';
 import iconPlus from '../../assets/icons/fi_plus.svg';
 
 // Actions
-import { getAllBid } from '../../stores/actions/ActionBid';
+import { getAllBid, acceptBid } from '../../stores/actions/ActionBid';
 import {
     deleteSellerProduct,
     updateSellerProduct,
 } from '../../stores/actions/ActionSeller';
 import { getProduct } from '../../stores/actions/ActionProduct';
 
-const Bid = ({ data, product }) => {
-    const { name, price, status } = data;
+const Bid = ({ data, product, refresh }) => {
+    const { bidId, user, price, status } = data;
     const [notification, setNotification] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    const dispatch = useDispatch();
+    const { buttonLoading, message, messageStatus } = useSelector(
+        state => state.ReducerBid
+    );
+    const navigate = useNavigate();
+
+    const handleTerima = params => {
+        dispatch(
+            acceptBid(params, refresh, setIsOpen, setNotification, navigate)
+        );
+    };
+
+    const handleWaiting = () => {
+        console.log('handle waiting');
+    };
 
     return (
         <div className={styles['bid-wrapper']}>
             <Notification
-                message={'Harga tawarmu berhasil dikirim ke penjual'}
-                variant={'success'}
+                message={message}
+                variant={messageStatus}
                 show={notification}
                 setShow={setNotification}
             />
@@ -49,12 +64,6 @@ const Bid = ({ data, product }) => {
                 onClose={() => setIsOpen(false)}
                 className={styles.modal}
             >
-                <Paragraph variant={'body-1'} weight={'medium'}>
-                    {'Yeay kamu berhasil mendapat harga yang sesuai'}
-                </Paragraph>
-                <Paragraph variant={'body-1'} color={'neutral'}>
-                    {'Silahkan menunggu pembeli melanjutkan pembayaran'}
-                </Paragraph>
                 <div className={styles['modal-match']}>
                     <Paragraph
                         className={styles['modal-header']}
@@ -66,7 +75,9 @@ const Bid = ({ data, product }) => {
                     <div className={styles['modal-wrapper']}>
                         <img src={imgPlaceholder} alt={'placeholder'} />
                         <div className={styles['modal-detail']}>
-                            <Paragraph variant={'body-1'}>{name}</Paragraph>
+                            <Paragraph variant={'body-1'}>
+                                {user.name}
+                            </Paragraph>
                             <Paragraph variant={'body-3'}>{'Kota'}</Paragraph>
                         </div>
                     </div>
@@ -88,18 +99,26 @@ const Bid = ({ data, product }) => {
                         </div>
                     </div>
                 </div>
-                <Button variant={'primary'} onClick={() => setIsOpen(false)}>
-                    {'Hubungi via Whatsapp'}
+                <Button
+                    type={'button'}
+                    variant={'primary'}
+                    onClick={() => handleTerima(bidId)}
+                >
+                    {buttonLoading ? (
+                        <Spinner variant={'button'} />
+                    ) : (
+                        'Terima Tawaran'
+                    )}
                 </Button>
             </Modal>
             <div className={styles.user}>
                 <img src={imgPlaceholder} alt={'placeholder'} />
                 <div className={styles['user-detail']}>
                     <Paragraph variant={'body-1'} weight={'medium'}>
-                        {name}
+                        {user.name}
                     </Paragraph>
                     <Paragraph variant={'body-1'} color={'neutral'}>
-                        {'Kota'}
+                        {user.city}
                     </Paragraph>
                     <Paragraph variant={'body-1'} weight={'medium'}>
                         {formatRupiah(price)}
@@ -108,18 +127,21 @@ const Bid = ({ data, product }) => {
             </div>
             <div className={styles.button}>
                 {status === 'active' ? (
-                    <>
-                        <Button type={'button'} variant={'secondary'}>
-                            {'Tolak'}
-                        </Button>
-                        <Button
-                            type={'button'}
-                            variant={'primary'}
-                            onClick={() => setIsOpen(true)}
-                        >
-                            {'Terima'}
-                        </Button>
-                    </>
+                    <Button
+                        type={'button'}
+                        variant={'primary'}
+                        onClick={() => setIsOpen(true)}
+                    >
+                        {'Terima'}
+                    </Button>
+                ) : status === 'accepted' ? (
+                    <Button
+                        type={'button'}
+                        variant={'primary'}
+                        onClick={() => handleWaiting()}
+                    >
+                        {'Hubungi penawar'}
+                    </Button>
                 ) : null}
             </div>
         </div>
@@ -136,11 +158,12 @@ const SellerBid = ({
     const { loading, listBids } = useSelector(state => state.ReducerBid);
     const { buttonLoading } = useSelector(state => state.ReducerSeller);
     const { product } = useSelector(state => state.ReducerProduct);
-    const { name, category, price } = product;
+    const { name, category, price, status } = product;
     const productLoading = useSelector(state => state.ReducerProduct.loading);
     const navigate = useNavigate();
     const [isEdit, setIsEdit] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
+    const [refreshBid, setRefreshBid] = useState(false);
     const {
         register,
         formState: { errors },
@@ -149,9 +172,11 @@ const SellerBid = ({
 
     useEffect(() => {
         dispatch(getProduct(productId));
-        dispatch(getAllBid(productId, navigate));
-        console.log(productLoading);
     }, [dispatch]);
+
+    useEffect(() => {
+        dispatch(getAllBid(productId, navigate));
+    }, [dispatch, refreshBid]);
 
     const mapTawar = params => {
         if (params.length === 0) {
@@ -172,7 +197,18 @@ const SellerBid = ({
             );
         }
         return params.map((value, index) => {
-            return <Bid data={value} product={product} key={index} />;
+            if (value.status === 'declined') {
+                return null;
+            } else {
+                return (
+                    <Bid
+                        data={value}
+                        product={product}
+                        key={index}
+                        refresh={setRefreshBid}
+                    />
+                );
+            }
         });
     };
 
@@ -240,11 +276,14 @@ const SellerBid = ({
                         </div>
                     </div>
                     <div className={styles['product-right']}>
-                        <img
-                            src={iconEdit}
-                            alt={'fi_edit'}
-                            onClick={() => setIsEdit(true)}
-                        />
+                        {status === 'waiting' ||
+                        status === 'inactive' ? null : (
+                            <img
+                                src={iconEdit}
+                                alt={'fi_edit'}
+                                onClick={() => setIsEdit(true)}
+                            />
+                        )}
                         <Modal
                             open={isEdit}
                             onClose={() => setIsEdit(false)}
@@ -303,12 +342,29 @@ const SellerBid = ({
                                     {'Kategori'}
                                 </Paragraph>
                                 <Input className={styles['edit-input']}>
-                                    <input
+                                    <select
                                         {...register('categoryId', {
                                             required: true,
                                         })}
-                                        placeholder={'Pilih Kategori'}
-                                    />
+                                    >
+                                        <option value={'1'}>{'Console'}</option>
+                                        <option value={'2'}>
+                                            {'Video Game'}
+                                        </option>
+                                        <option value={'3'}>
+                                            {'Controller'}
+                                        </option>
+                                        <option value={'4'}>
+                                            {'Aksesoris'}
+                                        </option>
+                                        <option value={'5'}>
+                                            {'Board Game'}
+                                        </option>
+                                        <option value={'6'}>
+                                            {'Collectible'}
+                                        </option>
+                                        <option value={'7'}>{'Other'}</option>
+                                    </select>
                                 </Input>
                                 {errors.categoryId &&
                                     errors.categoryId.type === 'required' && (
@@ -366,11 +422,14 @@ const SellerBid = ({
                                 </Button>
                             </form>
                         </Modal>
-                        <img
-                            src={iconDelete}
-                            alt={'fi_trash'}
-                            onClick={() => setIsDelete(true)}
-                        />
+                        {status === 'waiting' ||
+                        status === 'inactive' ? null : (
+                            <img
+                                src={iconDelete}
+                                alt={'fi_trash'}
+                                onClick={() => setIsDelete(true)}
+                            />
+                        )}
                         <Modal
                             open={isDelete}
                             onClose={() => setIsDelete(false)}
@@ -419,11 +478,13 @@ const SellerBid = ({
 Bid.propTypes = {
     data: PropTypes.object,
     product: PropTypes.object,
+    refresh: PropTypes.func,
 };
 
 Bid.defaultProps = {
     data: {},
     product: {},
+    refresh: null,
 };
 
 SellerBid.propTypes = {

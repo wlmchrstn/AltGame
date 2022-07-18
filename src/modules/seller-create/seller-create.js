@@ -86,10 +86,15 @@ const SellerCreate = ({ handleCreate, handleNotification, setRefresh }) => {
                     {'Kategori'}
                 </Paragraph>
                 <Input className={styles.input}>
-                    <input
-                        {...register('categoryId', { required: true })}
-                        placeholder={'Pilih Kategori'}
-                    />
+                    <select {...register('categoryId', { required: true })}>
+                        <option value={'1'}>{'Console'}</option>
+                        <option value={'2'}>{'Video Game'}</option>
+                        <option value={'3'}>{'Controller'}</option>
+                        <option value={'4'}>{'Aksesoris'}</option>
+                        <option value={'5'}>{'Board Game'}</option>
+                        <option value={'6'}>{'Collectible'}</option>
+                        <option value={'7'}>{'Other'}</option>
+                    </select>
                 </Input>
                 {errors.categoryId && errors.categoryId.type === 'required' && (
                     <p className={styles.error}>*Required field*</p>
