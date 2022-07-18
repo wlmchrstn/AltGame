@@ -1,20 +1,74 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './transaction-card.module.scss';
 import PropTypes from 'prop-types';
 import { formatRupiah } from '../../utils/helper';
+import { useNavigate } from 'react-router-dom';
 
 // Components
 import Paragraph from '../paragraph/paragraph';
 import Button from '../button/button';
+import Modal from '../modal/modal';
 
 // Assets
 import shoppingBag from '../../assets/icons/fi_shopping-bag.svg';
 
-const TransactionCard = ({ data, variant, ...props }) => {
-    const { name, category, price, image } = data;
+const TransactionCard = ({ data, ...props }) => {
+    const { createdAt, productId, name, category, price, image, status } = data;
+    const [isOpen, setIsOpen] = useState(false);
+    const navigate = useNavigate();
 
+    const handlePembayaran = () => {
+        console.log('handle');
+    };
+
+    const mapButton = () => {
+        if (status === 'accepted') {
+            return (
+                <Button
+                    type={'button'}
+                    variant={'primary'}
+                    onClick={() => setIsOpen(true)}
+                >
+                    {'Upload bukti pembayaran'}
+                </Button>
+            );
+        } else if (status === 'inactive') {
+            return (
+                <Button
+                    type={'button'}
+                    variant={'primary'}
+                    onClick={() => console.log('invoice')}
+                >
+                    {'Lihat Invoice'}
+                </Button>
+            );
+        } else {
+            return (
+                <Button
+                    type={'button'}
+                    variant={'primary'}
+                    onClick={() => navigate(`/product/${productId}`)}
+                >
+                    {'Lihat halaman produk'}
+                </Button>
+            );
+        }
+    };
     return (
         <div className={styles.root} {...props}>
+            <Modal
+                open={isOpen}
+                onClose={() => setIsOpen(false)}
+                className={styles.modal}
+            >
+                <Button
+                    type={'submit'}
+                    variant={'primary'}
+                    onClick={() => handlePembayaran()}
+                >
+                    {'Upload bukti pembayaran'}
+                </Button>
+            </Modal>
             <div className={styles.header}>
                 <img src={shoppingBag} alt={'fi_shopping-bag'} />
                 <div className={styles['header-content']}>
@@ -23,11 +77,19 @@ const TransactionCard = ({ data, variant, ...props }) => {
                             {'Belanja'}
                         </Paragraph>
                         <Paragraph variant={'body-3'} color={'neutral'}>
-                            {'1 Juni 2022'}
+                            {createdAt}
                         </Paragraph>
                     </div>
-                    <Paragraph className={styles[variant]} variant={'body-1'}>
-                        {variant}
+                    <Paragraph className={styles[status]} variant={'body-1'}>
+                        {status === 'accepted'
+                            ? 'Menunggu Pembayaran'
+                            : status === 'active'
+                            ? 'Menunggu penjual'
+                            : status === 'declined'
+                            ? 'Ditolak'
+                            : status === 'inactive'
+                            ? 'Selesai'
+                            : status}
                     </Paragraph>
                 </div>
             </div>
@@ -53,12 +115,7 @@ const TransactionCard = ({ data, variant, ...props }) => {
                         </Paragraph>
                     </div>
                     <div className={styles['content-button']}>
-                        <Button
-                            variant={'primary'}
-                            onClick={() => console.log('button')}
-                        >
-                            {'Detail'}
-                        </Button>
+                        {mapButton()}
                     </div>
                 </div>
             </div>
@@ -79,7 +136,6 @@ TransactionCard.defaultProps = {
         price: 200000,
         image: null,
     },
-    variant: 'berlangsung',
 };
 
 export default TransactionCard;

@@ -20,7 +20,9 @@ export const getAllBid = (data, navigate) => async dispatch => {
             },
         });
 
-        setToken(sessionStorage.getItem('token'));
+        if (sessionStorage.getItem('token')) {
+            setToken(sessionStorage.getItem('token'));
+        }
 
         const { data: response } = await axios.get(
             `${process.env.REACT_APP_BASE_URL}/api/bids/all-bids-product/${data}`
@@ -63,7 +65,9 @@ export const getBuyerBid = (navigate, id, tawar) => async dispatch => {
             },
         });
 
-        setToken(sessionStorage.getItem('token'));
+        if (sessionStorage.getItem('token')) {
+            setToken(sessionStorage.getItem('token'));
+        }
 
         const { data: response } = await axios.get(
             `${process.env.REACT_APP_BASE_URL}/api/bids/index`
@@ -80,6 +84,24 @@ export const getBuyerBid = (navigate, id, tawar) => async dispatch => {
         const bid = response.data.find(e => e.productId == id);
         if (bid) tawar(false);
     } catch (error) {
+        if (error.response.status === 403) {
+            if (window.location.pathname === 'transaction') {
+                dispatch({
+                    type: UNAUTHENTICATED,
+                });
+                navigate('/login');
+            } else {
+                dispatch({
+                    type: SHOW_BUYER_BID,
+                    payload: {
+                        data: [],
+                        loading: false,
+                    },
+                });
+                tawar(true);
+            }
+        }
+
         if (error.response.status === 404) {
             dispatch({
                 type: SHOW_BUYER_BID,
@@ -88,13 +110,6 @@ export const getBuyerBid = (navigate, id, tawar) => async dispatch => {
                     loading: false,
                 },
             });
-        }
-
-        if (error.response.status === 403) {
-            dispatch({
-                type: UNAUTHENTICATED,
-            });
-            navigate('/login');
         }
     }
 };
@@ -106,11 +121,14 @@ export const addBid =
                 type: ADD_BID,
                 payload: {
                     loading: true,
-                    error: '',
+                    message: '',
+                    messageStatus: '',
                 },
             });
 
-            setToken(sessionStorage.getItem('token'));
+            if (sessionStorage.getItem('token')) {
+                setToken(sessionStorage.getItem('token'));
+            }
 
             const { data: response } = await axios.post(
                 `${process.env.REACT_APP_BASE_URL}/api/bids/store`,
@@ -122,7 +140,8 @@ export const addBid =
                 payload: {
                     loading: false,
                     data: response.data,
-                    error: '',
+                    message: 'Berhasil menawar',
+                    messageStatus: 'success',
                 },
             });
 
@@ -134,7 +153,8 @@ export const addBid =
                 type: ADD_BID,
                 payload: {
                     loading: false,
-                    error: error.response.data.message,
+                    message: error.response.data.message,
+                    messageStatus: 'failed',
                 },
             });
 
@@ -155,7 +175,8 @@ export const updateBid = (id, data, navigate) => async dispatch => {
             type: UPDATE_BID,
             payload: {
                 loading: true,
-                error: '',
+                message: '',
+                messageStatus: '',
             },
         });
 
@@ -169,7 +190,8 @@ export const updateBid = (id, data, navigate) => async dispatch => {
             payload: {
                 data: response.data,
                 loading: false,
-                error: '',
+                message: 'Berhasil update tawaran',
+                messageStatus: 'success',
             },
         });
     } catch (error) {
@@ -177,7 +199,8 @@ export const updateBid = (id, data, navigate) => async dispatch => {
             type: UPDATE_BID,
             payload: {
                 loading: false,
-                error: 'Failed to Update bid',
+                message: error.response.data.message,
+                messageStatus: 'failed',
             },
         });
 
@@ -196,11 +219,14 @@ export const deleteBid = (data, navigate) => async dispatch => {
             type: DELETE_BID,
             payload: {
                 loading: true,
-                error: '',
+                message: '',
+                messageStatus: '',
             },
         });
 
-        setToken(sessionStorage.getItem('token'));
+        if (sessionStorage.getItem('token')) {
+            setToken(sessionStorage.getItem('token'));
+        }
 
         const { data: response } = await axios.post(
             `${process.env.REACT_APP_BASE_URL}/api/bids/destroy/${data}`
@@ -211,7 +237,8 @@ export const deleteBid = (data, navigate) => async dispatch => {
             payload: {
                 data: response.data,
                 loading: false,
-                error: '',
+                message: 'Berhasil hapus tawaran',
+                messageStatus: 'success',
             },
         });
     } catch (error) {
@@ -219,7 +246,8 @@ export const deleteBid = (data, navigate) => async dispatch => {
             type: DELETE_BID,
             payload: {
                 loading: false,
-                error: 'Failed to delete Bid',
+                message: error.response.data.message,
+                messageStatus: 'failed',
             },
         });
 
@@ -232,44 +260,56 @@ export const deleteBid = (data, navigate) => async dispatch => {
     }
 };
 
-export const acceptBid = (data, navigate) => async dispatch => {
-    try {
-        dispatch({
-            type: ACCEPT_BID,
-            payload: {
-                loading: true,
-                error: '',
-            },
-        });
-
-        setToken(sessionStorage.getItem('token'));
-
-        const { data: response } = await axios.post(
-            `${process.env.REACT_APP_BASE_URL}/api/bids/accept-bid-buyer/${data}`
-        );
-
-        dispatch({
-            type: ACCEPT_BID,
-            payload: {
-                data: response.data,
-                loading: false,
-                error: '',
-            },
-        });
-    } catch (error) {
-        dispatch({
-            type: ACCEPT_BID,
-            payload: {
-                loading: false,
-                error: 'Failed to accept bid',
-            },
-        });
-
-        if (error.response.status === 403) {
+export const acceptBid =
+    (data, refresh, modal, notification, navigate) => async dispatch => {
+        try {
             dispatch({
-                type: UNAUTHENTICATED,
+                type: ACCEPT_BID,
+                payload: {
+                    loading: true,
+                    message: '',
+                    messageStatus: '',
+                },
             });
-            navigate('/login');
+
+            if (sessionStorage.getItem('token')) {
+                setToken(sessionStorage.getItem('token'));
+            }
+
+            const { data: response } = await axios.post(
+                `${process.env.REACT_APP_BASE_URL}/api/bids/accept-bid-buyer/${data}`
+            );
+
+            dispatch({
+                type: ACCEPT_BID,
+                payload: {
+                    data: response.data,
+                    loading: false,
+                    message:
+                        'Berhasil menerima tawaran, silahkan menunggu pembayaran dari penawar',
+                    messageStatus: 'success',
+                },
+            });
+
+            modal(false);
+            notification(true);
+            refresh(prev => !prev);
+        } catch (error) {
+            console.log(error);
+            dispatch({
+                type: ACCEPT_BID,
+                payload: {
+                    loading: false,
+                    message: 'Gagal',
+                    messageStatus: 'failed',
+                },
+            });
+
+            if (error.response.status === 403) {
+                dispatch({
+                    type: UNAUTHENTICATED,
+                });
+                navigate('/login');
+            }
         }
-    }
-};
+    };

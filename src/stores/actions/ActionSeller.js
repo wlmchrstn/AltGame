@@ -17,11 +17,10 @@ export const getSellerProduct = navigate => async dispatch => {
                 loading: true,
             },
         });
+
         if (sessionStorage.getItem('token')) {
             setToken(sessionStorage.getItem('token'));
         }
-
-        setToken(sessionStorage.getItem('token'));
 
         const { data: response } = await axios.get(
             `${process.env.REACT_APP_BASE_URL}/api/products/my-products`
@@ -61,7 +60,9 @@ export const addSellerProduct =
                 },
             });
 
-            setToken(sessionStorage.getItem('token'));
+            if (sessionStorage.getItem('token')) {
+                setToken(sessionStorage.getItem('token'));
+            }
 
             const { data: response } = await axios.post(
                 `${process.env.REACT_APP_BASE_URL}/api/products/store`,
@@ -81,19 +82,23 @@ export const addSellerProduct =
             notification(true);
             setRefresh(prev => !prev);
         } catch (error) {
-            dispatch({
-                payload: {
-                    message: error.response.data.message || 'Unexpected Error',
-                    messageStatus: 'failed',
-                    loading: false,
-                },
-            });
             if (error.response.status === 403) {
                 dispatch({
                     type: UNAUTHENTICATED,
                 });
                 navigate('/login');
             }
+            dispatch({
+                type: ADD_PRODUCT,
+                payload: {
+                    message: error.response.data.message || 'Unexpected Error',
+                    messageStatus: 'failed',
+                    loading: false,
+                },
+            });
+            create('landing');
+            notification(true);
+            setRefresh(prev => !prev);
         }
     };
 
@@ -108,7 +113,9 @@ export const updateSellerProduct =
                 },
             });
 
-            setToken(sessionStorage.getItem('token'));
+            if (sessionStorage.getItem('token')) {
+                setToken(sessionStorage.getItem('token'));
+            }
 
             const { data: response } = await axios.post(
                 `${process.env.REACT_APP_BASE_URL}/api/products/update/${id}`,
@@ -156,7 +163,10 @@ export const deleteSellerProduct =
                     loading: true,
                 },
             });
-            setToken(sessionStorage.getItem('token'));
+
+            if (sessionStorage.getItem('token')) {
+                setToken(sessionStorage.getItem('token'));
+            }
 
             const { data: response } = await axios.post(
                 `${process.env.REACT_APP_BASE_URL}/api/products/destroy/${data}`

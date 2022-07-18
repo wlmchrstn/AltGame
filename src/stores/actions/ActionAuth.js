@@ -93,30 +93,45 @@ export const login = (data, navigate, notification) => async dispatch => {
     }
 };
 
-export const getUser = (user, loading) => async dispatch => {
+export const getUser = () => async dispatch => {
     try {
-        setToken(sessionStorage.getItem('token'));
+        dispatch({
+            type: GET_USER,
+            payload: {
+                loading: true,
+            },
+        });
+
+        if (sessionStorage.getItem('token')) {
+            setToken(sessionStorage.getItem('token'));
+        }
+
         const { data: response } = await axios.get(
             `${process.env.REACT_APP_BASE_URL}/api/users/get-user`
         );
+
         dispatch({
             type: GET_USER,
-            payload: response.data,
+            payload: {
+                loading: false,
+                data: response.data,
+            },
         });
-        if (user) user(response.data);
-        if (loading) loading(false);
     } catch (error) {
-        dispatch({
-            type: UNAUTHENTICATED,
-            payload: error.response,
-        });
+        if (error.response.status === 403) {
+            dispatch({
+                type: UNAUTHENTICATED,
+            });
+        }
     }
 };
 
 export const updateUser =
     (data, loading, notification, failedNotification) => async dispatch => {
         try {
-            setToken(sessionStorage.getItem('token'));
+            if (sessionStorage.getItem('token')) {
+                setToken(sessionStorage.getItem('token'));
+            }
             const { data: response } = await axios.post(
                 `${process.env.REACT_APP_BASE_URL}/api/users/update`,
                 data

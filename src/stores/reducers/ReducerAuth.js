@@ -64,7 +64,8 @@ export default (state = initialState, action) => {
         case GET_USER:
             return {
                 ...state,
-                user: payload,
+                user: payload.data,
+                loading: payload.loading,
             };
         case UNAUTHENTICATED:
             sessionStorage.removeItem('token');
