@@ -10,6 +10,7 @@ import Paragraph from '../../components/paragraph/paragraph';
 import Button from '../../components/button/button';
 import Card from '../../components/card/card';
 import Notification from '../../components/notification/notification';
+import Spinner from '../../components/spinner/spinner';
 
 // Assets
 import profileImg from '../../assets/images/profile-image.png';
@@ -38,12 +39,14 @@ export const SellerPage = () => {
     const [filter, setFilter] = useState('semua');
     const [page, setPage] = useState('landing');
     const [notification, setNotification] = useState(false);
-    const [product, setProduct] = useState(null);
+    const [productId, setProductId] = useState(null);
     const [screenSize, setScreenSize] = useState(null);
     const [refresh, setRefresh] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { listProducts, loading } = useSelector(state => state.ReducerSeller);
+    const { listProducts, loading, message, messageStatus } = useSelector(
+        state => state.ReducerSeller
+    );
     const { user } = useSelector(state => state.ReducerAuth);
 
     useLayoutEffect(() => {
@@ -54,16 +57,17 @@ export const SellerPage = () => {
     }, []);
 
     useEffect(() => {
-        dispatch(getSellerProduct(user.username));
+        dispatch(getSellerProduct(navigate));
     }, [dispatch, refresh]);
 
     const handleCard = async params => {
-        setProduct(listProducts[params]);
+        console.log(listProducts[params].productId);
+        setProductId(listProducts[params].productId);
         setPage('bid');
     };
 
     const handleMapping = params => {
-        if (params === undefined) return null;
+        if (params === []) return null;
         return params.map((value, index) => {
             return (
                 <Card
@@ -80,8 +84,8 @@ export const SellerPage = () => {
             {page === 'landing' ? (
                 <>
                     <Notification
-                        message={'Produk berhasil diterbitkan.'}
-                        variant={'success'}
+                        message={message}
+                        variant={messageStatus}
                         show={notification}
                         setShow={setNotification}
                     />
@@ -108,14 +112,14 @@ export const SellerPage = () => {
                                 color={'black'}
                                 weight={'medium'}
                             >
-                                {'Nama Penjual'}
+                                {user.name}
                             </Paragraph>
                             <Paragraph
                                 className={styles['seller-city']}
                                 variant={'body-3'}
                                 color={'neutral'}
                             >
-                                {'Kota'}
+                                {user.city || 'Batam'}
                             </Paragraph>
                         </div>
                         <Button
@@ -347,7 +351,7 @@ export const SellerPage = () => {
                                         </Paragraph>
                                     </div>
                                     {loading ? (
-                                        <p>loading</p>
+                                        <Spinner variant={'page'} />
                                     ) : (
                                         handleMapping(listProducts)
                                     )}
@@ -390,11 +394,15 @@ export const SellerPage = () => {
                 <SellerCreate
                     handleCreate={setPage}
                     handleNotification={setNotification}
-                    refresh={refresh}
-                    handleRefresh={setRefresh}
+                    setRefresh={setRefresh}
                 />
             ) : page === 'bid' ? (
-                <SellerBid product={product} handleBid={setPage} />
+                <SellerBid
+                    productId={productId}
+                    handleBid={setPage}
+                    handleNotification={setNotification}
+                    setRefresh={setRefresh}
+                />
             ) : null}
         </section>
     );

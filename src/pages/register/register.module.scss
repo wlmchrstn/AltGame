@@ -5,8 +5,8 @@
     background-color: $color-purple;
     display: flex;
     flex-direction: column;
-    height: 100vh;
     justify-content: center;
+    min-height: 100vh;
     width: 100vw;
 }
 
@@ -37,7 +37,7 @@
     width: 100%;
 
     @include tablet() {
-        height: 600px;
+        min-height: 600px;
     }
 
     h1 {

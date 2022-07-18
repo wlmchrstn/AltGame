@@ -3,15 +3,14 @@ import styles from './card.module.scss';
 import PropTypes from 'prop-types';
 
 import Paragraph from '../paragraph/paragraph';
-import imgcard from '../../assets/images/card-image.png';
 import { formatRupiah } from '../../utils/helper';
 
 const Card = ({ data, ...props }) => {
-    const { name, category, price } = data;
+    const { name, category, price, image } = data;
     return (
         <div className={styles.root} {...props}>
             <div className={styles.image}>
-                <img src={imgcard} alt={'console'} />
+                <img src={image} alt={'console'} />
             </div>
             <div className={styles.wrapper}>
                 <Paragraph className={styles.title} variant={'body-1'}>

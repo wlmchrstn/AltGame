@@ -9,17 +9,20 @@ export const FAILED_UPDATE_USER = 'FAILED_UPDATE_USER';
 
 export const SHOW_ALL_PRODUCT = 'SHOW_ALL_PRODUCT';
 export const SHOW_PRODUCT = 'SHOW_PRODUCT';
+export const SEARCH_PRODUCT = 'SEARCH_PRODUCT';
+
+export const SHOW_ALL_SELLER_PRODUCT = 'SHOW_ALL_SELLER_PRODUCT';
 export const ADD_PRODUCT = 'ADD_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
-export const PRODUCT_ERROR = 'PRODUCT_ERROR';
 
-export const SHOW_ALL_SELLER_PRODUCT = 'SHOW_ALL_SELLER_PRODUCT';
-export const SHOW_ALL_PRODUCT_BID = 'SHOW_ALL_PRODUCT_BID';
-export const SELLER_ERROR = 'SELLER_ERROR';
-
+export const SHOW_ALL_BID = 'SHOW_ALL_BID';
+export const SHOW_BID = 'SHOW_BID';
+export const SHOW_BUYER_BID = 'SHOW_BUYER_BID';
 export const ADD_BID = 'ADD_BID';
-export const BID_FAIL = 'BID_FAIL';
+export const UPDATE_BID = 'UPDATE_BID';
+export const DELETE_BID = 'DELETE_BID';
+export const ACCEPT_BID = 'ACCEPT_BID';
 
 export const SHOW_ALL_WISHLIST = 'LIST_WISHLIST';
 export const IS_IN_WISHLIST = 'IS_IN_WISHLIST';

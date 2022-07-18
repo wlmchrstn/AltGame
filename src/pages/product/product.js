@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { formatRupiah } from '../../utils/helper';
@@ -12,13 +12,16 @@ import Input from '../../components/input/input';
 import Title from '../../components/title/title';
 import Paragraph from '../../components/paragraph/paragraph';
 import Notification from '../../components/notification/notification';
+import Spinner from '../../components/spinner/spinner';
 
 // Assets
 import imgPlaceholder from '../../assets/images/product-image.png';
+import iconEmpty from '../../assets/icons/fi_empty.svg';
 
 // Actions
 import { getProduct } from '../../stores/actions/ActionProduct';
 import { getUser } from '../../stores/actions/ActionAuth';
+import { addBid, getBuyerBid } from '../../stores/actions/ActionBid';
 
 const ProductPage = () => {
     const { id } = useParams();
@@ -27,6 +30,8 @@ const ProductPage = () => {
         state => state.ReducerProduct
     );
     const { user } = useSelector(state => state.ReducerAuth);
+    const { buttonLoading } = useSelector(state => state.ReducerBid);
+    const bidLoading = useSelector(state => state.ReducerBid.loading);
     const {
         register,
         formState: { errors },
@@ -34,15 +39,53 @@ const ProductPage = () => {
     } = useForm();
     const [isOpen, setIsOpen] = useState(false);
     const [notification, setNotification] = useState(false);
+    const navigate = useNavigate();
+    const [buttonTawar, setButtonTawar] = useState(true);
+    const [refresh, setRefresh] = useState(false);
 
     const handleClick = () => {
         setIsOpen(true);
     };
 
+    const mapButtonTawar = () => {
+        if (user.username === product.user.username)
+            return (
+                <Button
+                    type={'button'}
+                    variant={'primary'}
+                    onClick={() => navigate('/seller')}
+                >
+                    {'Ke toko kamu'}
+                </Button>
+            );
+        if (buttonTawar === false)
+            return (
+                <Button
+                    type={'button'}
+                    variant={'primary'}
+                    onClick={() => navigate('/transaction')}
+                >
+                    {'Cek Tawaranmu'}
+                </Button>
+            );
+        if (buttonTawar === true)
+            return (
+                <Button
+                    type={'button'}
+                    variant={'primary'}
+                    onClick={handleClick}
+                >
+                    {'Saya tertarik dan ingin nego'}
+                </Button>
+            );
+    };
+
     const handleTawar = data => {
-        console.log(data);
-        setNotification(true);
-        setIsOpen(false);
+        const req = {
+            price: data.price,
+            productId: id,
+        };
+        dispatch(addBid(req, setNotification, setIsOpen, navigate, setRefresh));
     };
 
     useEffect(() => {
@@ -50,8 +93,30 @@ const ProductPage = () => {
         dispatch(getProduct(id));
     }, [dispatch]);
 
-    if (loading === true) return <p>loading</p>;
+    useEffect(() => {
+        dispatch(getBuyerBid(navigate, id, setButtonTawar));
+    }, [dispatch, refresh]);
 
+    if (loading === true)
+        return (
+            <div className={styles.loading}>
+                <Spinner variant={'page'} />
+            </div>
+        );
+    if (Object.keys(product).length === 0)
+        return (
+            <div className={styles.empty}>
+                <img src={iconEmpty} alt={'icon-empty'} />
+                <Paragraph
+                    className={styles['empty-text']}
+                    variant={'body-1'}
+                    color={'black'}
+                    weight={'medium'}
+                >
+                    {'Produk tidak ketemu'}
+                </Paragraph>
+            </div>
+        );
     return (
         <section className={styles.root}>
             <Notification
@@ -64,7 +129,7 @@ const ProductPage = () => {
                 <div
                     className={styles.carousel}
                     style={{
-                        backgroundImage: `url("data:image/jpeg;base64,${product.image}")`,
+                        backgroundImage: `url('${product.image}')`,
                     }}
                 />
                 <div className={styles.desc}>
@@ -105,18 +170,11 @@ const ProductPage = () => {
                     >
                         {formatRupiah(product.price)}
                     </Title>
-                    <Button
-                        type={'button'}
-                        variant={'primary'}
-                        onClick={handleClick}
-                        disabled={
-                            user.username === productOwner.username
-                                ? true
-                                : false
-                        }
-                    >
-                        Saya tertarik dan ingin nego
-                    </Button>
+                    {bidLoading ? (
+                        <Spinner variant={'page'} />
+                    ) : (
+                        mapButtonTawar()
+                    )}
                     <Modal
                         open={isOpen}
                         onClose={() => setIsOpen(false)}
@@ -170,7 +228,7 @@ const ProductPage = () => {
                                 <input
                                     type={'number'}
                                     placeholder={'Rp 0,00'}
-                                    {...register('harga', {
+                                    {...register('price', {
                                         required: true,
                                     })}
                                 />
@@ -182,7 +240,11 @@ const ProductPage = () => {
                                     )}
                             </Input>
                             <Button type={'submit'} variant={'primary'}>
-                                Kirim
+                                {buttonLoading ? (
+                                    <Spinner variant={'button'} />
+                                ) : (
+                                    'Kirim'
+                                )}
                             </Button>
                         </form>
                     </Modal>

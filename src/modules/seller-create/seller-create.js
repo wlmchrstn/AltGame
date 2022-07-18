@@ -1,33 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styles from './seller-create.module.scss';
 
 // Components
 import Input from '../../components/input/input';
 import Paragraph from '../../components/paragraph/paragraph';
 import Button from '../../components/button/button';
+import Spinner from '../../components/spinner/spinner';
 
 // Assets
 import arrowLeft from '../../assets/icons/fi_arrow-left.svg';
 import plus from '../../assets/icons/fi_plus.svg';
-import { setToken } from '../../utils/helper';
 
-const SellerCreate = ({
-    handleCreate,
-    handleNotification,
-    handleRefresh,
-    refresh,
-}) => {
+// Actions
+import { addSellerProduct } from '../../stores/actions/ActionSeller';
+
+const SellerCreate = ({ handleCreate, handleNotification, setRefresh }) => {
     const {
         register,
         formState: { errors },
         handleSubmit,
     } = useForm();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { buttonLoading } = useSelector(state => state.ReducerSeller);
 
-    const handleForm = async data => {
-        setToken(sessionStorage.getItem('token'));
+    const handleForm = data => {
         const { categoryId, name, description, price, image } = data;
         const req = new FormData();
         req.append('categoryId', categoryId);
@@ -36,18 +37,15 @@ const SellerCreate = ({
         req.append('price', price);
         if (image?.length > 0) req.append('image', image[0]);
 
-        try {
-            const { data: response } = await axios.post(
-                `${process.env.REACT_APP_BASE_URL}/api/products/store`,
-                req
-            );
-            console.log('berhasil tambah', response.message);
-            handleCreate('landing');
-            handleNotification(true);
-            handleRefresh(!refresh);
-        } catch (error) {
-            console.log(error);
-        }
+        dispatch(
+            addSellerProduct(
+                req,
+                handleCreate,
+                handleNotification,
+                navigate,
+                setRefresh
+            )
+        );
     };
 
     return (
@@ -123,7 +121,11 @@ const SellerCreate = ({
                     <p className={styles.error}>*Required field*</p>
                 )}
                 <Button type={'submit'} variant={'primary'}>
-                    {'Terbitkan'}
+                    {buttonLoading ? (
+                        <Spinner variant={'button'} />
+                    ) : (
+                        'Terbitkan'
+                    )}
                 </Button>
             </form>
         </section>
@@ -133,15 +135,13 @@ const SellerCreate = ({
 SellerCreate.propTypes = {
     handleCreate: PropTypes.func,
     handleNotification: PropTypes.func,
-    handleRefresh: PropTypes.func,
-    refresh: PropTypes.bool,
+    setRefresh: PropTypes.func,
 };
 
 SellerCreate.defaultProps = {
     handleCreate: null,
     handleNotification: null,
-    handleRefresh: null,
-    refresh: null,
+    setRefresh: null,
 };
 
 export default SellerCreate;

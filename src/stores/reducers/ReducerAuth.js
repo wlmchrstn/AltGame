@@ -14,9 +14,7 @@ const initialState = {
     user: {
         userId: null,
         name: '',
-        username: '',
-        kota: '',
-        role: 'Buyer',
+        city: '',
     },
     isAuthenticated: false,
     role: '',
@@ -52,6 +50,7 @@ export default (state = initialState, action) => {
                 token: payload.token,
                 isAuthenticated: true,
                 loading: payload.loading,
+                user: payload.user,
                 error: '',
             };
         case LOGIN_FAIL:

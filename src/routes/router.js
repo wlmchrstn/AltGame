@@ -10,6 +10,7 @@ import SellerPage from '../pages/seller/seller';
 import ProfilePage from '../pages/profile/profile';
 import TransactionPage from '../pages/transaction/transaction';
 import PaymentPage from '../pages/payment/payment.js';
+import SearchPage from '../pages/search/search';
 
 import Navbar from '../modules/navbar/navbar';
 
@@ -32,6 +33,7 @@ const Router = () => {
                 <Route path={'/seller'} element={<SellerPage />} />
                 <Route path={'/transaction/'} element={<TransactionPage />} />
                 <Route path={'/transaction/:id'} element={<PaymentPage />} />
+                <Route path={'/search'} element={<SearchPage />} />
             </Route>
             <Route path={'/login'} element={<LoginPage />} />
             <Route path={'/register'} element={<Register />} />
