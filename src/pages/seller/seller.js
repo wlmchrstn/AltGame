@@ -48,6 +48,7 @@ export const SellerPage = () => {
         state => state.ReducerSeller
     );
     const { user } = useSelector(state => state.ReducerAuth);
+
     useLayoutEffect(() => {
         const updateScreenSize = () => setScreenSize(window.innerWidth);
         window.addEventListener('resize', updateScreenSize);

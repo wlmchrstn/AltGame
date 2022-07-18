@@ -17,6 +17,9 @@ export const getSellerProduct = navigate => async dispatch => {
                 loading: true,
             },
         });
+        if (sessionStorage.getItem('token')) {
+            setToken(sessionStorage.getItem('token'));
+        }
 
         setToken(sessionStorage.getItem('token'));
 

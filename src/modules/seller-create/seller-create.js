@@ -14,6 +14,7 @@ import Spinner from '../../components/spinner/spinner';
 // Assets
 import arrowLeft from '../../assets/icons/fi_arrow-left.svg';
 import plus from '../../assets/icons/fi_plus.svg';
+import { setToken } from '../../utils/helper';
 
 // Actions
 import { addSellerProduct } from '../../stores/actions/ActionSeller';
