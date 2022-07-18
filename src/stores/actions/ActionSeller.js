@@ -26,6 +26,7 @@ export const getSellerProduct = navigate => async dispatch => {
         const { data: response } = await axios.get(
             `${process.env.REACT_APP_BASE_URL}/api/products/my-products`
         );
+
         dispatch({
             type: SHOW_ALL_SELLER_PRODUCT,
             payload: {
