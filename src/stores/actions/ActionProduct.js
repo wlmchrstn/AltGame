@@ -51,15 +51,15 @@ export const getProduct = data => async dispatch => {
 
         // Change city after response updated by backend team
         const owner = {
-            name: response.data.username,
-            city: response.data.city || 'Batam',
+            name: response.data.user.username,
+            city: response.data.user.city,
         };
 
-        console.log(response.data[0]);
+        console.log(response.data);
         dispatch({
             type: SHOW_PRODUCT,
             payload: {
-                data: response.data[0],
+                data: response.data,
                 owner: owner,
                 loading: false,
             },
@@ -107,5 +107,7 @@ export const searchProduct = (data, navigate) => async dispatch => {
                 loading: false,
             },
         });
+
+        if (window.location.pathname === '/') return navigate('/search');
     }
 };
