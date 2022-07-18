@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-// import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import { formatRupiah } from '../../utils/helper';
 import styles from './product.module.scss';
 
 // Components
@@ -10,12 +12,26 @@ import Input from '../../components/input/input';
 import Title from '../../components/title/title';
 import Paragraph from '../../components/paragraph/paragraph';
 import Notification from '../../components/notification/notification';
+import Spinner from '../../components/spinner/spinner';
 
 // Assets
-import imgPlaceholder from '../../assets/images/login-bg.png';
+import imgPlaceholder from '../../assets/images/product-image.png';
+import iconEmpty from '../../assets/icons/fi_empty.svg';
+
+// Actions
+import { getProduct } from '../../stores/actions/ActionProduct';
+import { getUser } from '../../stores/actions/ActionAuth';
+import { addBid, getBuyerBid } from '../../stores/actions/ActionBid';
 
 const ProductPage = () => {
-    // const { id } = useParams();
+    const { id } = useParams();
+    const dispatch = useDispatch();
+    const { product, productOwner, loading } = useSelector(
+        state => state.ReducerProduct
+    );
+    const { user } = useSelector(state => state.ReducerAuth);
+    const { buttonLoading } = useSelector(state => state.ReducerBid);
+    const bidLoading = useSelector(state => state.ReducerBid.loading);
     const {
         register,
         formState: { errors },
@@ -23,17 +39,84 @@ const ProductPage = () => {
     } = useForm();
     const [isOpen, setIsOpen] = useState(false);
     const [notification, setNotification] = useState(false);
+    const navigate = useNavigate();
+    const [buttonTawar, setButtonTawar] = useState(true);
+    const [refresh, setRefresh] = useState(false);
 
     const handleClick = () => {
         setIsOpen(true);
     };
 
-    const handleTawar = data => {
-        console.log(data);
-        setNotification(true);
-        setIsOpen(false);
+    const mapButtonTawar = () => {
+        if (user.username === product.user.username)
+            return (
+                <Button
+                    type={'button'}
+                    variant={'primary'}
+                    onClick={() => navigate('/seller')}
+                >
+                    {'Ke toko kamu'}
+                </Button>
+            );
+        if (buttonTawar === false)
+            return (
+                <Button
+                    type={'button'}
+                    variant={'primary'}
+                    onClick={() => navigate('/transaction')}
+                >
+                    {'Cek Tawaranmu'}
+                </Button>
+            );
+        if (buttonTawar === true)
+            return (
+                <Button
+                    type={'button'}
+                    variant={'primary'}
+                    onClick={handleClick}
+                >
+                    {'Saya tertarik dan ingin nego'}
+                </Button>
+            );
     };
 
+    const handleTawar = data => {
+        const req = {
+            price: data.price,
+            productId: id,
+        };
+        dispatch(addBid(req, setNotification, setIsOpen, navigate, setRefresh));
+    };
+
+    useEffect(() => {
+        dispatch(getUser());
+        dispatch(getProduct(id));
+    }, [dispatch]);
+
+    useEffect(() => {
+        dispatch(getBuyerBid(navigate, id, setButtonTawar));
+    }, [dispatch, refresh]);
+
+    if (loading === true)
+        return (
+            <div className={styles.loading}>
+                <Spinner variant={'page'} />
+            </div>
+        );
+    if (Object.keys(product).length === 0)
+        return (
+            <div className={styles.empty}>
+                <img src={iconEmpty} alt={'icon-empty'} />
+                <Paragraph
+                    className={styles['empty-text']}
+                    variant={'body-1'}
+                    color={'black'}
+                    weight={'medium'}
+                >
+                    {'Produk tidak ketemu'}
+                </Paragraph>
+            </div>
+        );
     return (
         <section className={styles.root}>
             <Notification
@@ -43,9 +126,12 @@ const ProductPage = () => {
                 setShow={setNotification}
             />
             <div className={styles.left}>
-                <div className={styles.carousel}>
-                    <img src={imgPlaceholder} alt={'placeholder'} />
-                </div>
+                <div
+                    className={styles.carousel}
+                    style={{
+                        backgroundImage: `url('${product.image}')`,
+                    }}
+                />
                 <div className={styles.desc}>
                     <Paragraph
                         className={styles['desc-header']}
@@ -56,26 +142,7 @@ const ProductPage = () => {
                         Deskripsi
                     </Paragraph>
                     <Paragraph variant={'body-1'} color={'neutral'}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud
-                        exercitation ullamco laboris nisi ut aliquip ex ea
-                        commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu
-                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                        non proident, sunt in culpa qui officia deserunt mollit
-                        anim id est laborum.
-                        <br />
-                        <br />
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud
-                        exercitation ullamco laboris nisi ut aliquip ex ea
-                        commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu
-                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                        cupidatat non proident, sunt in culpa qui officia
-                        deserunt mollit anim id est laborum.
+                        {product.description}
                     </Paragraph>
                 </div>
             </div>
@@ -87,13 +154,13 @@ const ProductPage = () => {
                         variant={'title-2'}
                         weight={'medium'}
                     >
-                        Jam Tangan Casio
+                        {product.name}
                     </Title>
                     <Paragraph
                         className={styles['product-category']}
                         variant={'body-1'}
                     >
-                        Aksesoris
+                        {product.categoryId}
                     </Paragraph>
                     <Title
                         tagElement={'h2'}
@@ -101,15 +168,13 @@ const ProductPage = () => {
                         variant={'title-2'}
                         weight={'medium'}
                     >
-                        Rp 250.000
+                        {formatRupiah(product.price)}
                     </Title>
-                    <Button
-                        type={'button'}
-                        variant={'primary'}
-                        onClick={handleClick}
-                    >
-                        Saya tertarik dan ingin nego
-                    </Button>
+                    {bidLoading ? (
+                        <Spinner variant={'page'} />
+                    ) : (
+                        mapButtonTawar()
+                    )}
                     <Modal
                         open={isOpen}
                         onClose={() => setIsOpen(false)}
@@ -127,8 +192,8 @@ const ProductPage = () => {
                             variant={'body-1'}
                             color={'neutral'}
                         >
-                            Harga tawaranmu akan diketahui penual, jika penjual
-                            cocok kamu akan segera dihubungi penjual.
+                            Harga tawaranmu akan diketahui penjual, jika cocok
+                            kamu dapat melanjutkan ke pembayaran.
                         </Paragraph>
                         <div className={styles['product-summary']}>
                             <img
@@ -142,10 +207,10 @@ const ProductPage = () => {
                                     variant={'body-1'}
                                     weight={'medium'}
                                 >
-                                    Jam Tangan Casio
+                                    {product.name}
                                 </Paragraph>
                                 <Paragraph variant={'body-1'}>
-                                    Rp 250.000
+                                    {formatRupiah(product.price)}
                                 </Paragraph>
                             </div>
                         </div>
@@ -163,7 +228,9 @@ const ProductPage = () => {
                                 <input
                                     type={'number'}
                                     placeholder={'Rp 0,00'}
-                                    {...register('harga', { required: true })}
+                                    {...register('price', {
+                                        required: true,
+                                    })}
                                 />
                                 {errors.harga &&
                                     errors.harga.type === 'required' && (
@@ -173,7 +240,11 @@ const ProductPage = () => {
                                     )}
                             </Input>
                             <Button type={'submit'} variant={'primary'}>
-                                Kirim
+                                {buttonLoading ? (
+                                    <Spinner variant={'button'} />
+                                ) : (
+                                    'Kirim'
+                                )}
                             </Button>
                         </form>
                     </Modal>
@@ -190,10 +261,10 @@ const ProductPage = () => {
                             variant={'body-1'}
                             weight={'medium'}
                         >
-                            Nama Penjual
+                            {productOwner.name}
                         </Paragraph>
                         <Paragraph variant={'body-3'} color={'neutral'}>
-                            Kota
+                            {productOwner.city}
                         </Paragraph>
                     </div>
                 </div>

@@ -3,6 +3,7 @@ $color-white: #fff;
 $color-black: #000;
 $color-neutral: #8a8a8a;
 $color-neutral-2: #d0d0d0;
+$color-neutral-3: #eee;
 $color-purple: #7126b5;
 $color-semi-purple: #e2d4f0;
 $color-red: #fa2c5a;
@@ -14,6 +15,11 @@ $breakpoint-sm: 425px;
 $breakpoint-md: 768px;
 $breakpoint-lg: 1024px;
 $breakpoint-xl: 1440px;
+
+/* Max-Width */
+$max-width-sm: 600px;
+$max-width-md: 968px;
+$max-width-lg: 1168px;
 
 /* Z-Index  */
 $z-index-negative: -1;

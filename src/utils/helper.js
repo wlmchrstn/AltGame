@@ -1,4 +1,7 @@
+import axios from 'axios';
+
 export const formatRupiah = value => {
+    if (value === undefined) return `Rp 0`;
     let string = value.toString();
     let remainder = string.length % 3;
     let rupiah = string.substr(0, remainder);
@@ -10,4 +13,12 @@ export const formatRupiah = value => {
     }
 
     return `Rp ${rupiah}`;
+};
+
+export const setToken = token => {
+    if (token) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    } else {
+        delete axios.headers.common['Authorization'];
+    }
 };

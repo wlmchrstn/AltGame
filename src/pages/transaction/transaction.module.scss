@@ -1,0 +1,55 @@
+@use '../../styles/' as *;
+
+.root {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: $max-width-sm;
+    padding: 16px 24px;
+
+    @include tablet() {
+        max-width: $max-width-md;
+        padding: 40px 24px;
+    }
+
+    @include desktop() {
+        max-width: $max-width-lg;
+    }
+}
+
+.button-group {
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+
+    button {
+        flex: 0 1;
+    }
+}
+
+.button-group button:not(:last-child) {
+    margin-right: 16px;
+
+    @include tablet() {
+        margin-right: 24px;
+    }
+}
+
+.transaction {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+
+    @include tablet() {
+        margin-top: 24px;
+    }
+}
+
+.transaction > *:not(:last-child) {
+    margin-bottom: 16px;
+
+    @include tablet() {
+        margin-bottom: 24px;
+    }
+}

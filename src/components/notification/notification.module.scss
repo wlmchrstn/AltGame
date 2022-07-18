@@ -6,10 +6,15 @@
     left: 50%;
     padding: 16px 24px;
     position: fixed;
-    top: 100px;
+    top: 50px;
     transform: translate(-50%, 0);
-    width: 500px;
-    z-index: $z-index-front;
+    width: 300px;
+    z-index: $z-index-overflow;
+
+    @include tablet() {
+        top: 100px;
+        width: 500px;
+    }
 }
 
 .failed {

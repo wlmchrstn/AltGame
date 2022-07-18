@@ -1,0 +1,79 @@
+@use '../../styles/' as *;
+
+.root {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: $max-width-sm;
+    padding: 16px 24px;
+
+    @include tablet() {
+        flex-direction: row;
+        max-width: $max-width-md;
+        padding: 40px 24px;
+    }
+
+    @include desktop() {
+        max-width: $max-width-lg;
+    }
+}
+
+.left {
+    @include tablet() {
+        flex: 4;
+        margin-right: 12px;
+    }
+}
+
+.right {
+    margin-top: 16px;
+
+    @include tablet() {
+        flex: 8;
+        margin-left: 12px;
+        margin-top: 0;
+    }
+}
+
+.product {
+    background-color: $color-white;
+    border-radius: 12px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+    box-sizing: border-box;
+    display: flex;
+    padding: 16px;
+
+    @include tablet() {
+        border-radius: 16px;
+        padding: 24px;
+    }
+
+    img {
+        border-radius: 12px;
+        height: 48px;
+        margin-right: 16px;
+        object-fit: cover;
+        width: 48px;
+    }
+}
+
+.form {
+    p {
+        margin-bottom: 4px;
+    }
+
+    &-input {
+        margin-bottom: 16px;
+
+        @include tablet() {
+            margin-bottom: 24px;
+        }
+    }
+
+    textarea {
+        border: 0;
+        padding: 0;
+        width: 100%;
+    }
+}

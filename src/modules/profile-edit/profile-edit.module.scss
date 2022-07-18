@@ -1,8 +1,13 @@
 @use '../../styles/' as *;
 
-form {
-    margin: -24px auto 0;
-    max-width: 568px;
+.form {
+    box-sizing: border-box;
+    max-width: 320px;
+    width: 100vw;
+
+    @include tablet() {
+        max-width: 567px;
+    }
 
     .label {
         margin-bottom: 4px;

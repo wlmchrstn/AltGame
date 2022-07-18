@@ -1,12 +1,27 @@
+@use '../../styles/' as *;
+
 .root {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
     margin: 0 auto;
-    max-width: 1168px;
-    padding: 40px 0;
+    max-width: $max-width-sm;
+    padding: 16px 24px;
+
+    @include tablet() {
+        max-width: $max-width-md;
+        padding: 40px 24px;
+    }
+
+    @include desktop() {
+        max-width: $max-width-lg;
+    }
 }
 
 .category {
     display: flex;
     margin-top: 16px;
+    overflow-x: scroll;
 
     button {
         flex: 0 1;
@@ -18,14 +33,22 @@
     }
 }
 
-.category button:not(:first-child) {
+.category .wrapper:not(:first-child) {
     margin-left: 16px;
 }
 
 .product {
     column-gap: 16px;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     margin-top: 40px;
     row-gap: 16px;
+
+    @include tablet() {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    @include desktop() {
+        grid-template-columns: repeat(6, 1fr);
+    }
 }

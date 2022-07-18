@@ -1,0 +1,53 @@
+@use '../../styles/' as *;
+
+.root {
+    background-color: $color-white;
+    border-radius: 4px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+
+    @include tablet() {
+        padding: 24px;
+    }
+}
+
+.top {
+    display: flex;
+    margin-bottom: 16px;
+
+    img {
+        border-radius: 12px;
+        height: 48px;
+        margin-right: 16px;
+        object-fit: cover;
+        width: 48px;
+    }
+}
+
+.bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    img {
+        border-radius: 12px;
+        cursor: pointer;
+        height: 24px;
+        padding: 3px;
+        width: 24px;
+
+        @include tablet() {
+            height: 32px;
+            margin: 1px;
+            padding: 8px;
+            width: 32px;
+        }
+    }
+}
+
+.bottom img:hover {
+    background-color: $color-neutral-3;
+}

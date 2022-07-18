@@ -3,19 +3,18 @@ import styles from './card.module.scss';
 import PropTypes from 'prop-types';
 
 import Paragraph from '../paragraph/paragraph';
-import imgcard from '../../assets/images/card-image.png';
 import { formatRupiah } from '../../utils/helper';
 
 const Card = ({ data, ...props }) => {
-    const { title, category, harga } = data;
+    const { name, category, price, image } = data;
     return (
         <div className={styles.root} {...props}>
             <div className={styles.image}>
-                <img src={imgcard} alt={'console'} />
+                <img src={image} alt={'console'} />
             </div>
             <div className={styles.wrapper}>
                 <Paragraph className={styles.title} variant={'body-1'}>
-                    {title}
+                    {name}
                 </Paragraph>
                 <Paragraph
                     className={styles.category}
@@ -25,7 +24,7 @@ const Card = ({ data, ...props }) => {
                     {category}
                 </Paragraph>
                 <Paragraph className={styles.price} variant={'body-1'}>
-                    {formatRupiah(harga)}
+                    {formatRupiah(price)}
                 </Paragraph>
             </div>
         </div>
@@ -39,9 +38,9 @@ Card.propTypes = {
 Card.defaultProps = {
     data: {
         id: 1,
-        title: 'Jam Tangan Casio',
+        name: 'Jam Tangan Casio',
         category: 'Aksesoris',
-        harga: 200000,
+        price: 200000,
     },
 };
 

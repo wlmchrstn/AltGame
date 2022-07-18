@@ -1,17 +1,30 @@
+@use '../../styles/' as *;
+
 .root {
-    background-color: #fff;
+    background-color: $color-white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
     width: 100vw;
 }
 
 .wrapper {
     align-items: center;
+    box-sizing: border-box;
     display: flex;
     flex-direction: row;
-    height: 84px;
+    height: 80px;
     margin: 0 auto;
-    max-width: 1168px;
+    padding: 0 24px;
     width: 100vw;
+
+    @include tablet() {
+        height: 84px;
+        max-width: $max-width-md;
+        padding: 0 24px;
+    }
+
+    @include desktop() {
+        max-width: $max-width-lg;
+    }
 }
 
 .logo-wrapper {
@@ -19,15 +32,24 @@
 }
 
 .bg {
-    background-color: #eee !important;
+    background-color: $color-neutral-3 !important;
     border: 0 !important;
-    width: 444px;
+    box-sizing: border-box;
+    width: 100%;
+
+    @include tablet() {
+        width: 344px;
+    }
+
+    @include desktop() {
+        width: 444px;
+    }
 }
 
 .button-group {
     column-gap: 24px;
     display: grid;
-    grid-template-columns: repeat(3, 24px);
+    grid-template-columns: repeat(4, 24px);
     margin-left: auto;
 }
 
@@ -42,4 +64,61 @@
 
 .button {
     cursor: pointer;
+}
+
+.menu {
+    border-radius: 16px;
+    box-sizing: border-box;
+    cursor: pointer;
+    height: 52px;
+    margin-right: 16px;
+    padding: 14px 16px;
+
+    img {
+        height: 24px;
+        width: 24px;
+    }
+}
+
+.menu:hover {
+    background-color: $color-neutral-3;
+}
+
+.modal {
+    animation: expand 200ms linear forwards;
+    border-radius: 0;
+    box-sizing: border-box;
+    height: 100vh;
+    left: 0;
+    overflow: hidden;
+    top: 0;
+    transform: none;
+    transition: all linear 1s;
+    width: 60vw;
+
+    &-item {
+        align-items: center;
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        height: 32px;
+
+        img {
+            margin-right: 16px;
+        }
+    }
+
+    &-home {
+        margin-bottom: 16px;
+    }
+}
+
+@keyframes expand {
+    from {
+        left: -60vw;
+    }
+
+    to {
+        left: 0;
+    }
 }

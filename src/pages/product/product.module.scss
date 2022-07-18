@@ -1,71 +1,110 @@
+@use '../../styles/' as *;
+
 .root {
+    box-sizing: border-box;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     margin: 0 auto;
-    max-width: 968px;
-    padding: 40px 0;
+    max-width: $max-width-sm;
+    padding: 16px 24px;
+
+    @include tablet() {
+        flex-direction: row;
+        max-width: $max-width-md;
+        padding: 40px 24px;
+    }
+
+    @include desktop() {
+        max-width: $max-width-lg;
+    }
 }
 
 .left {
-    flex: 6;
-    margin-right: 32px;
-    max-width: 600px;
+    margin-bottom: 16px;
+
+    @include only-tablet() {
+        margin-bottom: 0;
+        max-width: 600px;
+    }
+
+    @include tablet() {
+        flex: 6;
+        margin-right: 24px;
+    }
+
+    @include desktop() {
+        margin-right: 32px;
+    }
 }
 
 .right {
-    flex: 4;
-    max-width: 336px;
+    @include tablet() {
+        flex: 4;
+    }
+
+    @include only-tablet() {
+        max-width: 336px;
+    }
+}
+
+.carousel {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 16px;
+    height: 0;
+    margin-bottom: 16px;
+    padding-top: 75%;
+    position: relative;
+    width: 100%;
+
+    @include tablet() {
+        margin-bottom: 24px;
+    }
 }
 
 .desc {
-    background-color: #fff;
+    background-color: $color-white;
     border-radius: 16px;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
-    max-width: 600px;
     padding: 16px;
+
+    @include only-tablet() {
+        max-width: 600px;
+    }
+
+    @include tablet() {
+        padding: 24px;
+    }
 
     &-header {
         margin-bottom: 16px;
     }
 }
 
-.carousel {
-    align-items: center;
-    border-radius: 16px;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 24px;
-    max-height: 436px;
-    max-width: 600px;
-    overflow: hidden;
-
-    img {
-        border-radius: 16px;
-        max-width: 600px;
-        object-fit: contain;
-    }
-}
-
 .product {
-    background-color: #fff;
+    background-color: $color-white;
     border-radius: 16px;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
-    padding: 24px;
+    margin-bottom: 16px;
+    padding: 16px;
 
-    &-title {
+    @include tablet() {
+        margin-bottom: 24px;
+        padding: 24px;
+    }
+
+    &-title,
+    &-category {
         margin-bottom: 8px;
     }
 
-    &-category {
+    &-price {
         margin-bottom: 16px;
     }
 
-    &-price {
-        margin-bottom: 24px;
-    }
-
     &-summary {
-        background: #eee;
+        background: $color-neutral-2;
         border-radius: 16px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
         display: flex;
@@ -93,12 +132,11 @@
 }
 
 .seller {
-    background-color: #fff;
+    background-color: $color-white;
     border-radius: 16px;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: row;
-    margin-top: 24px;
     padding: 16px;
 
     &-name {
@@ -120,15 +158,24 @@
 }
 
 .modal {
-    max-width: 360px;
+    box-sizing: border-box;
+    max-width: 377px;
+    width: 100%;
+
+    @include tablet() {
+        max-width: 360px;
+    }
 
     button {
         margin-top: 24px;
     }
 
     &-header {
-        margin-top: 16px;
         text-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+
+        @include tablet() {
+            margin-top: 16px;
+        }
     }
 
     &-desc {
@@ -137,10 +184,31 @@
     }
 
     .form {
-        margin-top: 24px;
+        margin-top: 16px;
+
+        @include tablet() {
+            margin-top: 24px;
+        }
 
         &-label {
             margin-bottom: 4px;
         }
+    }
+}
+
+.loading {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: 40px auto;
+}
+
+.empty {
+    height: 666px;
+    margin: 40px auto;
+    width: 296px;
+
+    &-text {
+        margin-top: 16px;
     }
 }

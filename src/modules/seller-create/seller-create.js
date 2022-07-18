@@ -1,28 +1,51 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styles from './seller-create.module.scss';
 
 // Components
 import Input from '../../components/input/input';
 import Paragraph from '../../components/paragraph/paragraph';
 import Button from '../../components/button/button';
+import Spinner from '../../components/spinner/spinner';
 
 // Assets
 import arrowLeft from '../../assets/icons/fi_arrow-left.svg';
 import plus from '../../assets/icons/fi_plus.svg';
 
-const SellerCreate = ({ handleCreate, handleNotification }) => {
+// Actions
+import { addSellerProduct } from '../../stores/actions/ActionSeller';
+
+const SellerCreate = ({ handleCreate, handleNotification, setRefresh }) => {
     const {
         register,
         formState: { errors },
         handleSubmit,
     } = useForm();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { buttonLoading } = useSelector(state => state.ReducerSeller);
 
     const handleForm = data => {
-        console.log(data);
-        handleCreate('landing');
-        handleNotification(true);
+        const { categoryId, name, description, price, image } = data;
+        const req = new FormData();
+        req.append('categoryId', categoryId);
+        req.append('name', name);
+        req.append('description', description);
+        req.append('price', price);
+        if (image?.length > 0) req.append('image', image[0]);
+
+        dispatch(
+            addSellerProduct(
+                req,
+                handleCreate,
+                handleNotification,
+                navigate,
+                setRefresh
+            )
+        );
     };
 
     return (
@@ -32,18 +55,18 @@ const SellerCreate = ({ handleCreate, handleNotification }) => {
                 alt={'fi_arrow-left'}
                 onClick={() => handleCreate('landing')}
             />
-            <form onSubmit={handleSubmit(handleForm)}>
+            <form className={styles.form} onSubmit={handleSubmit(handleForm)}>
                 <Paragraph variant={'body-2'} className={styles.label}>
                     {'Nama Produk'}
                 </Paragraph>
                 <Input className={styles.input}>
                     <input
-                        {...register('nama', { required: true })}
+                        {...register('name', { required: true })}
                         placeholder={'Nama Produk'}
                         type={'text'}
                     />
                 </Input>
-                {errors.nama && errors.nama.type === 'required' && (
+                {errors.name && errors.name.type === 'required' && (
                     <p className={styles.error}>*Required field*</p>
                 )}
                 <Paragraph variant={'body-2'} className={styles.label}>
@@ -51,12 +74,12 @@ const SellerCreate = ({ handleCreate, handleNotification }) => {
                 </Paragraph>
                 <Input className={styles.input}>
                     <input
-                        {...register('harga', { required: true })}
+                        {...register('price', { required: true })}
                         placeholder={'Harga Produk'}
                         type={'number'}
                     />
                 </Input>
-                {errors.harga && errors.harga.type === 'required' && (
+                {errors.price && errors.price.type === 'required' && (
                     <p className={styles.error}>*Required field*</p>
                 )}
                 <Paragraph variant={'body-2'} className={styles.label}>
@@ -64,11 +87,11 @@ const SellerCreate = ({ handleCreate, handleNotification }) => {
                 </Paragraph>
                 <Input className={styles.input}>
                     <input
-                        {...register('category', { required: true })}
+                        {...register('categoryId', { required: true })}
                         placeholder={'Pilih Kategori'}
                     />
                 </Input>
-                {errors.category && errors.category.type === 'required' && (
+                {errors.categoryId && errors.categoryId.type === 'required' && (
                     <p className={styles.error}>*Required field*</p>
                 )}
                 <Paragraph variant={'body-2'} className={styles.label}>
@@ -76,21 +99,33 @@ const SellerCreate = ({ handleCreate, handleNotification }) => {
                 </Paragraph>
                 <Input className={styles.input}>
                     <input
-                        {...register('desc', { required: true })}
+                        {...register('description', { required: true })}
                         placeholder={'Contoh: Jalan Ikan Hiu 33'}
                     />
                 </Input>
-                {errors.desc && errors.desc.type === 'required' && (
-                    <p className={styles.error}>*Required field*</p>
-                )}
+                {errors.description &&
+                    errors.description.type === 'required' && (
+                        <p className={styles.error}>*Required field*</p>
+                    )}
                 <Paragraph variant={'body-2'} className={styles.label}>
                     {'Foto Produk'}
                 </Paragraph>
                 <div className={styles.file}>
                     <img src={plus} alt={'fi_plus'} />
+                    <input
+                        {...register('image', { required: true })}
+                        type={'file'}
+                    />
                 </div>
+                {errors.image && errors.image.type === 'required' && (
+                    <p className={styles.error}>*Required field*</p>
+                )}
                 <Button type={'submit'} variant={'primary'}>
-                    {'Terbitkan'}
+                    {buttonLoading ? (
+                        <Spinner variant={'button'} />
+                    ) : (
+                        'Terbitkan'
+                    )}
                 </Button>
             </form>
         </section>
@@ -100,11 +135,13 @@ const SellerCreate = ({ handleCreate, handleNotification }) => {
 SellerCreate.propTypes = {
     handleCreate: PropTypes.func,
     handleNotification: PropTypes.func,
+    setRefresh: PropTypes.func,
 };
 
 SellerCreate.defaultProps = {
     handleCreate: null,
     handleNotification: null,
+    setRefresh: null,
 };
 
 export default SellerCreate;
