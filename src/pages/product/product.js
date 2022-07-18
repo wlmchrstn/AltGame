@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { formatRupiah } from '../../utils/helper';
@@ -21,7 +21,7 @@ import iconEmpty from '../../assets/icons/fi_empty.svg';
 // Actions
 import { getProduct } from '../../stores/actions/ActionProduct';
 import { getUser } from '../../stores/actions/ActionAuth';
-import { addBid } from '../../stores/actions/ActionBid';
+import { addBid, getBuyerBid } from '../../stores/actions/ActionBid';
 
 const ProductPage = () => {
     const { id } = useParams();
@@ -30,7 +30,8 @@ const ProductPage = () => {
         state => state.ReducerProduct
     );
     const { user } = useSelector(state => state.ReducerAuth);
-    const { addLoading } = useSelector(state => state.ReducerBid);
+    const { buttonLoading } = useSelector(state => state.ReducerBid);
+    const bidLoading = useSelector(state => state.ReducerBid.loading);
     const {
         register,
         formState: { errors },
@@ -38,9 +39,45 @@ const ProductPage = () => {
     } = useForm();
     const [isOpen, setIsOpen] = useState(false);
     const [notification, setNotification] = useState(false);
+    const navigate = useNavigate();
+    const [buttonTawar, setButtonTawar] = useState(true);
+    const [refresh, setRefresh] = useState(false);
 
     const handleClick = () => {
         setIsOpen(true);
+    };
+
+    const mapButtonTawar = () => {
+        if (user.username === product.user.username)
+            return (
+                <Button
+                    type={'button'}
+                    variant={'primary'}
+                    onClick={() => navigate('/seller')}
+                >
+                    {'Ke toko kamu'}
+                </Button>
+            );
+        if (buttonTawar === false)
+            return (
+                <Button
+                    type={'button'}
+                    variant={'primary'}
+                    onClick={() => navigate('/transaction')}
+                >
+                    {'Cek Tawaranmu'}
+                </Button>
+            );
+        if (buttonTawar === true)
+            return (
+                <Button
+                    type={'button'}
+                    variant={'primary'}
+                    onClick={handleClick}
+                >
+                    {'Saya tertarik dan ingin nego'}
+                </Button>
+            );
     };
 
     const handleTawar = data => {
@@ -48,13 +85,17 @@ const ProductPage = () => {
             price: data.price,
             productId: id,
         };
-        dispatch(addBid(req, setNotification, setIsOpen));
+        dispatch(addBid(req, setNotification, setIsOpen, navigate, setRefresh));
     };
 
     useEffect(() => {
         dispatch(getUser());
         dispatch(getProduct(id));
     }, [dispatch]);
+
+    useEffect(() => {
+        dispatch(getBuyerBid(navigate, id, setButtonTawar));
+    }, [dispatch, refresh]);
 
     if (loading === true)
         return (
@@ -129,18 +170,11 @@ const ProductPage = () => {
                     >
                         {formatRupiah(product.price)}
                     </Title>
-                    <Button
-                        type={'button'}
-                        variant={'primary'}
-                        onClick={handleClick}
-                        disabled={
-                            user.username === productOwner.username
-                                ? true
-                                : false
-                        }
-                    >
-                        Saya tertarik dan ingin nego
-                    </Button>
+                    {bidLoading ? (
+                        <Spinner variant={'page'} />
+                    ) : (
+                        mapButtonTawar()
+                    )}
                     <Modal
                         open={isOpen}
                         onClose={() => setIsOpen(false)}
@@ -206,7 +240,7 @@ const ProductPage = () => {
                                     )}
                             </Input>
                             <Button type={'submit'} variant={'primary'}>
-                                {addLoading ? (
+                                {buttonLoading ? (
                                     <Spinner variant={'button'} />
                                 ) : (
                                     'Kirim'

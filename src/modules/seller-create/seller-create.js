@@ -18,12 +18,7 @@ import plus from '../../assets/icons/fi_plus.svg';
 // Actions
 import { addSellerProduct } from '../../stores/actions/ActionSeller';
 
-const SellerCreate = ({
-    handleCreate,
-    handleNotification,
-    refresh,
-    setRefresh,
-}) => {
+const SellerCreate = ({ handleCreate, handleNotification, setRefresh }) => {
     const {
         register,
         formState: { errors },
@@ -48,7 +43,6 @@ const SellerCreate = ({
                 handleCreate,
                 handleNotification,
                 navigate,
-                refresh,
                 setRefresh
             )
         );
@@ -141,14 +135,12 @@ const SellerCreate = ({
 SellerCreate.propTypes = {
     handleCreate: PropTypes.func,
     handleNotification: PropTypes.func,
-    refresh: PropTypes.bool,
     setRefresh: PropTypes.func,
 };
 
 SellerCreate.defaultProps = {
     handleCreate: null,
     handleNotification: null,
-    refresh: null,
     setRefresh: null,
 };
 

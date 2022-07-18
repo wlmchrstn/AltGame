@@ -55,8 +55,6 @@ export const registerUser =
                     data: error.response,
                 },
             });
-            console.log(error.response.data);
-
             notification(true);
         }
     };

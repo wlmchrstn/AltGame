@@ -26,8 +26,6 @@ export const getAllBid = (data, navigate) => async dispatch => {
             `${process.env.REACT_APP_BASE_URL}/api/bids/all-bids-product/${data}`
         );
 
-        console.log(response.data);
-
         dispatch({
             type: SHOW_ALL_BID,
             payload: {
@@ -55,7 +53,7 @@ export const getAllBid = (data, navigate) => async dispatch => {
     }
 };
 
-export const getBuyerBid = navigate => async dispatch => {
+export const getBuyerBid = (navigate, id, tawar) => async dispatch => {
     try {
         dispatch({
             type: SHOW_BUYER_BID,
@@ -78,6 +76,9 @@ export const getBuyerBid = navigate => async dispatch => {
                 loading: false,
             },
         });
+
+        const bid = response.data.find(e => e.productId == id);
+        if (bid) tawar(false);
     } catch (error) {
         if (error.response.status === 404) {
             dispatch({
@@ -95,13 +96,11 @@ export const getBuyerBid = navigate => async dispatch => {
             });
             navigate('/login');
         }
-
-        console.log(error.response);
     }
 };
 
 export const addBid =
-    (data, notification, modal, navigate) => async dispatch => {
+    (data, notification, modal, navigate, refresh) => async dispatch => {
         try {
             dispatch({
                 type: ADD_BID,
@@ -129,6 +128,7 @@ export const addBid =
 
             notification(true);
             modal(false);
+            refresh(prev => !prev);
         } catch (error) {
             dispatch({
                 type: ADD_BID,
@@ -146,7 +146,6 @@ export const addBid =
             }
 
             notification(false);
-            console.log(error.response.data);
         }
     };
 
@@ -188,8 +187,6 @@ export const updateBid = (id, data, navigate) => async dispatch => {
             });
             navigate('/login');
         }
-
-        console.log(error.response.data);
     }
 };
 
@@ -232,8 +229,6 @@ export const deleteBid = (data, navigate) => async dispatch => {
             });
             navigate('/login');
         }
-
-        console.log(error.response.data);
     }
 };
 
@@ -276,7 +271,5 @@ export const acceptBid = (data, navigate) => async dispatch => {
             });
             navigate('/login');
         }
-
-        console.log(error.response.data);
     }
 };

@@ -39,7 +39,7 @@ export const SellerPage = () => {
     const [filter, setFilter] = useState('semua');
     const [page, setPage] = useState('landing');
     const [notification, setNotification] = useState(false);
-    const [product, setProduct] = useState(null);
+    const [productId, setProductId] = useState(null);
     const [screenSize, setScreenSize] = useState(null);
     const [refresh, setRefresh] = useState(false);
     const navigate = useNavigate();
@@ -60,7 +60,8 @@ export const SellerPage = () => {
     }, [dispatch, refresh]);
 
     const handleCard = async params => {
-        setProduct(listProducts[params]);
+        console.log(listProducts[params].productId);
+        setProductId(listProducts[params].productId);
         setPage('bid');
     };
 
@@ -392,15 +393,13 @@ export const SellerPage = () => {
                 <SellerCreate
                     handleCreate={setPage}
                     handleNotification={setNotification}
-                    refresh={refresh}
                     setRefresh={setRefresh}
                 />
             ) : page === 'bid' ? (
                 <SellerBid
-                    product={product}
+                    productId={productId}
                     handleBid={setPage}
                     handleNotification={setNotification}
-                    refresh={refresh}
                     setRefresh={setRefresh}
                 />
             ) : null}

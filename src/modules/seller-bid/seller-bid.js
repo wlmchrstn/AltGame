@@ -29,6 +29,7 @@ import {
     deleteSellerProduct,
     updateSellerProduct,
 } from '../../stores/actions/ActionSeller';
+import { getProduct } from '../../stores/actions/ActionProduct';
 
 const Bid = ({ data, product }) => {
     const { name, price, status } = data;
@@ -126,16 +127,17 @@ const Bid = ({ data, product }) => {
 };
 
 const SellerBid = ({
-    product,
+    productId,
     handleBid,
     handleNotification,
-    refresh,
     setRefresh,
 }) => {
-    const { productId, name, category, price } = product;
     const dispatch = useDispatch();
     const { loading, listBids } = useSelector(state => state.ReducerBid);
     const { buttonLoading } = useSelector(state => state.ReducerSeller);
+    const { product } = useSelector(state => state.ReducerProduct);
+    const { name, category, price } = product;
+    const productLoading = useSelector(state => state.ReducerProduct.loading);
     const navigate = useNavigate();
     const [isEdit, setIsEdit] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
@@ -146,7 +148,9 @@ const SellerBid = ({
     } = useForm();
 
     useEffect(() => {
+        dispatch(getProduct(productId));
         dispatch(getAllBid(productId, navigate));
+        console.log(productLoading);
     }, [dispatch]);
 
     const mapTawar = params => {
@@ -187,7 +191,9 @@ const SellerBid = ({
                 req,
                 navigate,
                 setIsEdit,
-                handleNotification
+                handleBid,
+                handleNotification,
+                setRefresh
             )
         );
     };
@@ -199,11 +205,12 @@ const SellerBid = ({
                 navigate,
                 handleBid,
                 handleNotification,
-                refresh,
                 setRefresh
             )
         );
     };
+
+    if (productLoading) return <Spinner variant={'page'} />;
 
     return (
         <div className={styles.root}>
@@ -420,18 +427,16 @@ Bid.defaultProps = {
 };
 
 SellerBid.propTypes = {
-    product: PropTypes.object,
+    productId: PropTypes.number,
     handleBid: PropTypes.func,
     handleNotification: PropTypes.func,
-    refresh: PropTypes.bool,
     setRefresh: PropTypes.func,
 };
 
 SellerBid.defaultProps = {
-    product: {},
+    productId: null,
     handleBid: null,
     handleNotification: null,
-    refresh: null,
     setRefresh: null,
 };
 

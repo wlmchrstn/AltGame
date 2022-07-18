@@ -45,13 +45,11 @@ export const getSellerProduct = navigate => async dispatch => {
             });
             navigate('/login');
         }
-        console.log(error.response);
     }
 };
 
 export const addSellerProduct =
-    (data, create, notification, navigate, refresh, setRefresh) =>
-    async dispatch => {
+    (data, create, notification, navigate, setRefresh) => async dispatch => {
         try {
             dispatch({
                 type: ADD_PRODUCT,
@@ -78,7 +76,7 @@ export const addSellerProduct =
 
             create('landing');
             notification(true);
-            setRefresh(!refresh);
+            setRefresh(prev => !prev);
         } catch (error) {
             dispatch({
                 payload: {
@@ -93,12 +91,11 @@ export const addSellerProduct =
                 });
                 navigate('/login');
             }
-            console.log(error.response.data);
         }
     };
 
 export const updateSellerProduct =
-    (id, data, navigate, modal, notification, refresh, setRefresh) =>
+    (id, data, navigate, modal, bid, notification, setRefresh) =>
     async dispatch => {
         try {
             dispatch({
@@ -124,9 +121,11 @@ export const updateSellerProduct =
                 },
             });
             modal(false);
+            bid('landing');
             notification(true);
-            setRefresh(refresh);
+            setRefresh(prev => !prev);
         } catch (error) {
+            console.log(error);
             if (error.response.status === 403) {
                 dispatch({
                     type: UNAUTHENTICATED,
@@ -142,13 +141,11 @@ export const updateSellerProduct =
                 },
             });
             notification(true);
-            console.log(error.response.data);
         }
     };
 
 export const deleteSellerProduct =
-    (data, navigate, bid, notification, refresh, setRefresh) =>
-    async dispatch => {
+    (data, navigate, bid, notification, setRefresh) => async dispatch => {
         try {
             dispatch({
                 type: DELETE_PRODUCT,
@@ -162,8 +159,6 @@ export const deleteSellerProduct =
                 `${process.env.REACT_APP_BASE_URL}/api/products/destroy/${data}`
             );
 
-            console.log(response);
-
             dispatch({
                 type: DELETE_PRODUCT,
                 payload: {
@@ -175,11 +170,8 @@ export const deleteSellerProduct =
 
             bid('landing');
             notification(true);
-            console.log('before' + refresh);
-            setRefresh(!refresh);
-            console.log('after' + refresh);
+            setRefresh(prev => !prev);
         } catch (error) {
-            console.log('error' + error);
             if (error.response.status === 403) {
                 dispatch({
                     type: UNAUTHENTICATED,

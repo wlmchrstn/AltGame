@@ -30,8 +30,6 @@ export const getAllProduct = () => async dispatch => {
                 loading: false,
             },
         });
-
-        console.log(error.response.data);
     }
 };
 
@@ -73,8 +71,6 @@ export const getProduct = data => async dispatch => {
                 loading: false,
             },
         });
-
-        console.log('SHOW_PRODUCT' + error.response);
     }
 };
 
@@ -109,7 +105,5 @@ export const searchProduct = (data, navigate) => async dispatch => {
                 loading: false,
             },
         });
-
-        console.log(error.response.data);
     }
 };
