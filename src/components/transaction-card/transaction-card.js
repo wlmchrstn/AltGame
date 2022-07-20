@@ -18,7 +18,10 @@ import Spinner from '../spinner/spinner';
 import shoppingBag from '../../assets/icons/fi_shopping-bag.svg';
 import iconEdit from '../../assets/icons/fi_edit.svg';
 import iconDelete from '../../assets/icons/fi_trash.svg';
-import { deleteBid, updateBid } from '../../stores/actions/ActionBid';
+import plus from '../../assets/icons/fi_plus.svg';
+
+// Actions
+import { deleteBid, updateBid, payBid } from '../../stores/actions/ActionBid';
 
 const TransactionCard = ({ data, notification, refresh, ...props }) => {
     const { createdAt, product, bidId, price, status } = data;
@@ -34,8 +37,15 @@ const TransactionCard = ({ data, notification, refresh, ...props }) => {
     const dispatch = useDispatch();
     const { buttonLoading } = useSelector(state => state.ReducerBid);
 
-    const handleForm = () => {
-        console.log('handle');
+    const handleForm = params => {
+        const { address, image } = params;
+        const req = new FormData();
+        if (image?.length > 0) req.append('image', image[0]);
+        req.append('address', address);
+
+        dispatch(
+            payBid(bidId, req, setIsOpen, notification, refresh, navigate)
+        );
     };
 
     const handleEditBid = params => {
@@ -68,7 +78,7 @@ const TransactionCard = ({ data, notification, refresh, ...props }) => {
                     {'Upload bukti pembayaran'}
                 </Button>
             );
-        } else if (status === 'inactive') {
+        } else if (status === 'finish') {
             return (
                 <Button
                     type={'button'}
@@ -119,22 +129,42 @@ const TransactionCard = ({ data, notification, refresh, ...props }) => {
                 onClose={() => setIsOpen(false)}
                 className={styles.modal}
             >
-                <form onSubmit={handleSubmit(handleForm)}>
+                <form
+                    className={styles.payment}
+                    onSubmit={handleSubmit(handleForm)}
+                >
                     <Paragraph variant={'body-2'} className={styles.label}>
                         {'Alamat Pengiriman'}
                     </Paragraph>
                     <Input className={styles.input}>
                         <input
-                            {...register('price', { required: true })}
-                            placeholder={'Harga Produk'}
-                            type={'number'}
+                            {...register('address', { required: true })}
+                            placeholder={'Alamat Pengiriman'}
+                            type={'text'}
                         />
                     </Input>
-                    {errors.price && errors.price.type === 'required' && (
+                    {errors.address && errors.address.type === 'required' && (
+                        <p className={styles.error}>*Required field*</p>
+                    )}
+                    <Paragraph variant={'body-2'} className={styles.label}>
+                        {'Bukti Pembayaran'}
+                    </Paragraph>
+                    <div className={styles.file}>
+                        <img src={plus} alt={'fi_plus'} />
+                        <input
+                            {...register('image', { required: true })}
+                            type={'file'}
+                        />
+                    </div>
+                    {errors.image && errors.image.type === 'required' && (
                         <p className={styles.error}>*Required field*</p>
                     )}
                     <Button type={'submit'} variant={'primary'}>
-                        {'Upload bukti pembayaran'}
+                        {buttonLoading ? (
+                            <Spinner variant={'button'} />
+                        ) : (
+                            'Upload bukti pembayaran'
+                        )}
                     </Button>
                 </form>
             </Modal>
@@ -156,7 +186,7 @@ const TransactionCard = ({ data, notification, refresh, ...props }) => {
                             ? 'Menunggu penjual'
                             : status === 'declined'
                             ? 'Ditolak'
-                            : status === 'inactive'
+                            : status === 'finish'
                             ? 'Selesai'
                             : status}
                     </Paragraph>

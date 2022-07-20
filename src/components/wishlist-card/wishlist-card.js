@@ -13,7 +13,7 @@ import imgcard from '../../assets/images/card-image.png';
 import trash from '../../assets/icons/fi_trash.svg';
 
 const WishlistCard = ({ data, ...props }) => {
-    const { id, title, category, harga } = data;
+    const { productId, name, category, price } = data;
     const navigate = useNavigate();
 
     return (
@@ -22,13 +22,13 @@ const WishlistCard = ({ data, ...props }) => {
                 <img src={imgcard} alt={'imgcard'} />
                 <div className={styles['content-product']}>
                     <Paragraph variant={'body-1'} weight={'medium'}>
-                        {title}
+                        {name}
                     </Paragraph>
                     <Paragraph variant={'body-1'} color={'neutral'}>
                         {category}
                     </Paragraph>
                     <Paragraph variant={'body-1'}>
-                        {formatRupiah(harga)}
+                        {formatRupiah(price)}
                     </Paragraph>
                 </div>
             </div>
@@ -38,7 +38,7 @@ const WishlistCard = ({ data, ...props }) => {
                     <Button
                         type={'button'}
                         variant={'primary'}
-                        onClick={() => navigate(`/product/${id}`)}
+                        onClick={() => navigate(`/product/${productId}`)}
                     >
                         {'Lihat Halaman Produk'}
                     </Button>

@@ -24,6 +24,8 @@ export const ADD_BID = 'ADD_BID';
 export const UPDATE_BID = 'UPDATE_BID';
 export const DELETE_BID = 'DELETE_BID';
 export const ACCEPT_BID = 'ACCEPT_BID';
+export const PAY_BID = 'PAY_BID';
+export const GET_INVOICE = 'GET_INVOICE';
 
 export const SHOW_ALL_WISHLIST = 'LIST_WISHLIST';
 export const IS_IN_WISHLIST = 'IS_IN_WISHLIST';

@@ -138,7 +138,7 @@ export const SellerPage = () => {
 
     const handleHistory = params => {
         const sold = params.filter(item => {
-            return item.status == 'inactive' || item.status == 'waiting';
+            return item.status == 'sold' || item.status == 'waiting';
         });
 
         if (sold.length == 0) {
