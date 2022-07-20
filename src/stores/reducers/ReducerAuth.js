@@ -15,6 +15,7 @@ const initialState = {
     user: {
         userId: null,
         name: '',
+        username: '',
         city: '',
     },
     isAuthenticated: false,
