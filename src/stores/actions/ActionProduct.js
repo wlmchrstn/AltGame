@@ -44,18 +44,15 @@ export const getProduct = data => async dispatch => {
             },
         });
 
-        console.log(data);
         const { data: response } = await axios.get(
             `${process.env.REACT_APP_BASE_URL}/api/products/show/${data}`
         );
 
-        // Change city after response updated by backend team
         const owner = {
             name: response.data.user.name,
             city: response.data.user.city,
         };
 
-        console.log(response.data);
         dispatch({
             type: SHOW_PRODUCT,
             payload: {

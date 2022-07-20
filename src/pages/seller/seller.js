@@ -77,7 +77,7 @@ export const SellerPage = () => {
     }, [dispatch, registerRefresh]);
 
     const handleCard = async params => {
-        setProductId(listProducts[params].productId);
+        setProductId(params);
         setPage('bid');
     };
 
@@ -88,7 +88,7 @@ export const SellerPage = () => {
                 <Card
                     key={index}
                     data={value}
-                    onClick={() => handleCard(index)}
+                    onClick={() => handleCard(value.productId)}
                 />
             );
         });
@@ -98,6 +98,8 @@ export const SellerPage = () => {
         const bidded = params.filter(item => {
             return item.status == 'bidded';
         });
+
+        console.log(bidded);
 
         if (bidded.length == 0) {
             return (
@@ -120,12 +122,12 @@ export const SellerPage = () => {
         } else {
             return (
                 <div className={styles.product}>
-                    {params.map((value, index) => {
+                    {bidded.map((value, index) => {
                         return (
                             <Card
                                 key={index}
                                 data={value}
-                                onClick={() => handleCard(index)}
+                                onClick={() => handleCard(value.productId)}
                             />
                         );
                     })}
@@ -160,7 +162,7 @@ export const SellerPage = () => {
         } else {
             return (
                 <div className={styles.product}>
-                    {params.map((value, index) => {
+                    {sold.map((value, index) => {
                         return (
                             <Card
                                 key={index}
