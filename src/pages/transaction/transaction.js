@@ -8,6 +8,7 @@ import Button from '../../components/button/button';
 import Paragraph from '../../components/paragraph/paragraph';
 import Spinner from '../../components/spinner/spinner';
 import TransactionCard from '../../components/transaction-card/transaction-card';
+import Notification from '../../components/notification/notification';
 
 // Assets
 import iconEmpty from '../../assets/icons/fi_empty.svg';
@@ -18,12 +19,16 @@ import { getBuyerBid } from '../../stores/actions/ActionBid';
 const TransactionPage = () => {
     const [filter, setFilter] = useState('semua');
     const dispatch = useDispatch();
-    const { buyerBids, loading } = useSelector(state => state.ReducerBid);
+    const { buyerBids, loading, message, messageStatus } = useSelector(
+        state => state.ReducerBid
+    );
     const navigate = useNavigate();
+    const [refresh, setRefresh] = useState(false);
+    const [notification, setNotification] = useState(false);
 
     useEffect(() => {
         dispatch(getBuyerBid(navigate));
-    }, [dispatch]);
+    }, [dispatch, refresh]);
 
     const handleTransaction = params => {
         if (params.length === 0)
@@ -36,23 +41,49 @@ const TransactionPage = () => {
                         color={'black'}
                         weight={'medium'}
                     >
-                        {'Yang sabar ya,'}
-                        <br />
-                        {'belum ada yang nawar nih'}
+                        {'Belum ada produk yang kamu tawar'}
                     </Paragraph>
                 </div>
             );
         return params.map((value, index) => {
             switch (true) {
                 case filter === 'semua':
-                    return <TransactionCard key={index} data={value} />;
+                    return (
+                        <TransactionCard
+                            key={index}
+                            data={value}
+                            notification={setNotification}
+                            refresh={setRefresh}
+                        />
+                    );
                 case filter === 'berlangsung' &&
                     (value.status === 'active' || value.status === 'accepted'):
-                    return <TransactionCard key={index} data={value} />;
+                    return (
+                        <TransactionCard
+                            key={index}
+                            data={value}
+                            notification={setNotification}
+                            refresh={setRefresh}
+                        />
+                    );
                 case filter === 'ditolak' && value.status === 'declined':
-                    return <TransactionCard key={index} data={value} />;
+                    return (
+                        <TransactionCard
+                            key={index}
+                            data={value}
+                            notification={setNotification}
+                            refresh={setRefresh}
+                        />
+                    );
                 case filter === 'selesai' && value.status === 'inactive':
-                    return <TransactionCard key={index} data={value} />;
+                    return (
+                        <TransactionCard
+                            key={index}
+                            data={value}
+                            notification={setNotification}
+                            refresh={setRefresh}
+                        />
+                    );
                 default:
                     return null;
             }
@@ -62,6 +93,12 @@ const TransactionPage = () => {
     return (
         <section className={styles.root}>
             <div className={styles['button-group']}>
+                <Notification
+                    show={notification}
+                    setShow={setNotification}
+                    message={message}
+                    variant={messageStatus}
+                />
                 <Button
                     variant={filter === 'semua' ? 'primary' : 'secondary'}
                     type={'button'}

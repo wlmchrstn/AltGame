@@ -7,6 +7,7 @@ import {
     UNAUTHENTICATED,
     UPDATE_USER,
     FAILED_UPDATE_USER,
+    REGISTER_SELLER,
 } from '../actions/types';
 
 const initialState = {
@@ -19,7 +20,10 @@ const initialState = {
     isAuthenticated: false,
     role: '',
     loading: false,
+    buttonLoading: false,
     error: '',
+    message: '',
+    messageStatus: '',
 };
 
 export default (state = initialState, action) => {
@@ -79,6 +83,13 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 error: payload,
+            };
+        case REGISTER_SELLER:
+            return {
+                ...state,
+                buttonLoading: payload.loading,
+                message: payload.message,
+                messageStatus: payload.messageStatus,
             };
         default:
             return state;

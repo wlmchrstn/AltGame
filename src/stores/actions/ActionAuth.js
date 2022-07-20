@@ -9,6 +9,7 @@ import {
     UNAUTHENTICATED,
     UPDATE_USER,
     FAILED_UPDATE_USER,
+    REGISTER_SELLER,
 } from './types';
 
 export const registerUser =
@@ -148,5 +149,59 @@ export const updateUser =
                 payload: 'Failed to update user',
             });
             failedNotification(true);
+        }
+    };
+
+export const registerSeller =
+    (data, modal, notification, refresh, navigate) => async dispatch => {
+        try {
+            dispatch({
+                type: REGISTER_SELLER,
+                payload: {
+                    loading: true,
+                    message: '',
+                    messageStatus: '',
+                },
+            });
+
+            if (sessionStorage.getItem('token')) {
+                setToken(sessionStorage.getItem('token'));
+            }
+
+            const { data: response } = await axios.post(
+                `${process.env.REACT_APP_BASE_URL}/api/users/register-seller`,
+                data
+            );
+
+            console.log(response);
+
+            dispatch({
+                type: REGISTER_SELLER,
+                payload: {
+                    loading: false,
+                    message: response.message,
+                    messageStatus: 'success',
+                },
+            });
+
+            modal(false);
+            notification(true);
+            refresh(prev => !prev);
+        } catch (error) {
+            if (error.response.status === 403) {
+                dispatch({
+                    type: UNAUTHENTICATED,
+                });
+                navigate('/login');
+            }
+
+            dispatch({
+                type: REGISTER_SELLER,
+                payload: {
+                    loading: false,
+                    message: error.response.data.message,
+                    messageStatus: 'failed',
+                },
+            });
         }
     };

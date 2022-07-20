@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from 'react-hook-form';
 import classNames from 'classnames';
 import styles from './seller.module.scss';
 
@@ -11,6 +12,8 @@ import Button from '../../components/button/button';
 import Card from '../../components/card/card';
 import Notification from '../../components/notification/notification';
 import Spinner from '../../components/spinner/spinner';
+import Modal from '../../components/modal/modal';
+import Input from '../../components/input/input';
 
 // Assets
 import profileImg from '../../assets/images/profile-image.png';
@@ -34,7 +37,7 @@ import SellerBid from '../../modules/seller-bid/seller-bid';
 
 // Actions
 import { getSellerProduct } from '../../stores/actions/ActionSeller';
-import { getUser } from '../../stores/actions/ActionAuth';
+import { getUser, registerSeller } from '../../stores/actions/ActionAuth';
 
 export const SellerPage = () => {
     const [filter, setFilter] = useState('semua');
@@ -43,13 +46,20 @@ export const SellerPage = () => {
     const [productId, setProductId] = useState(null);
     const [screenSize, setScreenSize] = useState(null);
     const [refresh, setRefresh] = useState(false);
+    const [registerRefresh, setRegisterRefresh] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { listProducts, loading, message, messageStatus } = useSelector(
         state => state.ReducerSeller
     );
-    const { user } = useSelector(state => state.ReducerAuth);
+    const { user, buttonLoading } = useSelector(state => state.ReducerAuth);
     const userLoading = useSelector(state => state.ReducerAuth.loading);
+    const [sellerForm, setSellerForm] = useState(false);
+    const {
+        register,
+        formState: { errors },
+        handleSubmit,
+    } = useForm();
 
     useLayoutEffect(() => {
         const updateScreenSize = () => setScreenSize(window.innerWidth);
@@ -60,11 +70,11 @@ export const SellerPage = () => {
 
     useEffect(() => {
         dispatch(getSellerProduct(navigate));
-    }, [dispatch, refresh]);
+    }, [dispatch, refresh, registerRefresh]);
 
     useEffect(() => {
         dispatch(getUser());
-    }, [dispatch]);
+    }, [dispatch, registerRefresh]);
 
     const handleCard = async params => {
         setProductId(listProducts[params].productId);
@@ -164,10 +174,69 @@ export const SellerPage = () => {
         }
     };
 
+    const handleJadiSeller = params => {
+        dispatch(
+            registerSeller(
+                params,
+                setSellerForm,
+                setNotification,
+                setRegisterRefresh,
+                navigate
+            )
+        );
+    };
+
     if (userLoading)
         return (
             <section className={styles.root}>
                 <Spinner variant={'page'} />
+            </section>
+        );
+
+    if (user.role === 'buyer')
+        return (
+            <section className={styles.buyer}>
+                <Title tagElement={'h1'} variant={'heading-2'} weight={'bold'}>
+                    {'Mau berjualan di AltGame?'}
+                    <br />
+                    {'Yuk daftar jadi Seller di AltGame'}
+                </Title>
+                <Modal
+                    open={sellerForm}
+                    onClose={() => setSellerForm(false)}
+                    className={styles.modal}
+                >
+                    <form onSubmit={handleSubmit(handleJadiSeller)}>
+                        <Paragraph variant={'body-2'} className={styles.label}>
+                            {'Bank Account'}
+                        </Paragraph>
+                        <Input className={styles.input}>
+                            <input
+                                {...register('bankAccount', { required: true })}
+                                placeholder={'Bank Account'}
+                                type={'text'}
+                            />
+                        </Input>
+                        {errors.bankAccount &&
+                            errors.bankAccount.type === 'required' && (
+                                <p className={styles.error}>*Required field*</p>
+                            )}
+                        <Button variant={'primary'} type={'submit'}>
+                            {buttonLoading ? (
+                                <Spinner variant={'button'} />
+                            ) : (
+                                'Daftar'
+                            )}
+                        </Button>
+                    </form>
+                </Modal>
+                <Button
+                    variant={'primary'}
+                    type={'button'}
+                    onClick={() => setSellerForm(true)}
+                >
+                    {'Daftar disini'}
+                </Button>
             </section>
         );
 

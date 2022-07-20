@@ -173,3 +173,51 @@
         margin-top: 16px;
     }
 }
+
+.buyer {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: $max-width-sm;
+    padding: 16px 24px;
+
+    @include tablet() {
+        max-width: $max-width-md;
+        padding: 40px 24px;
+    }
+
+    @include desktop() {
+        max-width: $max-width-lg;
+    }
+
+    h1 {
+        margin: 0 auto 16px;
+        text-align: center;
+
+        @include tablet() {
+            margin: 0 auto 24px;
+        }
+    }
+
+    button {
+        align-self: center;
+        width: 240px;
+
+        @include tablet() {
+            width: 327px;
+        }
+    }
+}
+
+.modal {
+    min-width: 327px;
+
+    .label {
+        margin-bottom: 4px;
+    }
+
+    .input {
+        margin-bottom: 16px;
+    }
+}
