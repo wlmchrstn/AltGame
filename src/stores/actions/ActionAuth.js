@@ -173,8 +173,6 @@ export const registerSeller =
                 data
             );
 
-            console.log(response);
-
             dispatch({
                 type: REGISTER_SELLER,
                 payload: {
