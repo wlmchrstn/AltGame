@@ -303,7 +303,6 @@ export const acceptBid =
             notification(true);
             refresh(prev => !prev);
         } catch (error) {
-            console.log(error);
             dispatch({
                 type: ACCEPT_BID,
                 payload: {

@@ -135,7 +135,6 @@ export const updateSellerProduct =
             notification(true);
             setRefresh(prev => !prev);
         } catch (error) {
-            console.log(error);
             if (error.response.status === 403) {
                 dispatch({
                     type: UNAUTHENTICATED,
