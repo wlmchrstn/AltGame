@@ -121,6 +121,18 @@ export const getUser = () => async dispatch => {
     } catch (error) {
         if (error.response.status === 403) {
             dispatch({
+                type: GET_USER,
+                payload: {
+                    loading: false,
+                    data: {
+                        userId: null,
+                        name: '',
+                        username: '',
+                        city: '',
+                    },
+                },
+            });
+            dispatch({
                 type: UNAUTHENTICATED,
             });
         }

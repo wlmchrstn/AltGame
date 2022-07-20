@@ -6,7 +6,9 @@ import {
     UPDATE_BID,
     DELETE_BID,
     ACCEPT_BID,
+    PAY_BID,
     UNAUTHENTICATED,
+    GET_INVOICE,
 } from './types';
 import { setToken } from '../../utils/helper';
 
@@ -98,7 +100,7 @@ export const getBuyerBid = (navigate, id, tawar) => async dispatch => {
                         loading: false,
                     },
                 });
-                if (tawar) tawar(true);
+                tawar && tawar(true);
             }
         }
 
@@ -111,6 +113,14 @@ export const getBuyerBid = (navigate, id, tawar) => async dispatch => {
                 },
             });
         }
+
+        dispatch({
+            type: SHOW_BUYER_BID,
+            payload: {
+                data: [],
+                loading: false,
+            },
+        });
     }
 };
 
@@ -320,3 +330,90 @@ export const acceptBid =
             }
         }
     };
+
+export const payBid =
+    (id, data, modal, notification, refresh, navigate) => async dispatch => {
+        try {
+            dispatch({
+                type: PAY_BID,
+                payload: {
+                    loading: true,
+                    message: '',
+                    messageStatus: '',
+                },
+            });
+
+            if (sessionStorage.getItem('token')) {
+                setToken(sessionStorage.getItem('token'));
+            }
+
+            const { data: response } = await axios.post(
+                `${process.env.REACT_APP_BASE_URL}/api/invoices/pay/${id}`,
+                data
+            );
+
+            dispatch({
+                type: PAY_BID,
+                payload: {
+                    loading: false,
+                    message: response.message,
+                    messageStatus: 'success',
+                },
+            });
+
+            modal(false);
+            notification(true);
+            refresh(prev => !prev);
+        } catch (error) {
+            console.log('failed' + error.response);
+            dispatch({
+                type: PAY_BID,
+                payload: {
+                    loading: false,
+                    message: 'Gagal upload pembayaran',
+                    messsageStatus: 'failed',
+                },
+            });
+
+            if (error.response.status === 403) {
+                dispatch({
+                    type: UNAUTHENTICATED,
+                });
+                navigate('/login');
+            }
+        }
+    };
+
+export const getInvoice = (data, navigate) => async dispatch => {
+    try {
+        dispatch({
+            type: GET_INVOICE,
+            payload: {
+                loading: true,
+            },
+        });
+
+        if (sessionStorage.getItem('token')) {
+            setToken(sessionStorage.getItem('token'));
+        }
+
+        const { data: response } = await axios.get(
+            `${process.env.REACT_APP_BASE_URL}/api/invoices/show/${data}`
+        );
+
+        dispatch({
+            type: GET_INVOICE,
+            payload: {
+                data: response.data,
+                loading: false,
+            },
+        });
+    } catch (error) {
+        if (error.response.status === 403) {
+            dispatch({
+                type: UNAUTHENTICATED,
+            });
+            navigate('/login');
+        }
+    }
+};

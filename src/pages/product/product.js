@@ -30,6 +30,7 @@ const ProductPage = () => {
         state => state.ReducerProduct
     );
     const { user } = useSelector(state => state.ReducerAuth);
+    const userLoading = useSelector(state => state.ReducerAuth.loading);
     const { buttonLoading } = useSelector(state => state.ReducerBid);
     const bidLoading = useSelector(state => state.ReducerBid.loading);
     const {
@@ -48,7 +49,7 @@ const ProductPage = () => {
     };
 
     const mapButtonTawar = () => {
-        if (user.username === product.user.username)
+        if (user.username && user.username === product.user.username)
             return (
                 <Button
                     type={'button'}
@@ -96,6 +97,10 @@ const ProductPage = () => {
     useEffect(() => {
         dispatch(getBuyerBid(navigate, id, setButtonTawar));
     }, [dispatch, refresh]);
+
+    useEffect(() => {
+        console.log(bidLoading);
+    });
 
     if (loading === true)
         return (
@@ -170,7 +175,7 @@ const ProductPage = () => {
                     >
                         {formatRupiah(product.price)}
                     </Title>
-                    {bidLoading ? (
+                    {bidLoading === true && userLoading === true ? (
                         <Spinner variant={'page'} />
                     ) : (
                         mapButtonTawar()

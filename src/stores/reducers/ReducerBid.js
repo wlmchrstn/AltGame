@@ -5,11 +5,14 @@ import {
     UPDATE_BID,
     DELETE_BID,
     ACCEPT_BID,
+    PAY_BID,
+    GET_INVOICE,
 } from '../actions/types';
 
 const initialState = {
     listBids: [],
     buyerBids: [],
+    invoice: {},
     loading: false,
     buttonLoading: false,
     message: '',
@@ -59,6 +62,19 @@ export default (state = initialState, action) => {
                 buttonLoading: payload.loading,
                 message: payload.message,
                 messageStatus: payload.messageStatus,
+            };
+        case PAY_BID:
+            return {
+                ...state,
+                buttonLoading: payload.loading,
+                message: payload.message,
+                messageStatus: payload.messageStatus,
+            };
+        case GET_INVOICE:
+            return {
+                ...state,
+                loading: payload.loading,
+                invoice: payload.data,
             };
         default:
             return state;

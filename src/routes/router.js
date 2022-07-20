@@ -11,6 +11,7 @@ import ProfilePage from '../pages/profile/profile';
 import TransactionPage from '../pages/transaction/transaction';
 import PaymentPage from '../pages/payment/payment.js';
 import SearchPage from '../pages/search/search';
+import InvoicePage from '../pages/invoice/invoice';
 
 import Navbar from '../modules/navbar/navbar';
 
@@ -37,6 +38,7 @@ const Router = () => {
             </Route>
             <Route path={'/login'} element={<LoginPage />} />
             <Route path={'/register'} element={<Register />} />
+            <Route path={'/invoice/:id'} element={<InvoicePage />} />
             <Route path={'*'} element={<Custom404 />} />
         </Routes>
     );
