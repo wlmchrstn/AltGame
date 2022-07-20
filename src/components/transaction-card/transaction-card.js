@@ -3,22 +3,58 @@ import styles from './transaction-card.module.scss';
 import PropTypes from 'prop-types';
 import { formatRupiah } from '../../utils/helper';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 
 // Components
 import Paragraph from '../paragraph/paragraph';
 import Button from '../button/button';
 import Modal from '../modal/modal';
+import Input from '../input/input';
+import Spinner from '../spinner/spinner';
 
 // Assets
 import shoppingBag from '../../assets/icons/fi_shopping-bag.svg';
+import iconEdit from '../../assets/icons/fi_edit.svg';
+import iconDelete from '../../assets/icons/fi_trash.svg';
+import { deleteBid, updateBid } from '../../stores/actions/ActionBid';
 
-const TransactionCard = ({ data, ...props }) => {
-    const { createdAt, productId, name, category, price, image, status } = data;
+const TransactionCard = ({ data, notification, refresh, ...props }) => {
+    const { createdAt, product, bidId, price, status } = data;
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
+    const [bidEdit, setBidEdit] = useState(false);
+    const [bidDelete, setBidDelete] = useState(false);
+    const {
+        register,
+        formState: { errors },
+        handleSubmit,
+    } = useForm();
+    const dispatch = useDispatch();
+    const { buttonLoading } = useSelector(state => state.ReducerBid);
 
-    const handlePembayaran = () => {
+    const handleForm = () => {
         console.log('handle');
+    };
+
+    const handleEditBid = params => {
+        dispatch(
+            updateBid(
+                bidId,
+                params,
+                setBidEdit,
+                notification,
+                refresh,
+                navigate
+            )
+        );
+    };
+
+    const handleDeleteBid = params => {
+        dispatch(
+            deleteBid(params, setBidDelete, notification, refresh, navigate)
+        );
     };
 
     const mapButton = () => {
@@ -47,13 +83,35 @@ const TransactionCard = ({ data, ...props }) => {
                 <Button
                     type={'button'}
                     variant={'primary'}
-                    onClick={() => navigate(`/product/${productId}`)}
+                    onClick={() => navigate(`/product/${product.productId}`)}
                 >
                     {'Lihat halaman produk'}
                 </Button>
             );
         }
     };
+
+    const mapCategoryId = params => {
+        switch (params) {
+            case 1:
+                return 'Console';
+            case 2:
+                return 'Video Game';
+            case 3:
+                return 'Controller';
+            case 4:
+                return 'Aksesoris';
+            case 5:
+                return 'Board Game';
+            case 6:
+                return 'Collectible';
+            case 7:
+                return 'Other';
+            default:
+                return 'Other';
+        }
+    };
+
     return (
         <div className={styles.root} {...props}>
             <Modal
@@ -61,13 +119,24 @@ const TransactionCard = ({ data, ...props }) => {
                 onClose={() => setIsOpen(false)}
                 className={styles.modal}
             >
-                <Button
-                    type={'submit'}
-                    variant={'primary'}
-                    onClick={() => handlePembayaran()}
-                >
-                    {'Upload bukti pembayaran'}
-                </Button>
+                <form onSubmit={handleSubmit(handleForm)}>
+                    <Paragraph variant={'body-2'} className={styles.label}>
+                        {'Alamat Pengiriman'}
+                    </Paragraph>
+                    <Input className={styles.input}>
+                        <input
+                            {...register('price', { required: true })}
+                            placeholder={'Harga Produk'}
+                            type={'number'}
+                        />
+                    </Input>
+                    {errors.price && errors.price.type === 'required' && (
+                        <p className={styles.error}>*Required field*</p>
+                    )}
+                    <Button type={'submit'} variant={'primary'}>
+                        {'Upload bukti pembayaran'}
+                    </Button>
+                </form>
             </Modal>
             <div className={styles.header}>
                 <img src={shoppingBag} alt={'fi_shopping-bag'} />
@@ -77,7 +146,7 @@ const TransactionCard = ({ data, ...props }) => {
                             {'Belanja'}
                         </Paragraph>
                         <Paragraph variant={'body-3'} color={'neutral'}>
-                            {createdAt}
+                            {moment(createdAt).format('LLL')}
                         </Paragraph>
                     </div>
                     <Paragraph className={styles[status]} variant={'body-1'}>
@@ -95,13 +164,13 @@ const TransactionCard = ({ data, ...props }) => {
             </div>
             <div className={styles.content}>
                 <div className={styles['content-top']}>
-                    <img src={image} alt={'imgcard'} />
+                    <img src={product.image} alt={'imgcard'} />
                     <div className={styles['content-product']}>
                         <Paragraph variant={'body-1'} weight={'medium'}>
-                            {name}
+                            {product.name}
                         </Paragraph>
                         <Paragraph variant={'body-1'} color={'neutral'}>
-                            {category}
+                            {mapCategoryId(product.categoryId)}
                         </Paragraph>
                     </div>
                 </div>
@@ -115,6 +184,85 @@ const TransactionCard = ({ data, ...props }) => {
                         </Paragraph>
                     </div>
                     <div className={styles['content-button']}>
+                        {status === 'active' ? (
+                            <div className={styles['button-audit']}>
+                                <img
+                                    src={iconEdit}
+                                    alt={'fi_edit'}
+                                    onClick={() => setBidEdit(true)}
+                                />
+                                <Modal
+                                    open={bidEdit}
+                                    onClose={() => setBidEdit(false)}
+                                    className={styles['bid-modal-edit']}
+                                >
+                                    <form
+                                        onSubmit={handleSubmit(handleEditBid)}
+                                    >
+                                        <Paragraph
+                                            variant={'body-2'}
+                                            className={styles.label}
+                                        >
+                                            {'Harga Tawar'}
+                                        </Paragraph>
+                                        <Input className={styles.input}>
+                                            <input
+                                                {...register('price', {
+                                                    required: true,
+                                                })}
+                                                placeholder={price}
+                                                type={'number'}
+                                            />
+                                        </Input>
+                                        {errors.price &&
+                                            errors.price.type ===
+                                                'required' && (
+                                                <p className={styles.error}>
+                                                    *Required field*
+                                                </p>
+                                            )}
+                                        <Button
+                                            variant={'primary'}
+                                            type={'submit'}
+                                        >
+                                            {buttonLoading ? (
+                                                <Spinner variant={'button'} />
+                                            ) : (
+                                                'Update harga tawar'
+                                            )}
+                                        </Button>
+                                    </form>
+                                </Modal>
+                                <img
+                                    src={iconDelete}
+                                    alt={'fi_delete'}
+                                    onClick={() => setBidDelete(true)}
+                                />
+                                <Modal
+                                    open={bidDelete}
+                                    onClose={() => setBidDelete(false)}
+                                    className={styles['bid-modal-delete']}
+                                >
+                                    <Paragraph
+                                        variant={'title-1'}
+                                        className={styles.label}
+                                    >
+                                        {'Batalkan tawaran?'}
+                                    </Paragraph>
+                                    <Button
+                                        type={'button'}
+                                        variant={'primary'}
+                                        onClick={() => handleDeleteBid(bidId)}
+                                    >
+                                        {buttonLoading ? (
+                                            <Spinner variant={'button'} />
+                                        ) : (
+                                            'Konfirmasi batal'
+                                        )}
+                                    </Button>
+                                </Modal>
+                            </div>
+                        ) : null}
                         {mapButton()}
                     </div>
                 </div>
@@ -125,17 +273,14 @@ const TransactionCard = ({ data, ...props }) => {
 
 TransactionCard.propTypes = {
     data: PropTypes.object.isRequired,
-    variant: PropTypes.string,
+    notification: PropTypes.func,
+    refresh: PropTypes.func,
 };
 
 TransactionCard.defaultProps = {
-    data: {
-        id: 1,
-        name: 'Jam Tangan Casio',
-        category: 'Aksesoris',
-        price: 200000,
-        image: null,
-    },
+    data: {},
+    notification: null,
+    refresh: null,
 };
 
 export default TransactionCard;

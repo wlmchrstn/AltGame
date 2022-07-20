@@ -51,7 +51,7 @@ export const getProduct = data => async dispatch => {
 
         // Change city after response updated by backend team
         const owner = {
-            name: response.data.user.username,
+            name: response.data.user.name,
             city: response.data.user.city,
         };
 

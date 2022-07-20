@@ -76,12 +76,77 @@
 
     &-button {
         align-self: flex-end;
+        display: flex;
+        flex-direction: row;
+
+        button {
+            font-size: 12px;
+            line-height: 16px;
+            padding: 8px 16px;
+
+            @include tablet() {
+                font-size: 14px;
+                line-height: 20px;
+                padding: 14px 24px;
+            }
+        }
+    }
+}
+
+.button-audit {
+    align-items: center;
+    display: flex;
+    margin-right: 4px;
+
+    @include tablet() {
+        margin-right: 8px;
+    }
+
+    img {
+        cursor: pointer;
+        height: 28px;
+        padding: 3px;
+        width: 28px;
+
+        @include tablet() {
+            height: 36px;
+            padding: 6px;
+            width: 36px;
+        }
+    }
+
+    img:hover {
+        background-color: $color-neutral-2;
+        border-radius: 6px;
+    }
+}
+
+.bid-modal-edit {
+    .label {
+        margin-bottom: 4px;
+    }
+
+    .input {
+        margin-bottom: 16px;
+    }
+}
+
+.bid-modal-delete {
+    .label {
+        margin-bottom: 4px;
     }
 }
 
 %variant {
     border-radius: 12px;
+    font-size: 12px;
+    line-height: 16px;
     padding: 4px 8px;
+
+    @include tablet() {
+        font-size: 14px;
+        line-height: 20px;
+    }
 }
 
 .active {

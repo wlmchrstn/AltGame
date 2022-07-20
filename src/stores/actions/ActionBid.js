@@ -81,11 +81,11 @@ export const getBuyerBid = (navigate, id, tawar) => async dispatch => {
             },
         });
 
-        const bid = response.data.find(e => e.productId == id);
-        if (bid) tawar(false);
+        const bid = response.data.find(e => e.product.productId == id);
+        if (tawar && bid) tawar(false);
     } catch (error) {
         if (error.response.status === 403) {
-            if (window.location.pathname === 'transaction') {
+            if (window.location.pathname === '/transaction') {
                 dispatch({
                     type: UNAUTHENTICATED,
                 });
@@ -98,7 +98,7 @@ export const getBuyerBid = (navigate, id, tawar) => async dispatch => {
                         loading: false,
                     },
                 });
-                tawar(true);
+                if (tawar) tawar(true);
             }
         }
 
@@ -169,96 +169,104 @@ export const addBid =
         }
     };
 
-export const updateBid = (id, data, navigate) => async dispatch => {
-    try {
-        dispatch({
-            type: UPDATE_BID,
-            payload: {
-                loading: true,
-                message: '',
-                messageStatus: '',
-            },
-        });
-
-        const { data: response } = await axios.post(
-            `${process.env.REACT_APP_BASE_URL}/api/bids/update/${id}`,
-            data
-        );
-
-        dispatch({
-            type: UPDATE_BID,
-            payload: {
-                data: response.data,
-                loading: false,
-                message: 'Berhasil update tawaran',
-                messageStatus: 'success',
-            },
-        });
-    } catch (error) {
-        dispatch({
-            type: UPDATE_BID,
-            payload: {
-                loading: false,
-                message: error.response.data.message,
-                messageStatus: 'failed',
-            },
-        });
-
-        if (error.response.status === 403) {
+export const updateBid =
+    (id, data, modal, notification, refresh, navigate) => async dispatch => {
+        try {
             dispatch({
-                type: UNAUTHENTICATED,
+                type: UPDATE_BID,
+                payload: {
+                    loading: true,
+                    message: '',
+                    messageStatus: '',
+                },
             });
-            navigate('/login');
-        }
-    }
-};
 
-export const deleteBid = (data, navigate) => async dispatch => {
-    try {
-        dispatch({
-            type: DELETE_BID,
-            payload: {
-                loading: true,
-                message: '',
-                messageStatus: '',
-            },
-        });
+            const { data: response } = await axios.post(
+                `${process.env.REACT_APP_BASE_URL}/api/bids/update/${id}`,
+                data
+            );
 
-        if (sessionStorage.getItem('token')) {
-            setToken(sessionStorage.getItem('token'));
-        }
-
-        const { data: response } = await axios.post(
-            `${process.env.REACT_APP_BASE_URL}/api/bids/destroy/${data}`
-        );
-
-        dispatch({
-            type: DELETE_BID,
-            payload: {
-                data: response.data,
-                loading: false,
-                message: 'Berhasil hapus tawaran',
-                messageStatus: 'success',
-            },
-        });
-    } catch (error) {
-        dispatch({
-            type: DELETE_BID,
-            payload: {
-                loading: false,
-                message: error.response.data.message,
-                messageStatus: 'failed',
-            },
-        });
-
-        if (error.response.status === 403) {
             dispatch({
-                type: UNAUTHENTICATED,
+                type: UPDATE_BID,
+                payload: {
+                    data: response.data,
+                    loading: false,
+                    message: 'Berhasil update tawaran',
+                    messageStatus: 'success',
+                },
             });
-            navigate('/login');
+            modal(false);
+            notification(true);
+            refresh(prev => !prev);
+        } catch (error) {
+            dispatch({
+                type: UPDATE_BID,
+                payload: {
+                    loading: false,
+                    message: error.response.data.message,
+                    messageStatus: 'failed',
+                },
+            });
+
+            if (error.response.status === 403) {
+                dispatch({
+                    type: UNAUTHENTICATED,
+                });
+                navigate('/login');
+            }
         }
-    }
-};
+    };
+
+export const deleteBid =
+    (data, modal, notification, refresh, navigate) => async dispatch => {
+        try {
+            dispatch({
+                type: DELETE_BID,
+                payload: {
+                    loading: true,
+                    message: '',
+                    messageStatus: '',
+                },
+            });
+
+            if (sessionStorage.getItem('token')) {
+                setToken(sessionStorage.getItem('token'));
+            }
+
+            const { data: response } = await axios.post(
+                `${process.env.REACT_APP_BASE_URL}/api/bids/destroy/${data}`
+            );
+
+            dispatch({
+                type: DELETE_BID,
+                payload: {
+                    data: response.data,
+                    loading: false,
+                    message: 'Berhasil hapus tawaran',
+                    messageStatus: 'success',
+                },
+            });
+            modal(false);
+            notification(true);
+            refresh(prev => !prev);
+        } catch (error) {
+            dispatch({
+                type: DELETE_BID,
+                payload: {
+                    loading: false,
+                    message: error.response.data.message,
+                    messageStatus: 'failed',
+                },
+            });
+
+            if (error.response.status === 403) {
+                dispatch({
+                    type: UNAUTHENTICATED,
+                });
+                navigate('/login');
+            }
+        }
+    };
 
 export const acceptBid =
     (data, refresh, modal, notification, navigate) => async dispatch => {
