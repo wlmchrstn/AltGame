@@ -156,3 +156,36 @@
 .profile-logout:hover {
     background-color: $color-neutral-3;
 }
+
+.notif {
+    width: 400px !important;
+
+    h3 {
+        padding: 0 12px;
+    }
+
+    &-item {
+        cursor: pointer;
+        padding: 12px;
+    }
+
+    &-new {
+        background-color: $color-light-purple;
+    }
+
+    &-old {
+        background-color: $color-white;
+    }
+}
+
+.notif-new:hover {
+    background-color: $color-semi-purple;
+}
+
+.notif-old:hover {
+    background-color: $color-neutral-3;
+}
+
+.notif > div:not(:last-child) {
+    margin-bottom: 6px;
+}
