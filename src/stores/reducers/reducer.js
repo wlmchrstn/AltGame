@@ -4,6 +4,7 @@ import ReducerWishlist from './ReducerWishlist';
 import ReducerProduct from './ReducerProduct';
 import ReducerSeller from './ReducerSeller';
 import ReducerBid from './ReducerBid';
+import ReducerNotif from './ReducerNotif';
 
 const rootReducer = combineReducers({
     ReducerAuth,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
     ReducerProduct,
     ReducerSeller,
     ReducerBid,
+    ReducerNotif,
 });
 
 export default rootReducer;
