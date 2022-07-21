@@ -8,6 +8,8 @@ import {
 
 const initialState = {
     wishlist: [],
+    isInWishlist: false,
+    loading: false,
 };
 
 export default (state = initialState, action) => {
@@ -17,13 +19,13 @@ export default (state = initialState, action) => {
         case SHOW_ALL_WISHLIST:
             return {
                 ...state,
-                ...payload,
-                wishlist: payload,
+                wishlist: payload.data,
+                loading: payload.loading,
             };
         case IS_IN_WISHLIST:
             return {
                 ...state,
-                ...payload,
+                isInWishlist: payload,
             };
         case ADD_WISHLIST:
             return {
@@ -33,7 +35,7 @@ export default (state = initialState, action) => {
         case DELETE_WISHLIST:
             return {
                 ...state,
-                ...payload,
+                loading: payload.loading,
             };
         case ERROR_WISHLIST:
             return {
