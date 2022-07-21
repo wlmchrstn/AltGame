@@ -10,6 +10,7 @@ import {
     UPDATE_USER,
     FAILED_UPDATE_USER,
     REGISTER_SELLER,
+    LOGOUT,
 } from './types';
 
 export const registerUser =
@@ -74,6 +75,9 @@ export const login = (data, navigate, notification) => async dispatch => {
             data
         );
 
+        sessionStorage.setItem('name', response.data.user.name);
+        sessionStorage.setItem('city', response.data.user.city);
+
         dispatch({
             type: LOGIN_SUCCESS,
             payload: {
@@ -100,6 +104,12 @@ export const getUser = () => async dispatch => {
             type: GET_USER,
             payload: {
                 loading: true,
+                data: {
+                    userId: null,
+                    name: '',
+                    username: '',
+                    city: '',
+                },
             },
         });
 
@@ -215,3 +225,31 @@ export const registerSeller =
             });
         }
     };
+
+export const logout = navigate => async dispatch => {
+    try {
+        if (sessionStorage.getItem('token')) {
+            setToken(sessionStorage.getItem('token'));
+        }
+
+        const { data: response } = await axios.post(
+            `${process.env.REACT_APP_BASE_URL}/api/logout`
+        );
+
+        dispatch({
+            type: LOGOUT,
+            payload: {
+                data: response,
+            },
+        });
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('name');
+        sessionStorage.removeItem('city');
+        navigate('/login');
+    } catch (error) {
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('name');
+        sessionStorage.removeItem('city');
+        navigate('/login');
+    }
+};
