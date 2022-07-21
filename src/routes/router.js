@@ -12,6 +12,7 @@ import TransactionPage from '../pages/transaction/transaction';
 import PaymentPage from '../pages/payment/payment.js';
 import SearchPage from '../pages/search/search';
 import InvoicePage from '../pages/invoice/invoice';
+import WishlistPage from '../pages/wishlist/wishlist';
 
 import Navbar from '../modules/navbar/navbar';
 
@@ -35,6 +36,7 @@ const Router = () => {
                 <Route path={'/transaction/'} element={<TransactionPage />} />
                 <Route path={'/transaction/:id'} element={<PaymentPage />} />
                 <Route path={'/search'} element={<SearchPage />} />
+                <Route path={'/wishlist'} element={<WishlistPage />} />
             </Route>
             <Route path={'/login'} element={<LoginPage />} />
             <Route path={'/register'} element={<Register />} />
