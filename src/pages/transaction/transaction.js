@@ -75,7 +75,7 @@ const TransactionPage = () => {
                             refresh={setRefresh}
                         />
                     );
-                case filter === 'selesai' && value.status === 'inactive':
+                case filter === 'selesai' && value.status === 'finish':
                     return (
                         <TransactionCard
                             key={index}

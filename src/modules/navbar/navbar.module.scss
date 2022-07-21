@@ -4,6 +4,11 @@
     background-color: $color-white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
     width: 100vw;
+
+    hr {
+        color: #000;
+        width: 100%;
+    }
 }
 
 .wrapper {
@@ -49,7 +54,7 @@
 .button-group {
     column-gap: 24px;
     display: grid;
-    grid-template-columns: repeat(4, 24px);
+    grid-template-columns: repeat(3, 24px);
     margin-left: auto;
 }
 
@@ -121,4 +126,33 @@
     to {
         left: 0;
     }
+}
+
+.profile {
+    &-detail {
+        padding: 0 6px;
+    }
+}
+
+.profile > div:not(:last-child) {
+    margin-bottom: 3px;
+}
+
+.profile > div:not(:first-child) {
+    margin-top: 3px;
+}
+
+.profile-detail,
+.profile-transaction,
+.profile-wishlist,
+.profile-logout {
+    cursor: pointer;
+    padding: 0 6px;
+}
+
+.profile-detail:hover,
+.profile-transaction:hover,
+.profile-wishlist:hover,
+.profile-logout:hover {
+    background-color: $color-neutral-3;
 }

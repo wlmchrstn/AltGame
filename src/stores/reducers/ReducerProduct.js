@@ -8,7 +8,7 @@ const initialState = {
     listProducts: [],
     product: {},
     productOwner: {},
-    loading: false,
+    loading: true,
     search: [],
     searchLoading: false,
 };

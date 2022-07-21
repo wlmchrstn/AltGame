@@ -8,6 +8,7 @@ import {
     UPDATE_USER,
     FAILED_UPDATE_USER,
     REGISTER_SELLER,
+    LOGOUT,
 } from '../actions/types';
 
 const initialState = {
@@ -91,6 +92,11 @@ export default (state = initialState, action) => {
                 buttonLoading: payload.loading,
                 message: payload.message,
                 messageStatus: payload.messageStatus,
+            };
+        case LOGOUT:
+            sessionStorage.removeItem('token');
+            return {
+                state,
             };
         default:
             return state;
