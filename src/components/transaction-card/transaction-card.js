@@ -83,7 +83,7 @@ const TransactionCard = ({ data, notification, refresh, ...props }) => {
                 <Button
                     type={'button'}
                     variant={'primary'}
-                    onClick={() => console.log('invoice')}
+                    onClick={() => navigate(`/invoice/${bidId}`)}
                 >
                     {'Lihat Invoice'}
                 </Button>

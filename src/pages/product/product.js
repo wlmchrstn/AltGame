@@ -49,6 +49,17 @@ const ProductPage = () => {
     };
 
     const mapButtonTawar = () => {
+        if (!sessionStorage.getItem('token')) {
+            return (
+                <Button
+                    type={'button'}
+                    variant={'primary'}
+                    onClick={() => navigate('/login')}
+                >
+                    {'Login untuk menawar'}
+                </Button>
+            );
+        }
         if (user.username && user.username === product.user.username)
             return (
                 <Button
@@ -108,7 +119,7 @@ const ProductPage = () => {
                 <Spinner variant={'page'} />
             </div>
         );
-    if (Object.keys(product).length === 0)
+    if (loading === false && Object.keys(product).length === 0)
         return (
             <div className={styles.empty}>
                 <img src={iconEmpty} alt={'icon-empty'} />
