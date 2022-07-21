@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import styles from './navbar.module.scss';
 
@@ -11,12 +11,15 @@ import Button from '../../components/button/button';
 import Modal from '../../components/modal/modal';
 import Paragraph from '../../components/paragraph/paragraph';
 import NavbarModal from '../../components/navbar-modal/navbar-modal';
+import Title from '../../components/title/title';
+import Spinner from '../../components/spinner/spinner';
 
 // Assets
 import logo from '../../assets/images/logo.svg';
 import search from '../../assets/icons/fi_search.svg';
 import user from '../../assets/icons/fi_user.svg';
 import bell from '../../assets/icons/fi_bell.svg';
+import bellOn from '../../assets/icons/fi_bell-on.svg';
 import login from '../../assets/icons/fi_log-in.svg';
 import menu from '../../assets/icons/fi_menu.svg';
 import store from '../../assets/icons/fi_store.svg';
@@ -25,6 +28,7 @@ import shoppingCart from '../../assets/icons/fi_shopping-cart.svg';
 // Actions
 import { searchProduct } from '../../stores/actions/ActionProduct';
 import { logout } from '../../stores/actions/ActionAuth';
+import { getAllNotif, updateNotif } from '../../stores/actions/ActionNotif';
 
 const Navbar = () => {
     const [auth, setAuth] = useState(false);
@@ -33,9 +37,13 @@ const Navbar = () => {
     const [screenSize, setScreenSize] = useState(window.innerWidth);
     const [isOpen, setIsOpen] = useState(false);
     const [modal, setModal] = useState(false);
+    const [notifModal, setNotifModal] = useState(false);
+    const [refresh, setRefresh] = useState(false);
+    const [newBell, setNewBell] = useState(false);
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm();
     const dispatch = useDispatch();
+    const { listNotifs, loading } = useSelector(state => state.ReducerNotif);
 
     useEffect(() => {
         if (sessionStorage.getItem('token')) {
@@ -48,6 +56,10 @@ const Navbar = () => {
             setUsercity(sessionStorage.getItem('city'));
         }
     }, []);
+
+    useEffect(() => {
+        dispatch(getAllNotif(setNewBell, navigate));
+    }, [dispatch, refresh]);
 
     useLayoutEffect(() => {
         const updateScreenSize = () => setScreenSize(window.innerWidth);
@@ -62,6 +74,84 @@ const Navbar = () => {
 
     const handleLogout = () => {
         dispatch(logout(navigate));
+    };
+
+    const mapNotif = data => {
+        if (data.length === 0) return <div>belum ada notif</div>;
+
+        const newNotif = data.filter(item => {
+            return item.status === 'unread';
+        });
+
+        const oldNotif = data.filter(item => {
+            return item.status === 'read';
+        });
+
+        return (
+            <>
+                {newNotif.length !== 0 ? (
+                    <>
+                        <Title
+                            tagElement={'h3'}
+                            variant={'title-1'}
+                            weight={'bold'}
+                        >
+                            {'Baru'}
+                        </Title>
+                        {newNotif.map((value, index) => {
+                            return (
+                                <div
+                                    className={classNames(
+                                        styles['notif-item'],
+                                        styles['notif-new']
+                                    )}
+                                    key={index}
+                                    onClick={() =>
+                                        dispatch(
+                                            updateNotif(
+                                                value.notificationId,
+                                                setRefresh,
+                                                navigate
+                                            )
+                                        )
+                                    }
+                                >
+                                    <Paragraph variant={'body-1'}>
+                                        {`Penawaranmu atas produk '${value.productName}' telah diterima oleh penjual, silahkan lanjutkan tahap pembayaran`}
+                                    </Paragraph>
+                                </div>
+                            );
+                        })}
+                    </>
+                ) : null}
+                {oldNotif.length !== 0 ? (
+                    <>
+                        <Title
+                            tagElement={'h3'}
+                            variant={'title-1'}
+                            weight={'bold'}
+                        >
+                            {'Terdahulu'}
+                        </Title>
+                        {oldNotif.map((value, index) => {
+                            return (
+                                <div
+                                    className={classNames(
+                                        styles['notif-item'],
+                                        styles['notif-old']
+                                    )}
+                                    key={index}
+                                >
+                                    <Paragraph variant={'body-1'}>
+                                        {`Penawaranmu atas produk '${value.productName}' telah diterima oleh penjual, silahkan lanjutkan tahap pembayaran`}
+                                    </Paragraph>
+                                </div>
+                            );
+                        })}
+                    </>
+                ) : null}
+            </>
+        );
     };
 
     return (
@@ -98,10 +188,25 @@ const Navbar = () => {
                                 </div>
                                 <div
                                     className={styles.button}
-                                    onClick={() => console.log('click')}
+                                    onClick={() => setNotifModal(true)}
                                 >
-                                    <img src={bell} alt={'fi_bell'} />
+                                    {newBell ? (
+                                        <img src={bellOn} alt={'fi_bell-on'} />
+                                    ) : (
+                                        <img src={bell} alt={'fi_bell-on'} />
+                                    )}
                                 </div>
+                                <NavbarModal
+                                    open={notifModal}
+                                    onClose={() => setNotifModal(false)}
+                                    className={styles.notif}
+                                >
+                                    {loading ? (
+                                        <Spinner variant={'page'} />
+                                    ) : (
+                                        mapNotif(listNotifs)
+                                    )}
+                                </NavbarModal>
                                 <div
                                     className={styles.button}
                                     onClick={() => setModal(true)}
