@@ -32,3 +32,13 @@
         grid-template-rows: repeat(6, 1fr);
     }
 }
+
+.empty {
+    height: 666px;
+    margin: 0 auto;
+    width: 276px;
+
+    &-text {
+        margin-top: 16px;
+    }
+}

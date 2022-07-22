@@ -99,8 +99,6 @@ export const SellerPage = () => {
             return item.status == 'bidded';
         });
 
-        console.log(bidded);
-
         if (bidded.length == 0) {
             return (
                 <div className={styles['product-empty']}>

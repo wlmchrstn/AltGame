@@ -3,13 +3,15 @@ import {
     IS_IN_WISHLIST,
     ADD_WISHLIST,
     DELETE_WISHLIST,
-    ERROR_WISHLIST,
 } from '../actions/types';
 
 const initialState = {
     wishlist: [],
     isInWishlist: false,
     loading: false,
+    buttonLoading: false,
+    message: '',
+    messageStatus: '',
 };
 
 export default (state = initialState, action) => {
@@ -25,7 +27,8 @@ export default (state = initialState, action) => {
         case IS_IN_WISHLIST:
             return {
                 ...state,
-                isInWishlist: payload,
+                loading: payload.loading,
+                isInWishlist: payload.isInWishlist,
             };
         case ADD_WISHLIST:
             return {
@@ -36,11 +39,8 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 loading: payload.loading,
-            };
-        case ERROR_WISHLIST:
-            return {
-                ...state,
-                ...payload,
+                message: payload.message,
+                messageStatus: payload.messageStatus,
             };
         default:
             return state;
