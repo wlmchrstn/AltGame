@@ -10,11 +10,12 @@ import Paragraph from '../paragraph/paragraph';
 import Button from '../button/button';
 
 // Assets
-import imgcard from '../../assets/images/card-image.png';
 import trash from '../../assets/icons/fi_trash.svg';
+
+// Actions
 import { deleteWishlist } from '../../stores/actions/ActionWishlist';
 
-const WishlistCard = ({ data, ...props }) => {
+const WishlistCard = ({ data, notification, refresh, ...props }) => {
     const { product, wishlistId } = data;
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -58,7 +59,16 @@ const WishlistCard = ({ data, ...props }) => {
             </div>
             <div className={styles.bottom}>
                 <img
-                    onClick={() => dispatch(deleteWishlist(wishlistId))}
+                    onClick={() =>
+                        dispatch(
+                            deleteWishlist(
+                                wishlistId,
+                                notification,
+                                refresh,
+                                navigate
+                            )
+                        )
+                    }
                     src={trash}
                     alt={'fi_trash'}
                 />
@@ -80,16 +90,14 @@ const WishlistCard = ({ data, ...props }) => {
 
 WishlistCard.propTypes = {
     data: PropTypes.object.isRequired,
+    notification: PropTypes.func,
+    refresh: PropTypes.func,
 };
 
 WishlistCard.defaultProps = {
-    data: {
-        id: 1,
-        name: 'Jam Tangan Casio',
-        description: 'Aksesoris',
-        image: { imgcard },
-        price: 200000,
-    },
+    data: {},
+    notification: null,
+    refresh: null,
 };
 
 export default WishlistCard;

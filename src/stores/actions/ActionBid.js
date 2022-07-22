@@ -365,7 +365,6 @@ export const payBid =
             notification(true);
             refresh(prev => !prev);
         } catch (error) {
-            console.log('failed' + error.response);
             dispatch({
                 type: PAY_BID,
                 payload: {
