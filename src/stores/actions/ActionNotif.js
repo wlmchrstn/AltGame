@@ -38,7 +38,6 @@ export const getAllNotif = (bell, navigate) => async dispatch => {
             },
         });
     } catch (error) {
-        console.log(error);
         dispatch({
             type: SHOW_ALL_NOTIF,
             payload: {
@@ -74,7 +73,6 @@ export const updateNotif = (data, refresh, navigate) => async dispatch => {
         refresh(prev => !prev);
         navigate('/transaction');
     } catch (error) {
-        console.log(error);
         dispatch({
             type: UPDATE_NOTIF,
             payload: {

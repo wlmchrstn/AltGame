@@ -32,7 +32,6 @@ export const SHOW_ALL_WISHLIST = 'LIST_WISHLIST';
 export const IS_IN_WISHLIST = 'IS_IN_WISHLIST';
 export const ADD_WISHLIST = 'ADD_WISHLIST';
 export const DELETE_WISHLIST = 'DELETE_WISHLIST';
-export const ERROR_WISHLIST = 'ERROR_WISHLIST';
 
 export const SHOW_ALL_NOTIF = 'SHOW_ALL_NOTIF';
 export const UPDATE_NOTIF = 'UPDATE_NOTIF';

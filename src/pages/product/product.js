@@ -22,6 +22,10 @@ import iconEmpty from '../../assets/icons/fi_empty.svg';
 import { getProduct } from '../../stores/actions/ActionProduct';
 import { getUser } from '../../stores/actions/ActionAuth';
 import { addBid, getBuyerBid } from '../../stores/actions/ActionBid';
+import {
+    addWishlist,
+    isProductInWishlist,
+} from '../../stores/actions/ActionWishlist';
 
 const ProductPage = () => {
     const { id } = useParams();
@@ -33,6 +37,12 @@ const ProductPage = () => {
     const userLoading = useSelector(state => state.ReducerAuth.loading);
     const { buttonLoading } = useSelector(state => state.ReducerBid);
     const bidLoading = useSelector(state => state.ReducerBid.loading);
+    const wishlistLoading = useSelector(state => state.ReducerWishlist.loading);
+    const { isInWishlist, message, messageStatus } = useSelector(
+        state => state.ReducerWishlist
+    );
+    const [refreshWishlist, setRefreshWishlist] = useState(false);
+    const [wishlistNotif, setWishlistNotif] = useState(false);
     const {
         register,
         formState: { errors },
@@ -100,6 +110,42 @@ const ProductPage = () => {
         dispatch(addBid(req, setNotification, setIsOpen, navigate, setRefresh));
     };
 
+    const mapButtonWishlist = params => {
+        console.log(params);
+        if (params === true) {
+            return (
+                <Button
+                    className={styles['button-wishlist']}
+                    type={'button'}
+                    variant={'secondary'}
+                    onClick={() => navigate('/wishlist')}
+                >
+                    {'Cek Wishlist Kamu'}
+                </Button>
+            );
+        } else {
+            return (
+                <Button
+                    className={styles['button-wishlist']}
+                    type={'button'}
+                    variant={'secondary'}
+                    onClick={() =>
+                        dispatch(
+                            addWishlist(
+                                id,
+                                setWishlistNotif,
+                                setRefreshWishlist,
+                                navigate
+                            )
+                        )
+                    }
+                >
+                    {'Masukkan ke Wishlist'}
+                </Button>
+            );
+        }
+    };
+
     useEffect(() => {
         dispatch(getUser());
         dispatch(getProduct(id));
@@ -110,8 +156,8 @@ const ProductPage = () => {
     }, [dispatch, refresh]);
 
     useEffect(() => {
-        console.log(bidLoading);
-    });
+        dispatch(isProductInWishlist(id));
+    }, [dispatch, refreshWishlist]);
 
     if (loading === true)
         return (
@@ -140,6 +186,12 @@ const ProductPage = () => {
                 variant={'success'}
                 show={notification}
                 setShow={setNotification}
+            />
+            <Notification
+                message={message}
+                variant={messageStatus}
+                show={wishlistNotif}
+                setShow={setWishlistNotif}
             />
             <div className={styles.left}>
                 <div
@@ -190,6 +242,11 @@ const ProductPage = () => {
                         <Spinner variant={'page'} />
                     ) : (
                         mapButtonTawar()
+                    )}
+                    {wishlistLoading ? (
+                        <Spinner variant={'page'} />
+                    ) : (
+                        mapButtonWishlist(isInWishlist)
                     )}
                     <Modal
                         open={isOpen}

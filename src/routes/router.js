@@ -9,7 +9,6 @@ import Register from '../pages/register/register';
 import SellerPage from '../pages/seller/seller';
 import ProfilePage from '../pages/profile/profile';
 import TransactionPage from '../pages/transaction/transaction';
-import PaymentPage from '../pages/payment/payment.js';
 import SearchPage from '../pages/search/search';
 import InvoicePage from '../pages/invoice/invoice';
 import WishlistPage from '../pages/wishlist/wishlist';
@@ -34,7 +33,6 @@ const Router = () => {
                 <Route path={'/profile'} element={<ProfilePage />} />
                 <Route path={'/seller'} element={<SellerPage />} />
                 <Route path={'/transaction/'} element={<TransactionPage />} />
-                <Route path={'/transaction/:id'} element={<PaymentPage />} />
                 <Route path={'/search'} element={<SearchPage />} />
                 <Route path={'/wishlist'} element={<WishlistPage />} />
             </Route>

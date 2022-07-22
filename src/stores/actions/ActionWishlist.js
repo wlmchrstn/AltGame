@@ -12,24 +12,36 @@ export const getAllWishlist = navigate => async dispatch => {
     try {
         dispatch({
             type: SHOW_ALL_WISHLIST,
-            payload: { loading: true, data: [] },
+            payload: {
+                loading: true,
+                data: [],
+            },
         });
+
         if (sessionStorage.getItem('token')) {
             setToken(sessionStorage.getItem('token'));
         }
+
         const { data: response } = await axios.get(
             `${process.env.REACT_APP_BASE_URL}/api/wishlists/index`
         );
 
         dispatch({
             type: SHOW_ALL_WISHLIST,
-            payload: { loading: false, data: response.data },
+            payload: {
+                loading: false,
+                data: response.data,
+            },
         });
     } catch (error) {
         dispatch({
             type: SHOW_ALL_WISHLIST,
-            payload: { loading: false, data: [] },
+            payload: {
+                loading: false,
+                data: [],
+            },
         });
+
         if (error.response.status === 403) {
             dispatch({
                 type: UNAUTHENTICATED,
@@ -48,86 +60,130 @@ export const isProductInWishlist = data => async dispatch => {
                 isInWishlist: false,
             },
         });
-        setToken(sessionStorage.getItem('token'));
-        const response = await axios.get(
+
+        if (sessionStorage.getItem('token')) {
+            setToken(sessionStorage.getItem('token'));
+        }
+
+        const { data: response } = await axios.get(
             `${process.env.REACT_APP_BASE_URL}/api/is-product-in-wishlist/${data}`
         );
-        console.log(typeof response.data.data.in_wishlist);
+
         dispatch({
             type: IS_IN_WISHLIST,
             payload: {
                 loading: false,
-                isInWishlist: response.data.data.in_wishlist,
+                isInWishlist: response.data.in_wishlist,
             },
         });
     } catch (error) {
-        // dispatch({
-        //     payload: error.response,
-        // });
-        console.log(error);
+        dispatch({
+            type: IS_IN_WISHLIST,
+            payload: {
+                loading: false,
+                isInWishlist: false,
+            },
+        });
+        if (error.response.status === 403) {
+            dispatch({
+                type: UNAUTHENTICATED,
+            });
+        }
     }
 };
 
-export const addWishlist = data => async dispatch => {
-    try {
-        // axios
-        //     .post(
-        //         'https://api-altgame-production.herokuapp.com/api/wishlists/store',
-        //         { productId: id }
-        //     )
-        //     .then(function (response) {
-        //         console.log(response);
-        //     });
-        if (sessionStorage.getItem('token')) {
-            setToken(sessionStorage.getItem('token'));
-        }
-        const response = await axios.post(
-            `${process.env.REACT_APP_BASE_URL}/api/wishlists/store`,
-            {
-                productId: data,
+export const addWishlist =
+    (data, notification, refresh, navigate) => async dispatch => {
+        try {
+            dispatch({
+                type: ADD_WISHLIST,
+                payload: {
+                    loading: true,
+                    message: '',
+                    messageStatus: '',
+                },
+            });
+
+            if (sessionStorage.getItem('token')) {
+                setToken(sessionStorage.getItem('token'));
             }
-        );
-        console.log(response.data);
 
-        // const response = await axios.post(
-        //     `${process.env.REACT_APP_BASE_URL}/api/wishlists/`,
-        //     data
-        // );
+            const { data: response } = await axios.post(
+                `${process.env.REACT_APP_BASE_URL}/api/wishlists/store`,
+                {
+                    productId: data,
+                }
+            );
 
-        dispatch({
-            type: ADD_WISHLIST,
-            payload: response.data,
-        });
-    } catch (error) {
-        // dispatch({
-        //     payload: error.response,
-        // });
-        console.log(error);
-    }
-};
-
-export const deleteWishlist = data => async dispatch => {
-    try {
-        dispatch({
-            type: DELETE_WISHLIST,
-            payload: { loading: true },
-        });
-        if (sessionStorage.getItem('token')) {
-            setToken(sessionStorage.getItem('token'));
+            dispatch({
+                type: ADD_WISHLIST,
+                payload: {
+                    loading: false,
+                    message:
+                        response.data.message || 'Berhasil menambah wishlist',
+                    messageStatus: 'success',
+                },
+            });
+            notification(true);
+            refresh(prev => !prev);
+        } catch (error) {
+            if (error.response.status === 403) {
+                dispatch({
+                    type: UNAUTHENTICATED,
+                });
+                navigate('/login');
+            }
         }
-        const response = await axios.post(
-            `${process.env.REACT_APP_BASE_URL}/api/wishlists/destroy`,
-            { wishlistId: data }
-        );
+    };
 
-        dispatch({
-            type: DELETE_WISHLIST,
-            payload: { loading: false, data: response },
-        });
-    } catch (error) {
-        dispatch({
-            type: DELETE_WISHLIST,
-            payload: { loading: false },
-        });
-    }
-};
+export const deleteWishlist =
+    (data, notification, refresh, navigate) => async dispatch => {
+        try {
+            dispatch({
+                type: DELETE_WISHLIST,
+                payload: {
+                    loading: true,
+                    message: '',
+                    messageStatus: '',
+                },
+            });
+
+            if (sessionStorage.getItem('token')) {
+                setToken(sessionStorage.getItem('token'));
+            }
+
+            const response = await axios.post(
+                `${process.env.REACT_APP_BASE_URL}/api/wishlists/destroy`,
+                {
+                    wishlistId: data,
+                }
+            );
+
+            dispatch({
+                type: DELETE_WISHLIST,
+                payload: {
+                    loading: false,
+                    message: response.message || 'Berhasil hapus wishlist',
+                    messageStatus: 'success',
+                },
+            });
+            notification(true);
+            refresh(prev => !prev);
+        } catch (error) {
+            dispatch({
+                type: DELETE_WISHLIST,
+                payload: {
+                    loading: false,
+                    message:
+                        error.response.data.message || 'Gagal hapus wishlist',
+                    messageStatus: 'failed',
+                },
+            });
+            if (error.response.status === 403) {
+                dispatch({
+                    type: UNAUTHENTICATED,
+                });
+                navigate('/login');
+            }
+        }
+    };
