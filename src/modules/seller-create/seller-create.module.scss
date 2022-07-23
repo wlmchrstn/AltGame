@@ -42,5 +42,11 @@
             position: absolute;
             width: 98px;
         }
+
+        &-preview {
+            height: 96px;
+            object-fit: contain;
+            width: 96px;
+        }
     }
 }

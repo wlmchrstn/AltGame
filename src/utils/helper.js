@@ -22,3 +22,20 @@ export const setToken = token => {
         delete axios.headers.common['Authorization'];
     }
 };
+
+export const convertToBase64 = file => {
+    return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        if (!file) {
+            alert('Please select an image');
+        } else {
+            fileReader.readAsDataURL(file);
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            };
+        }
+        fileReader.onerror = err => {
+            reject(err);
+        };
+    });
+};

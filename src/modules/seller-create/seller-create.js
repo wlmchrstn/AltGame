@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styles from './seller-create.module.scss';
+import { convertToBase64 } from '../../utils/helper';
 
 // Components
 import Input from '../../components/input/input';
@@ -27,6 +28,15 @@ const SellerCreate = ({ handleCreate, handleNotification, setRefresh }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { buttonLoading } = useSelector(state => state.ReducerSeller);
+    const [file, setFile] = useState('');
+
+    const handleCreateBase64 = useCallback(async e => {
+        const file = e.target.files[0];
+        const base64 = await convertToBase64(file);
+        setFile(base64);
+        e.target.value = '';
+        console.log(file);
+    }, []);
 
     const handleForm = data => {
         const { categoryId, name, description, price, image } = data;
@@ -116,10 +126,19 @@ const SellerCreate = ({ handleCreate, handleNotification, setRefresh }) => {
                     {'Foto Produk'}
                 </Paragraph>
                 <div className={styles.file}>
-                    <img src={plus} alt={'fi_plus'} />
+                    {file ? (
+                        <img
+                            className={styles['file-preview']}
+                            src={file}
+                            alt={'image'}
+                        />
+                    ) : (
+                        <img src={plus} alt={'fi_plus'} />
+                    )}
                     <input
                         {...register('image', { required: true })}
                         type={'file'}
+                        onChange={handleCreateBase64}
                     />
                 </div>
                 {errors.image && errors.image.type === 'required' && (
