@@ -8,7 +8,6 @@ import {
     GET_USER,
     UNAUTHENTICATED,
     UPDATE_USER,
-    FAILED_UPDATE_USER,
     REGISTER_SELLER,
     LOGOUT,
 } from './types';
@@ -150,27 +149,67 @@ export const getUser = () => async dispatch => {
 };
 
 export const updateUser =
-    (data, loading, notification, failedNotification) => async dispatch => {
+    (data, image, notification, modal, refresh, navigate) => async dispatch => {
         try {
+            dispatch({
+                type: UPDATE_USER,
+                payload: {
+                    loading: true,
+                    message: '',
+                    messageStatus: '',
+                },
+            });
+
             if (sessionStorage.getItem('token')) {
                 setToken(sessionStorage.getItem('token'));
             }
+
+            const imageReq = new FormData();
+            if (image?.length > 0) {
+                imageReq.append('image', image[0]);
+                const { data: response } = await axios.post(
+                    `${process.env.REACT_APP_BASE_URL}/api/users/upload-image`,
+                    imageReq
+                );
+                console.log(response.message);
+            } else {
+                console.log('skip image upload');
+            }
+
             const { data: response } = await axios.post(
                 `${process.env.REACT_APP_BASE_URL}/api/users/update`,
                 data
             );
+
             dispatch({
                 type: UPDATE_USER,
-                payload: response.data,
+                payload: {
+                    loading: false,
+                    message: response.message || 'Berhasil update user',
+                    messageStatus: 'success',
+                },
             });
             notification(true);
-            loading(false);
+            modal(false);
+            refresh(prev => !prev);
         } catch (error) {
+            console.log(error.response.data);
             dispatch({
-                type: FAILED_UPDATE_USER,
-                payload: 'Failed to update user',
+                type: UPDATE_USER,
+                payload: {
+                    loading: false,
+                    message: error.response.data.message || 'Gagal update user',
+                    messageStatus: 'failed',
+                },
             });
-            failedNotification(true);
+            notification(true);
+
+            if (error.response.status === 403) {
+                dispatch({
+                    type: UNAUTHENTICATED,
+                });
+                navigate('/login');
+            }
         }
     };
 

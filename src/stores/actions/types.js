@@ -5,7 +5,6 @@ export const REGISTER_FAILED = 'REGISTER_FAILED';
 export const GET_USER = 'GET_USER';
 export const UNAUTHENTICATED = 'UNAUTHENTICATED';
 export const UPDATE_USER = 'UPDATE_USER';
-export const FAILED_UPDATE_USER = 'FAILED_UPDATE_USER';
 export const REGISTER_SELLER = 'REGISTER_SELLER';
 export const LOGOUT = 'LOGOUT';
 

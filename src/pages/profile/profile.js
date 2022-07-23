@@ -7,31 +7,30 @@ import Button from '../../components/button/button';
 import Paragraph from '../../components/paragraph/paragraph';
 import Modal from '../../components/modal/modal';
 import Notification from '../../components/notification/notification';
+import Spinner from '../../components/spinner/spinner';
 
 // Assets
 import camera_purple from '../../assets/icons/fi_camera_purple.svg';
 import Title from '../../components/title/title';
 
 // Modules
-// import ProfileEdit from '../../modules/profile-edit/profile-edit';
+import ProfileEdit from '../../modules/profile-edit/profile-edit';
 
 // Actions
 import { getUser } from '../../stores/actions/ActionAuth';
-import Spinner from '../../components/spinner/spinner';
-import ProfileEdit from '../../modules/profile-edit/profile-edit';
 
 const ProfilePage = () => {
-    const [userData, setUserData] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
     const [notification, setNotification] = useState(false);
-    const [failedNotification, setFailedNotification] = useState(false);
+    const [refresh, setRefresh] = useState(false);
     const dispatch = useDispatch();
-    const { error } = useSelector(state => state.ReducerAuth);
+    const { message, messageStatus, user, loading } = useSelector(
+        state => state.ReducerAuth
+    );
 
     useEffect(() => {
-        dispatch(getUser(setUserData, setIsLoading));
-    }, [dispatch]);
+        dispatch(getUser());
+    }, [dispatch, refresh]);
 
     return (
         <section className={styles.root}>
@@ -41,30 +40,33 @@ const ProfilePage = () => {
                 className={styles.modal}
             >
                 <ProfileEdit
-                    user={userData}
                     notification={setNotification}
-                    failedNotification={setFailedNotification}
+                    modal={setIsOpen}
+                    refresh={setRefresh}
                 />
             </Modal>
             <Notification
-                message={error}
-                variant={'failed'}
-                show={failedNotification}
-                setShow={setFailedNotification}
-            />
-            <Notification
-                message={'Berhasil update profile'}
-                variant={'success'}
+                message={message}
+                variant={messageStatus}
                 show={notification}
                 setShow={setNotification}
             />
-            {isLoading ? (
+            {loading ? (
                 <Spinner variant={'page'} />
             ) : (
                 <div className={styles.profile}>
-                    <div className={styles.camera}>
-                        <img src={camera_purple} alt={'fi_camera_purple'} />
-                    </div>
+                    {user.image ? (
+                        <div className={styles['profile-image']}>
+                            <img
+                                src={`data:image/jpeg;base64,${user.image}`}
+                                alt={'profile_image'}
+                            />
+                        </div>
+                    ) : (
+                        <div className={styles.camera}>
+                            <img src={camera_purple} alt={'fi_camera_purple'} />
+                        </div>
+                    )}
                     <Paragraph
                         variant={'body-2'}
                         className={styles['profile-label']}
@@ -78,7 +80,7 @@ const ProfilePage = () => {
                         weight={'medium'}
                         className={styles['profile-data']}
                     >
-                        {userData.name}
+                        {user.name}
                     </Title>
                     <Paragraph
                         variant={'body-2'}
@@ -93,7 +95,22 @@ const ProfilePage = () => {
                         weight={'medium'}
                         className={styles['profile-data']}
                     >
-                        {'Batam'}
+                        {user.city}
+                    </Title>
+                    <Paragraph
+                        variant={'body-2'}
+                        className={styles['profile-label']}
+                        color={'neutral'}
+                    >
+                        {'Email'}
+                    </Paragraph>
+                    <Title
+                        tagElement={'p'}
+                        variant={'title-1'}
+                        weight={'medium'}
+                        className={styles['profile-data']}
+                    >
+                        {user.email}
                     </Title>
                     <Paragraph
                         variant={'body-2'}
@@ -108,7 +125,22 @@ const ProfilePage = () => {
                         weight={'medium'}
                         className={styles['profile-data']}
                     >
-                        {userData.phone}
+                        {user.phone}
+                    </Title>
+                    <Paragraph
+                        variant={'body-2'}
+                        className={styles['profile-label']}
+                        color={'neutral'}
+                    >
+                        {'No Rekening'}
+                    </Paragraph>
+                    <Title
+                        tagElement={'p'}
+                        variant={'title-1'}
+                        weight={'medium'}
+                        className={styles['profile-data']}
+                    >
+                        {user.bankAccount || '-'}
                     </Title>
                     <Button
                         type={'button'}
