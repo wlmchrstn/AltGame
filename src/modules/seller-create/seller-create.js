@@ -34,8 +34,6 @@ const SellerCreate = ({ handleCreate, handleNotification, setRefresh }) => {
         const file = e.target.files[0];
         const base64 = await convertToBase64(file);
         setFile(base64);
-        e.target.value = '';
-        console.log(file);
     }, []);
 
     const handleForm = data => {
