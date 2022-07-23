@@ -30,6 +30,24 @@
     width: 96px;
 }
 
+.profile-image {
+    align-items: center;
+    background: #e2d4f0;
+    border-radius: 12px;
+    display: flex;
+    height: 96px;
+    justify-content: center;
+    margin: 0 auto 24px;
+    width: 96px;
+
+    img {
+        border-radius: 12px;
+        height: 96px;
+        object-fit: cover;
+        width: 96px;
+    }
+}
+
 .profile {
     margin: 0 auto;
     max-width: 567px;

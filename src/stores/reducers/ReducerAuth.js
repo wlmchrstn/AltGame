@@ -6,7 +6,6 @@ import {
     GET_USER,
     UNAUTHENTICATED,
     UPDATE_USER,
-    FAILED_UPDATE_USER,
     REGISTER_SELLER,
     LOGOUT,
 } from '../actions/types';
@@ -79,12 +78,9 @@ export default (state = initialState, action) => {
         case UPDATE_USER:
             return {
                 ...state,
-                user: payload,
-            };
-        case FAILED_UPDATE_USER:
-            return {
-                ...state,
-                error: payload,
+                buttonLoading: payload.loading,
+                message: payload.message,
+                messageStatus: payload.messageStatus,
             };
         case REGISTER_SELLER:
             return {

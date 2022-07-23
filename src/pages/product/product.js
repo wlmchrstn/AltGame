@@ -15,7 +15,7 @@ import Notification from '../../components/notification/notification';
 import Spinner from '../../components/spinner/spinner';
 
 // Assets
-import imgPlaceholder from '../../assets/images/product-image.png';
+import imgPlaceholder from '../../assets/images/userplaceholder.png';
 import iconEmpty from '../../assets/icons/fi_empty.svg';
 
 // Actions

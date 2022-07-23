@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './profile-edit.module.scss';
+import { useNavigate } from 'react-router-dom';
+import { convertToBase64 } from '../../utils/helper';
 
 // Components
 import Input from '../../components/input/input';
@@ -11,28 +14,78 @@ import Spinner from '../../components/spinner/spinner';
 
 // Assets
 import camera_purple from '../../assets/icons/fi_camera_purple.svg';
-import { useDispatch } from 'react-redux';
-import { updateUser } from '../../stores/actions/ActionAuth';
 
-const ProfileEdit = ({ user, notification, failedNotification }) => {
+// Actions
+import { updateUser } from '../../stores/actions/ActionAuth';
+import classNames from 'classnames';
+
+const ProfileEdit = ({ notification, modal, refresh }) => {
+    const { user, buttonLoading } = useSelector(state => state.ReducerAuth);
+    const dispatch = useDispatch();
     const {
         register,
         formState: { errors },
         handleSubmit,
-    } = useForm();
-    const dispatch = useDispatch();
-    const [isLoading, setIsLoading] = useState(false);
+    } = useForm({
+        defaultValues: {
+            name: user.name,
+            city: user.city,
+            email: user.email,
+            phone: user.phone,
+            bankAccount: user.bankAccount,
+        },
+    });
+    const navigate = useNavigate();
+    const [file, setFile] = useState('');
+
+    const handleCreateBase64 = useCallback(async e => {
+        const file = e.target.files[0];
+        const base64 = await convertToBase64(file);
+        setFile(base64);
+        e.target.value = '';
+        console.log(file);
+    }, []);
 
     const handleUpdate = data => {
+        const { name, city, email, phone, image, bankAccount } = data;
+        const req = new FormData();
+        req.append('name', name);
+        req.append('city', city);
+        req.append('email', email);
+        req.append('phone', phone);
+        req.append('password', null);
+        if (bankAccount !== null) {
+            req.append('bankAccount', bankAccount);
+        } else {
+            req.append('bankAccount', null);
+        }
         dispatch(
-            updateUser(data, setIsLoading, notification, failedNotification)
+            updateUser(req, image, notification, modal, refresh, navigate)
         );
     };
 
     return (
         <form className={styles.form} onSubmit={handleSubmit(handleUpdate)}>
-            <div className={styles.camera}>
-                <img src={camera_purple} alt={'fi_camera_purple'} />
+            <div
+                className={classNames(
+                    styles.camera,
+                    file ? styles['no-bg'] : ''
+                )}
+            >
+                {file ? (
+                    <img
+                        className={styles['camera-preview']}
+                        src={file}
+                        alt={'image-preview'}
+                    />
+                ) : (
+                    <img src={camera_purple} alt={'fi_camera_purple'} />
+                )}
+                <input
+                    {...register('image')}
+                    type={'file'}
+                    onChange={handleCreateBase64}
+                />
             </div>
             <Paragraph variant={'body-2'} className={styles.label}>
                 {'Name'}
@@ -44,7 +97,7 @@ const ProfileEdit = ({ user, notification, failedNotification }) => {
                     type={'text'}
                 />
             </Input>
-            {errors.nama && errors.nama.type === 'required' && (
+            {errors.name && errors.name.type === 'required' && (
                 <p className={styles.error}>*Required field*</p>
             )}
             <Paragraph variant={'body-2'} className={styles.label}>
@@ -52,12 +105,25 @@ const ProfileEdit = ({ user, notification, failedNotification }) => {
             </Paragraph>
             <Input className={styles.input}>
                 <input
-                    {...register('kota', { required: true })}
-                    placeholder={'Pilih Kota'}
+                    {...register('city', { required: true })}
+                    placeholder={'Kota'}
                     type={'text'}
                 />
             </Input>
-            {errors.kota && errors.kota.type === 'required' && (
+            {errors.city && errors.city.type === 'required' && (
+                <p className={styles.error}>*Required field*</p>
+            )}
+            <Paragraph variant={'body-2'} className={styles.label}>
+                {'Email'}
+            </Paragraph>
+            <Input className={styles.input}>
+                <input
+                    {...register('email', { required: true })}
+                    placeholder={'Email'}
+                    type={'email'}
+                />
+            </Input>
+            {errors.email && errors.email.type === 'required' && (
                 <p className={styles.error}>*Required field*</p>
             )}
             <Paragraph variant={'body-2'} className={styles.label}>
@@ -72,23 +138,41 @@ const ProfileEdit = ({ user, notification, failedNotification }) => {
             {errors.phone && errors.phone.type === 'required' && (
                 <p className={styles.error}>*Required field*</p>
             )}
+            {user.bankAccount !== null ? (
+                <>
+                    <Paragraph variant={'body-2'} className={styles.label}>
+                        {'No Rekening'}
+                    </Paragraph>
+                    <Input className={styles.input}>
+                        <input
+                            {...register('bankAccount', { required: true })}
+                            placeholder={'No Rekening'}
+                            type={'text'}
+                        />
+                    </Input>
+                    {errors.bankAccount &&
+                        errors.bankAccount.type === 'required' && (
+                            <p className={styles.error}>*Required field*</p>
+                        )}
+                </>
+            ) : null}
             <Button type={'submit'} variant={'primary'}>
-                {isLoading ? <Spinner variant={'button'} /> : 'Simpan'}
+                {buttonLoading ? <Spinner variant={'button'} /> : 'Simpan'}
             </Button>
         </form>
     );
 };
 
 ProfileEdit.propTypes = {
-    user: PropTypes.object,
     notification: PropTypes.func,
-    failedNotification: PropTypes.func,
+    modal: PropTypes.func,
+    refresh: PropTypes.func,
 };
 
 ProfileEdit.defaultProps = {
-    user: {},
     notification: null,
-    failedNotification: null,
+    modal: null,
+    refresh: null,
 };
 
 export default ProfileEdit;
