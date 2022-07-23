@@ -39,11 +39,9 @@ const ProfileEdit = ({ notification, modal, refresh }) => {
     const [file, setFile] = useState('');
 
     const handleCreateBase64 = useCallback(async e => {
-        const file = e.target.files[0];
-        const base64 = await convertToBase64(file);
+        const preview = e.target.files[0];
+        const base64 = await convertToBase64(preview);
         setFile(base64);
-        e.target.value = '';
-        console.log(file);
     }, []);
 
     const handleUpdate = data => {
@@ -53,7 +51,7 @@ const ProfileEdit = ({ notification, modal, refresh }) => {
         req.append('city', city);
         req.append('email', email);
         req.append('phone', phone);
-        req.append('password', null);
+
         if (bankAccount !== null) {
             req.append('bankAccount', bankAccount);
         } else {
