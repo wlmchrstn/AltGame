@@ -46,7 +46,9 @@ export const getAllWishlist = navigate => async dispatch => {
             dispatch({
                 type: UNAUTHENTICATED,
             });
-            navigate('/login');
+            if (window.location.pathname === '/wishlist') {
+                navigate('/login');
+            }
         }
     }
 };

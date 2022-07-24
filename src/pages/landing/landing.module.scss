@@ -37,7 +37,8 @@
     margin-left: 16px;
 }
 
-.product {
+.product,
+.product-wishlist {
     column-gap: 16px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -51,4 +52,12 @@
     @include desktop() {
         grid-template-columns: repeat(6, 1fr);
     }
+}
+
+.product-wishlist {
+    margin-top: 24px;
+}
+
+.header {
+    margin-top: 40px;
 }

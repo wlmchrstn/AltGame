@@ -15,7 +15,7 @@ import Title from '../../components/title/title';
 import Spinner from '../../components/spinner/spinner';
 
 // Assets
-import logo from '../../assets/images/logo.svg';
+import logo from '../../assets/images/alt.game.svg';
 import search from '../../assets/icons/fi_search.svg';
 import user from '../../assets/icons/fi_user.svg';
 import bell from '../../assets/icons/fi_bell.svg';
@@ -24,6 +24,7 @@ import login from '../../assets/icons/fi_log-in.svg';
 import menu from '../../assets/icons/fi_menu.svg';
 import store from '../../assets/icons/fi_store.svg';
 import shoppingCart from '../../assets/icons/fi_shopping-cart.svg';
+import heart from '../../assets/icons/fi_heart.svg';
 
 // Actions
 import { searchProduct } from '../../stores/actions/ActionProduct';
@@ -161,6 +162,7 @@ const Navbar = () => {
                     <>
                         <div className={styles['logo-wrapper']}>
                             <img
+                                className={styles['alt-game']}
                                 src={logo}
                                 alt={'logo'}
                                 onClick={() => navigate('/')}
@@ -320,7 +322,11 @@ const Navbar = () => {
                                     setIsOpen(false);
                                 }}
                             >
-                                <img src={logo} alt={'fi_logo'} />
+                                <img
+                                    className={styles['alt-game']}
+                                    src={logo}
+                                    alt={'fi_logo'}
+                                />
                             </div>
                             <div
                                 className={styles['modal-item']}
@@ -332,19 +338,6 @@ const Navbar = () => {
                                 <img src={user} alt={'fi_user'} />
                                 <Paragraph variant={'body-1'}>
                                     {'Profile'}
-                                </Paragraph>
-                            </div>
-                            <hr />
-                            <div
-                                className={styles['modal-item']}
-                                onClick={() => {
-                                    navigate('/notification');
-                                    setIsOpen(false);
-                                }}
-                            >
-                                <img src={bell} alt={'fi_bell'} />
-                                <Paragraph variant={'body-1'}>
-                                    {'Notification'}
                                 </Paragraph>
                             </div>
                             <hr />
@@ -370,7 +363,20 @@ const Navbar = () => {
                             >
                                 <img src={shoppingCart} alt={'fi_cart'} />
                                 <Paragraph variant={'body-1'}>
-                                    {'Wishlist & Transaction'}
+                                    {'Transaction'}
+                                </Paragraph>
+                            </div>
+                            <hr />
+                            <div
+                                className={styles['modal-item']}
+                                onClick={() => {
+                                    navigate('/wishlist');
+                                    setIsOpen(false);
+                                }}
+                            >
+                                <img src={heart} alt={'fi_cart'} />
+                                <Paragraph variant={'body-1'}>
+                                    {'Wishlist'}
                                 </Paragraph>
                             </div>
                         </Modal>
