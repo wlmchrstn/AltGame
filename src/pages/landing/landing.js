@@ -12,8 +12,14 @@ import Spinner from '../../components/spinner/spinner';
 // Assets
 import search from '../../assets/icons/fi_search.svg';
 import search_white from '../../assets/icons/fi_search_white.svg';
+
+// Modules
+import Carousel from '../../modules/carousel/carousel';
+
+// Actions
 import { getAllProduct } from '../../stores/actions/ActionProduct';
 import { getUser } from '../../stores/actions/ActionAuth';
+import { getAllWishlist } from '../../stores/actions/ActionWishlist';
 
 const LandingPage = () => {
     const [filter, setFilter] = useState('Semua');
@@ -22,10 +28,13 @@ const LandingPage = () => {
     const { listProducts, loading } = useSelector(
         state => state.ReducerProduct
     );
+    const { wishlist } = useSelector(state => state.ReducerWishlist);
+    const wishlistLoading = useSelector(state => state.ReducerWishlist.loading);
 
     useEffect(() => {
         dispatch(getUser());
         dispatch(getAllProduct());
+        dispatch(getAllWishlist());
     }, [dispatch]);
 
     const handleMapping = params => {
@@ -49,8 +58,40 @@ const LandingPage = () => {
         });
     };
 
+    const mapWishlist = () => {
+        if (wishlist.length !== 0) {
+            return (
+                <>
+                    <div className={styles.header}>
+                        <Title
+                            tagElement={'h2'}
+                            variant={'title-2'}
+                            color={'black'}
+                            weight={'bold'}
+                        >
+                            {'Wujudkan Impianmu'}
+                        </Title>
+                    </div>
+                    <div className={styles['product-wishlist']}>
+                        {wishlist.map((value, index) => {
+                            return (
+                                <Card
+                                    key={index}
+                                    data={value.product}
+                                    onClick={() => navigate(`/wishlist`)}
+                                />
+                            );
+                        })}
+                    </div>
+                </>
+            );
+        }
+    };
+
     return (
         <section className={styles.root}>
+            <Carousel />
+            {wishlistLoading ? null : mapWishlist()}
             <div className={styles.header}>
                 <Title
                     tagElement={'h2'}

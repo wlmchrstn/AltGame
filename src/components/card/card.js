@@ -6,7 +6,29 @@ import Paragraph from '../paragraph/paragraph';
 import { formatRupiah } from '../../utils/helper';
 
 const Card = ({ data, ...props }) => {
-    const { name, category, price, image } = data;
+    const { name, category, categoryId, price, image } = data;
+
+    const mapCategoryId = params => {
+        switch (params) {
+            case 1:
+                return 'Console';
+            case 2:
+                return 'Video Game';
+            case 3:
+                return 'Controller';
+            case 4:
+                return 'Aksesoris';
+            case 5:
+                return 'Board Game';
+            case 6:
+                return 'Collectible';
+            case 7:
+                return 'Other';
+            default:
+                return params;
+        }
+    };
+
     return (
         <div className={styles.root} {...props}>
             <div className={styles.image}>
@@ -21,7 +43,7 @@ const Card = ({ data, ...props }) => {
                     variant={'body-3'}
                     color={'neutral'}
                 >
-                    {category}
+                    {mapCategoryId(category || categoryId)}
                 </Paragraph>
                 <Paragraph className={styles.price} variant={'body-1'}>
                     {formatRupiah(price)}
