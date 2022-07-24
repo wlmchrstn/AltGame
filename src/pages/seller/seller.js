@@ -16,7 +16,7 @@ import Modal from '../../components/modal/modal';
 import Input from '../../components/input/input';
 
 // Assets
-import profileImg from '../../assets/images/profile-image.png';
+import profileImg from '../../assets/images/userplaceholder.png';
 import iconEmpty from '../../assets/icons/fi_empty.svg';
 import iconBoxGrey from '../../assets/icons/fi_box_grey.svg';
 import iconBoxPurple from '../../assets/icons/fi_box_purple.svg';
@@ -69,12 +69,12 @@ export const SellerPage = () => {
     }, []);
 
     useEffect(() => {
-        dispatch(getSellerProduct(navigate));
-    }, [dispatch, refresh, registerRefresh]);
-
-    useEffect(() => {
         dispatch(getUser());
     }, [dispatch, registerRefresh]);
+
+    useEffect(() => {
+        dispatch(getSellerProduct());
+    }, [dispatch, refresh, registerRefresh]);
 
     const handleCard = async params => {
         setProductId(params);
@@ -261,11 +261,19 @@ export const SellerPage = () => {
                         </Title>
                     </div>
                     <div className={styles.seller}>
-                        <img
-                            className={styles['seller-image']}
-                            src={profileImg}
-                            alt={'profile-image'}
-                        />
+                        {user.image ? (
+                            <img
+                                className={styles['seller-image']}
+                                src={`data:image/jpeg;base64,${user.image}`}
+                                alt={'profile-image'}
+                            />
+                        ) : (
+                            <img
+                                className={styles['seller-image']}
+                                src={profileImg}
+                                alt={'profile-image'}
+                            />
+                        )}
                         <div className={styles['seller-detail']}>
                             <Paragraph
                                 className={styles['seller-name']}
