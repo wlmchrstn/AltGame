@@ -17,7 +17,6 @@ import Input from '../../components/input/input';
 
 // Assets
 import arrowLeft from '../../assets/icons/fi_arrow-left.svg';
-import imgPlaceholder from '../../assets/images/card-image.png';
 import iconEmpty from '../../assets/icons/fi_empty.svg';
 import iconEdit from '../../assets/icons/fi_edit.svg';
 import iconDelete from '../../assets/icons/fi_trash.svg';
@@ -73,16 +72,18 @@ const Bid = ({ data, product, refresh }) => {
                         {'Product Match'}
                     </Paragraph>
                     <div className={styles['modal-wrapper']}>
-                        <img src={imgPlaceholder} alt={'placeholder'} />
+                        <img src={product.image} alt={'placeholder'} />
                         <div className={styles['modal-detail']}>
                             <Paragraph variant={'body-1'}>
                                 {user.name}
                             </Paragraph>
-                            <Paragraph variant={'body-3'}>{'Kota'}</Paragraph>
+                            <Paragraph variant={'body-3'}>
+                                {user.city}
+                            </Paragraph>
                         </div>
                     </div>
                     <div className={styles['modal-wrapper']}>
-                        <img src={imgPlaceholder} alt={'placeholder'} />
+                        <img src={product.image} alt={'placeholder'} />
                         <div className={styles['modal-product']}>
                             <Paragraph variant={'body-1'}>
                                 {product.name}
@@ -112,7 +113,7 @@ const Bid = ({ data, product, refresh }) => {
                 </Button>
             </Modal>
             <div className={styles.user}>
-                <img src={imgPlaceholder} alt={'placeholder'} />
+                <img src={product.image} alt={'placeholder'} />
                 <div className={styles['user-detail']}>
                     <Paragraph variant={'body-1'} weight={'medium'}>
                         {user.name}
@@ -158,7 +159,7 @@ const SellerBid = ({
     const { loading, listBids } = useSelector(state => state.ReducerBid);
     const { buttonLoading } = useSelector(state => state.ReducerSeller);
     const { product } = useSelector(state => state.ReducerProduct);
-    const { name, category, price, status } = product;
+    const { name, category, price, status, image } = product;
     const productLoading = useSelector(state => state.ReducerProduct.loading);
     const navigate = useNavigate();
     const [isEdit, setIsEdit] = useState(false);
@@ -260,7 +261,7 @@ const SellerBid = ({
                     <div className={styles['product-left']}>
                         <img
                             className={styles['product-image']}
-                            src={imgPlaceholder}
+                            src={image}
                             alt={'placeholder'}
                         />
                         <div className={styles['product-detail']}>
