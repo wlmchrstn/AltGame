@@ -8,7 +8,7 @@ import {
 } from './types';
 import { setToken } from '../../utils/helper';
 
-export const getSellerProduct = navigate => async dispatch => {
+export const getSellerProduct = () => async dispatch => {
     try {
         dispatch({
             type: SHOW_ALL_SELLER_PRODUCT,
@@ -45,7 +45,6 @@ export const getSellerProduct = navigate => async dispatch => {
             dispatch({
                 type: UNAUTHENTICATED,
             });
-            navigate('/login');
         }
     }
 };

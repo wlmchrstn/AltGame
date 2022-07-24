@@ -78,7 +78,10 @@ const Navbar = () => {
     };
 
     const mapNotif = data => {
-        if (data.length === 0) return <div>belum ada notif</div>;
+        if (data.length === 0)
+            return (
+                <div style={{ margin: '0 16px' }}>{'Belum ada notifikasi'}</div>
+            );
 
         const newNotif = data.filter(item => {
             return item.status === 'unread';

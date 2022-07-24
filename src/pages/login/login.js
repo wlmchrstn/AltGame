@@ -66,7 +66,7 @@ export const LoginPage = () => {
                     <Input className={styles.input}>
                         <input
                             type={'text'}
-                            placeholder={'Contoh: johndee@gmail.com'}
+                            placeholder={'Masukkan Username'}
                             {...register('username', { required: true })}
                         />
                     </Input>
