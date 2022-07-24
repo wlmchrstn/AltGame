@@ -127,21 +127,25 @@ const ProfilePage = () => {
                     >
                         {user.phone}
                     </Title>
-                    <Paragraph
-                        variant={'body-2'}
-                        className={styles['profile-label']}
-                        color={'neutral'}
-                    >
-                        {'No Rekening'}
-                    </Paragraph>
-                    <Title
-                        tagElement={'p'}
-                        variant={'title-1'}
-                        weight={'medium'}
-                        className={styles['profile-data']}
-                    >
-                        {user.bankAccount || '-'}
-                    </Title>
+                    {user.bankAccount ? (
+                        <>
+                            <Paragraph
+                                variant={'body-2'}
+                                className={styles['profile-label']}
+                                color={'neutral'}
+                            >
+                                {'No Rekening'}
+                            </Paragraph>
+                            <Title
+                                tagElement={'p'}
+                                variant={'title-1'}
+                                weight={'medium'}
+                                className={styles['profile-data']}
+                            >
+                                {user.bankAccount || '-'}
+                            </Title>
+                        </>
+                    ) : null}
                     <Button
                         type={'button'}
                         variant={'primary'}
