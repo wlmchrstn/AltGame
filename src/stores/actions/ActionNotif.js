@@ -2,7 +2,7 @@ import axios from 'axios';
 import { SHOW_ALL_NOTIF, UPDATE_NOTIF, UNAUTHENTICATED } from './types';
 import { setToken } from '../../utils/helper';
 
-export const getAllNotif = (bell, navigate) => async dispatch => {
+export const getAllNotif = bell => async dispatch => {
     try {
         dispatch({
             type: SHOW_ALL_NOTIF,
@@ -49,7 +49,6 @@ export const getAllNotif = (bell, navigate) => async dispatch => {
             dispatch({
                 type: UNAUTHENTICATED,
             });
-            navigate('/login');
         }
     }
 };
