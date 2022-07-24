@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import styles from './transaction-card.module.scss';
 import PropTypes from 'prop-types';
 import { formatRupiah } from '../../utils/helper';
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import { convertToBase64 } from '../../utils/helper';
 
 // Components
 import Paragraph from '../paragraph/paragraph';
@@ -25,6 +26,7 @@ import { deleteBid, updateBid, payBid } from '../../stores/actions/ActionBid';
 
 const TransactionCard = ({ data, notification, refresh, ...props }) => {
     const { createdAt, product, bidId, price, status } = data;
+    const [file, setFile] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
     const [bidEdit, setBidEdit] = useState(false);
@@ -47,6 +49,12 @@ const TransactionCard = ({ data, notification, refresh, ...props }) => {
             payBid(bidId, req, setIsOpen, notification, refresh, navigate)
         );
     };
+
+    const handleCreateBase64 = useCallback(async e => {
+        const file = e.target.files[0];
+        const base64 = await convertToBase64(file);
+        setFile(base64);
+    }, []);
 
     const handleEditBid = params => {
         dispatch(
@@ -150,10 +158,19 @@ const TransactionCard = ({ data, notification, refresh, ...props }) => {
                         {'Bukti Pembayaran'}
                     </Paragraph>
                     <div className={styles.file}>
-                        <img src={plus} alt={'fi_plus'} />
+                        {file ? (
+                            <img
+                                className={styles['file-preview']}
+                                src={file}
+                                alt={'image'}
+                            />
+                        ) : (
+                            <img src={plus} alt={'fi_plus'} />
+                        )}
                         <input
                             {...register('image', { required: true })}
                             type={'file'}
+                            onChange={handleCreateBase64}
                         />
                     </div>
                     {errors.image && errors.image.type === 'required' && (
